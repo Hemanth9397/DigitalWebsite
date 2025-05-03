@@ -7,6 +7,8 @@ import Home from "./react-pages/Home/Home";
 import About from "./react-pages/About/About";
 import Contact from "./react-pages/Contact/Contact";
 import NotFound from "./react-pages/NotFound";
+import './index.css';
+
 
 const router = createBrowserRouter([
   {
