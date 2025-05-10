@@ -1,5 +1,5 @@
-const express = require("express");
-const cors = require("cors");
+import express from 'express';
+import cors from 'cors';
 const app = express();
 
 app.use(cors());
@@ -24,8 +24,11 @@ app.get("/", (req, res) => {
   res.send("server is running");
 });
 
-app.get("/api/entries", (req, res) => {
-  res.json(entries);
+app.get("/about", (req, res) => {
+  setTimeout(()=>{
+    return res.status(200).json(entries);
+  }, 1000);
+  
 });
 
 app.listen(5000, () => {
