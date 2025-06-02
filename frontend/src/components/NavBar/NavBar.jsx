@@ -2,11 +2,19 @@ import React from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import "./NavBar.scss";
 import styled from "styled-components";
+import { Button, Typography } from "antd";
 
 const StyledNav = styled.nav`
   display: flex;
-  justify-content: end;
+  justify-content: space-between;
   background-color: var(--secondary-color);
+
+  & .title {
+    margin: 0 0.4rem;
+    display: grid;
+    place-items: center;
+  }
+
   ul {
     list-style: none;
     margin: 0;
@@ -25,7 +33,7 @@ const StyledNavLink = styled(NavLink)`
 const LinkContent = styled.label`
   position: relative;
   font-size: 1.5rem;
-  padding: 1rem 2rem;
+  padding: 1rem 0.5rem;
   display: inline-block;
   text-align: center;
   color: var(--text-primary);
@@ -53,17 +61,17 @@ const NavBar = () => {
   return (
     <div>
       <StyledNav>
+        <Typography.Title level={4} className="title">Digital-Blogger-Page</Typography.Title>
         <ul>
           <li>
-            <StyledNavLink end
+            <StyledNavLink
+              end
               className={({ isActive }) => (isActive ? "active" : "")}
               to="/"
             >
               <LinkContent title="Home">Home</LinkContent>
             </StyledNavLink>
           </li>
-        </ul>
-        <ul>
           <li>
             <StyledNavLink
               className={({ isActive }) => (isActive ? "active" : "")}
@@ -72,8 +80,6 @@ const NavBar = () => {
               <LinkContent title="About">About</LinkContent>
             </StyledNavLink>
           </li>
-        </ul>
-        <ul>
           <li>
             <StyledNavLink
               end
@@ -82,6 +88,9 @@ const NavBar = () => {
             >
               <LinkContent title="Contact">Contact</LinkContent>
             </StyledNavLink>
+          </li>
+          <li>
+            <Button>Login</Button>
           </li>
         </ul>
       </StyledNav>

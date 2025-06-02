@@ -2,8 +2,10 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import _ from "lodash";
 import { Skeleton } from "antd";
+import useTitle from "../../hooks/useTitle";
 
 const About = () => {
+  useTitle("About");
   const [{ isLoading, data }, setData] = useState({
     isLoading: false,
     data: [],
