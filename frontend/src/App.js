@@ -1,7 +1,6 @@
 // import logo from './logo.svg';
 import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import NavBar from "./components/NavBar/NavBar";
 import ErrorPage from "./components/ErrorPage/ErrorPage";
 //import Home from "./react-pages/Home/Home";
 //import About from "./react-pages/About/About";
@@ -9,29 +8,31 @@ import ErrorPage from "./components/ErrorPage/ErrorPage";
 import NotFound from "./react-pages/NotFound";
 import './index.css';
 import { lazy , Suspense} from "react";
+import Spinner from "./utils/Spinner";
+import Layout from "./components/Layout/Layout";
 
-const HomeComponent = lazy(()=> import('./react-pages/Home/Home'))
-const AboutComponent = lazy(()=> import('./react-pages/About/About'))
-const ContactComponent = lazy(()=> import('./react-pages/Contact/Contact'))
+const HomeComponent = lazy(()=> new Promise((resolve) => setTimeout(()=>resolve(import('./react-pages/Home/Home')), 2000)) );
+const AboutComponent = lazy(()=> import('./react-pages/About/About'));
+const ContactComponent = lazy(()=> new Promise((resolve) => setTimeout(()=>resolve(import('./react-pages/Contact/Contact')), 200000)) );
 
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <NavBar />,
+    element: <Layout />,
     errorElement: <ErrorPage />,
     children: [
       {
         index: true,
-        element: <Suspense fallback={<div>loading...</div>}><HomeComponent /></Suspense>,
+        element:<HomeComponent />,
       },
       {
         path: "about",
-        element: <Suspense fallback={<div>loading...</div>}><AboutComponent /></Suspense>,
+        element:<AboutComponent />,
       },
       {
         path: "contact",
-        element: <Suspense fallback={<div>loading...</div>}><ContactComponent /></Suspense>,
+        element: <Suspense fallback={<Spinner/>}><ContactComponent /></Suspense>,
       },
     ],
   },
@@ -42,7 +43,7 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  return ( <Suspense fallback={<Spinner/>}><RouterProvider router={router} /></Suspense>);
 }
 
 export default App;

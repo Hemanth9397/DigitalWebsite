@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink, Outlet } from "react-router-dom";
-import "./NavBar.scss";
+import "./layout.scss";
 import styled from "styled-components";
 import { Button, Typography } from "antd";
 
@@ -57,9 +57,9 @@ const LinkContent = styled.label`
   }
 `;
 
-const NavBar = () => {
+const Layout = () => {
   return (
-    <div>
+    <div className="app-layout">
       <StyledNav>
         <Typography.Title level={4} className="title">Digital-Blogger-Page</Typography.Title>
         <ul>
@@ -95,9 +95,11 @@ const NavBar = () => {
         </ul>
       </StyledNav>
       <hr />
+      <main className="page-container">
       <Outlet />
+      </main>
     </div>
   );
 };
 
-export default NavBar;
+export default Layout;
