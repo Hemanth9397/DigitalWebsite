@@ -1,9 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useDispatch } from 'react-redux';
 import "./ModeScroller.scss";
+import { setMode } from "../../slicers/mode/modeSlice";
 
 const ModeScroller = ({ modes = [] }) => {
   const scrollerRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  const dispatch = useDispatch();
 
   // Scroll-based active index detection
   useEffect(() => {
@@ -43,6 +46,7 @@ const ModeScroller = ({ modes = [] }) => {
       inline: "center",
       block: "nearest",
     });
+    dispatch(setMode(modes[index]))
     setActiveIndex(index);
   };
 
@@ -55,7 +59,7 @@ const ModeScroller = ({ modes = [] }) => {
             className={`mode-title ${index === activeIndex ? "active" : ""}`}
             onClick={() => handleClick(index)}
           >
-            {mode}
+            {mode.charAt(0).toUpperCase() + mode.slice(1).replace("-page"," Website")}
           </div>
         ))}
       </div>
