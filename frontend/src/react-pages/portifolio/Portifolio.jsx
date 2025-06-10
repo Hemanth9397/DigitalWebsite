@@ -68,7 +68,7 @@ const Portifolio = () => {
         <div className="grid md:grid-cols-2 gap-6">
           {portifolioData?.projects.map((project, index) => (
             <Card 
-              className="bg-blue-100 text-blue-800 text-sm font-medium customAhref"
+              className="bg-blue-100 text-blue-800 text-sm font-medium"
               key={index}
               title={project.title}
               extra={

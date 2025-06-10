@@ -1,14 +1,15 @@
 @tailwind base;
 @tailwind components;
-@import 'antd/dist/reset.css';   /* Always import resets first */
+@import "antd/dist/reset.css"; /* Always import resets first */
 @tailwind utilities;
 
 .hover-text-shadow-purple {
-  @apply transition-all duration-300 ease-in-out;
+  @apply transition-all duration-300;
 
-  text-shadow: none;
+  color: inherit !important;
   &:hover {
-    text-shadow: 0 0 2px #6e5494, 0 0 4px #6e5494;
+    color: inherit !important;
+    text-shadow: 1px 1px 0px #6e5494, -1px 1px 0px #6e5494, 1px -1px 0px #6e5494, -1px -1px 0px #6e5494 !important;
   }
 }
 
