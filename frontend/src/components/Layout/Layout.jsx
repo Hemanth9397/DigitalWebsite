@@ -1,10 +1,11 @@
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useNavigation } from "react-router-dom";
 import "./layout.scss";
 import styled from "styled-components";
 import { Button } from "antd";
 import ModeScroller from "../../utils/modeScroller/ModeScroller";
+import Spinner from "../../utils/spinner/Spinner";
 
-const modes = ["blogger-page", "shopping-page", "portfolio-page"];
+const modes = ["blogger", "shopping", "portfolio"];
 
 const StyledNavLink = styled(NavLink)`
   text-decoration: none;
@@ -36,6 +37,8 @@ const LinkContent = styled.label`
 `;
 
 const Layout = () => {
+
+  const navigation = useNavigation();
   return (
     <div>
       <header className="header">
@@ -44,7 +47,7 @@ const Layout = () => {
           <ul>
             <li>
               <StyledNavLink
-                to="/"
+                to="/home"
                 end
                 className={({ isActive }) => (isActive ? "active" : "")}
               >
@@ -75,7 +78,7 @@ const Layout = () => {
       </header>
       <hr />
       <main className="page-container">
-        <Outlet />
+       {navigation.state === "loading" ? <Spinner/> : <Outlet />}
       </main>
     </div>
   );

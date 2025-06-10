@@ -2,11 +2,13 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from 'react-redux';
 import "./ModeScroller.scss";
 import { setMode } from "../../slicers/mode/modeSlice";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const ModeScroller = ({ modes = [] }) => {
   const scrollerRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // Scroll-based active index detection
   useEffect(() => {
@@ -37,9 +39,11 @@ const ModeScroller = ({ modes = [] }) => {
 
     return () => container.removeEventListener("scroll", handleScroll);
   }, []);
-
+ 
+   const location = useLocation();
   // Click to scroll into view
   const handleClick = (index) => {
+   if (`/${modes[index]}` === location.pathname ) return;
     const item = scrollerRef.current.children[index];
     item.scrollIntoView({
       behavior: "smooth",
@@ -47,6 +51,7 @@ const ModeScroller = ({ modes = [] }) => {
       block: "nearest",
     });
     dispatch(setMode(modes[index]))
+    navigate(`/${modes[index]}`);
     setActiveIndex(index);
   };
 
@@ -59,7 +64,7 @@ const ModeScroller = ({ modes = [] }) => {
             className={`mode-title ${index === activeIndex ? "active" : ""}`}
             onClick={() => handleClick(index)}
           >
-            {mode.charAt(0).toUpperCase() + mode.slice(1).replace("-page"," Website")}
+            {mode.charAt(0).toUpperCase() + mode.slice(1) + " Website"}
           </div>
         ))}
       </div>

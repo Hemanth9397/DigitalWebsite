@@ -1,41 +1,79 @@
 // import logo from './logo.svg';
 import "./App.css";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  redirect,
+  RouterProvider,
+} from "react-router-dom";
 import ErrorPage from "./components/ErrorPage/ErrorPage";
-//import Home from "./react-pages/Home/Home";
-//import About from "./react-pages/About/About";
-//import Contact from "./react-pages/Contact/Contact";
-import { Provider} from 'react-redux';
+import { Provider } from "react-redux";
 import NotFound from "./react-pages/NotFound";
-import './index.css';
-import { lazy , Suspense} from "react";
-import Spinner from "./utils/Spinner";
+import "./index.css";
+import { lazy } from "react";
 import Layout from "./components/Layout/Layout";
 import { store } from "./store/store";
 
-const HomeComponent = lazy(()=> new Promise((resolve) => setTimeout(()=>resolve(import('./react-pages/Home/Home')), 2000)) );
-const AboutComponent = lazy(()=> import('./react-pages/About/About'));
-const ContactComponent = lazy(()=> new Promise((resolve) => setTimeout(()=>resolve(import('./react-pages/Contact/Contact')), 200000)) );
+const HomeComponent = lazy(
+  () =>
+    new Promise((resolve) =>
+      setTimeout(() => resolve(import("./react-pages/home/Home")), 2000)
+    )
+);
+const ContactComponent = lazy(
+  () =>
+    new Promise((resolve) =>
+      setTimeout(() => resolve(import("./react-pages/contact/Contact")), 5000)
+    )
+);
+const AboutComponent = lazy(() => import("./react-pages/about/About"));
+const BloggerComponent = lazy(() => import("./react-pages/blogger/Blogger"));
+const ShoppingComponent = lazy(() => import("./react-pages/shopping/Shopping"));
+const PortifolioComponent = lazy(() =>
+  import("./react-pages/portifolio/Portifolio")
+);
 
+const websitesRoutes = [
+  {
+    path: "blogger",
+    element: <BloggerComponent />,
+  },
+  {
+    path: "shopping",
+    element: <ShoppingComponent />,
+  },
+  {
+    path: "portfolio",
+    element: <PortifolioComponent />,
+  },
+];
 
 const router = createBrowserRouter([
   {
     path: "/",
+    loader: ({ request }) => {
+      const url = new URL(request.url);
+      const currentPath = url.pathname;
+      if (currentPath !== "/home") {
+        return redirect("/home");
+      }
+      return null;
+    },
     element: <Layout />,
     errorElement: <ErrorPage />,
     children: [
       {
-        index: true,
-        element:<HomeComponent />,
+        path: "home",
+        element: <HomeComponent />,
       },
       {
         path: "about",
-        element:<AboutComponent />,
+        element: <AboutComponent />,
       },
       {
         path: "contact",
-        element: <Suspense fallback={<Spinner/>}><ContactComponent /></Suspense>,
+        element: <ContactComponent />,
       },
+      ...websitesRoutes,
     ],
   },
   {
@@ -45,7 +83,11 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  return ( <Provider store={store}><Suspense fallback={<Spinner/>}><RouterProvider router={router} /></Suspense></Provider>);
+  return (
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
+  );
 }
 
 export default App;
