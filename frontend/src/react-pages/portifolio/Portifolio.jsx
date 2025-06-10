@@ -1,75 +1,3 @@
-// import React from "react";
-// import { Card, Button, Form, Input } from "antd";
-
-// const projects = [ { title: "MERN Ecommerce", description: "Full-featured eCommerce site using MongoDB, Express, React, Node.js.", link: "https://github.com/yourname/mern-ecommerce" }, { title: "Blog App", description: "Blog platform with user authentication, CRUD and rich text editor.", link: "https://github.com/yourname/blog-app" } ];
-
-// const skills = [ "JavaScript", "React", "Redux", "Tailwind CSS", "Node.js", "MongoDB", "Ant Design", "Git", "REST APIs" ];
-
-// const PortfolioPage = () => { return ( <div className="max-w-6xl mx-auto px-4 py-8"> {/* Intro */} <section className="text-center mb-12"> <h1 className="text-4xl font-bold mb-2">Hi, I'm Hemanth Gidijala</h1> <p className="text-secondaryColor text--600">Full Stack Developer | MERN | React | Tailwind CSS | Ant Design</p> </section>
-
-// {/* About */}
-//   <section className="mb-12">
-//     <h2 className="text-2xl font-semibold mb-4">About Me</h2>
-//     <p className="text-primaryColor">
-//       Passionate developer with experience building responsive and scalable web apps. I love solving complex problems and working with modern JavaScript frameworks.
-//     </p>
-//   </section>
-
-//   {/* Skills */}
-//   <section className="mb-12">
-//     <h2 className="text-2xl font-semibold mb-4">Skills</h2>
-//     <div className="flex flex-wrap gap-2">
-//       {skills.map((skill, index) => (
-//         <span
-//           key={index}
-//           className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium"
-//         >
-//           {skill}
-//         </span>
-//       ))}
-//     </div>
-//   </section>
-
-//   {/* Projects */}
-//   <section className="mb-12">
-//     <h2 className="text-2xl font-semibold mb-4">Projects</h2>
-//     <div className="grid md:grid-cols-2 gap-6">
-//       {projects.map((project, index) => (
-//         <Card
-//           key={index}
-//           title={project.title}
-//           bordered={false}
-//           extra={<a href={project.link} target="_blank" rel="noreferrer">GitHub</a>}
-//         >
-//           <p>{project.description}</p>
-//         </Card>
-//       ))}
-//     </div>
-//   </section>
-
-//   {/* Contact */}
-//   <section className="mb-12">
-//     <h2 className="text-2xl font-semibold mb-4">Contact Me</h2>
-//     <Form
-//       layout="vertical"
-//       className="max-w-xl"
-//       onFinish={(values) => console.log("Form Data:", values)}
-//     >
-//       <Form.Item name="name" label="Name" rules={[{ required: true }]}> <Input /> </Form.Item>
-//       <Form.Item name="email" label="Email" rules={[{ required: true, type: "email" }]}> <Input /> </Form.Item>
-//       <Form.Item name="message" label="Message" rules={[{ required: true }]}> <Input.TextArea rows={4} /> </Form.Item>
-//       <Form.Item>
-//         <Button type="primary" htmlType="submit">Send</Button>
-//       </Form.Item>
-//     </Form>
-//   </section>
-// </div>
-
-// ); };
-
-// export default PortfolioPage;
-
-import React from "react";
 import { Card } from "antd";
 import {
   GithubOutlined,
@@ -77,33 +5,8 @@ import {
   MailOutlined,
 } from "@ant-design/icons";
 import styled from "styled-components";
-
-const projects = [
-  {
-    title: "MERN Ecommerce",
-    description:
-      "Full-featured eCommerce site using MongoDB, Express, React, Node.js.",
-    link: "https://github.com/Hemanth9397/DigitalWebsite",
-  },
-  {
-    title: "Blog App",
-    description:
-      "Blog platform with user authentication, CRUD and rich text editor.",
-    link: "https://github.com/Hemanth9397/DigitalWebsite",
-  },
-];
-
-const skills = [
-  "JavaScript",
-  "React",
-  "Redux",
-  "Tailwind CSS",
-  "Node.js",
-  "MongoDB",
-  "Ant Design",
-  "Git",
-  "REST APIs",
-];
+import { useLoaderData } from "react-router-dom";
+import DownloadPDFButton from "../../utils/downloadPdfButton/DownloadPDFButton";
 
 const StyledGithubIcon = styled(GithubOutlined)`
   filter: drop-shadow(0 0 2px #6e5494) drop-shadow(0 0 5px #6e5494);
@@ -115,16 +18,18 @@ const StyledMailIcon = styled(MailOutlined)`
   filter: drop-shadow(0 0 2px #d93025) drop-shadow(0 0 5px #d93025);
 `;
 
-const Portfolio = () => {
+const Portifolio = () => {
+
+  const portifolioData = useLoaderData();
+  console.log("portifolioData: ", portifolioData);
   return (
     <div className="min-h-screen bg-background-dark text-text-primaryColor p-6">
-      <section className="text-center mb-12">
+           <section className="text-center mb-12">
         <h1 className="text-4xl font-bold text-primaryColor mb-4">
-          Hemanth Gidijala
+          {portifolioData?.name}
         </h1>
         <p className="text-text-secondary max-w-2xl mx-auto">
-          Full Stack Developer passionate about building modern web applications
-          with React, Node.js, and AWS.
+          {portifolioData?.shortNote}
         </p>
         <div className="flex justify-center gap-6 mt-4 text-2xl">
           <a
@@ -152,11 +57,7 @@ const Portfolio = () => {
           About Me
         </h2>
         <p>
-          I have 5+ years of experience in software development. I specialize in
-          building scalable web applications and have strong experience in both
-          frontend and backend technologies including React, Redux, Node.js,
-          Express, MongoDB, PostgreSQL, and AWS services like S3, Lambda, and
-          CloudFront.
+         {portifolioData?.aboutMe}
         </p>
       </section>
 
@@ -165,13 +66,13 @@ const Portfolio = () => {
           Projects
         </h2>
         <div className="grid md:grid-cols-2 gap-6">
-          {projects.map((project, index) => (
-            <Card
+          {portifolioData?.projects.map((project, index) => (
+            <Card 
+              className="bg-blue-100 text-blue-800 text-sm font-medium customAhref"
               key={index}
               title={project.title}
-              bordered={false}
               extra={
-                <a href={project.link} target="_blank" rel="noreferrer">
+                <a href={project.link} target="_blank" rel="noreferrer" className="hover-text-shadow-purple" >
                   view on GitHub
                 </a>
               }
@@ -182,24 +83,12 @@ const Portfolio = () => {
         </div>
       </section>
 
-      {/* <section className="mb-12">
-        <h2 className="text-2xl font-semibold text-primaryColor mb-6">Skills</h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-text-secondary">
-          <span>React / Redux</span>
-          <span>Node.js / Express</span>
-          <span>MongoDB / PostgreSQL</span>
-          <span>TypeScript</span>
-          <span>Tailwind CSS</span>
-          <span>AWS (Lambda, S3, CloudFront)</span>
-        </div>
-      </section> */}
-
       <section className="mb-12">
         <h2 className="text-2xl font-semibold text-primaryColor mb-4">
           Skills
         </h2>
         <div className="flex flex-wrap gap-2">
-          {skills.map((skill, index) => (
+          {portifolioData?.skills.map((skill, index) => (
             <span
               key={index}
               className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium"
@@ -208,6 +97,13 @@ const Portfolio = () => {
             </span>
           ))}
         </div>
+      </section>
+
+      <section className="mb-12 flex items-center gap-8">
+        <h2 className="text-2xl font-semibold text-primaryColor">
+          If you want the Soft copy of Resume.? (Please click on the Download PDF Button...📥📑)
+        </h2>
+        <DownloadPDFButton/>
       </section>
 
       <section className="text-center">
@@ -223,9 +119,9 @@ const Portfolio = () => {
         >
           Contact Me
         </a>
-      </section>
+      </section>     
     </div>
   );
 };
 
-export default Portfolio;
+export default Portifolio;

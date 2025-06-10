@@ -9,9 +9,11 @@ import ErrorPage from "./components/ErrorPage/ErrorPage";
 import { Provider } from "react-redux";
 import NotFound from "./react-pages/NotFound";
 import "./index.css";
-import { lazy } from "react";
+import { lazy, Suspense } from "react";
 import Layout from "./components/Layout/Layout";
 import { store } from "./store/store";
+import PortifolioLoader from "./loader/PortifolioLoader";
+import Spinner from "./utils/spinner/Spinner";
 
 const HomeComponent = lazy(
   () =>
@@ -43,6 +45,7 @@ const websitesRoutes = [
   },
   {
     path: "portfolio",
+    loader: PortifolioLoader,
     element: <PortifolioComponent />,
   },
 ];
@@ -84,8 +87,11 @@ const router = createBrowserRouter([
 
 function App() {
   return (
+
     <Provider store={store}>
+      <Suspense fallback={<Spinner/>}>
       <RouterProvider router={router} />
+      </Suspense>
     </Provider>
   );
 }

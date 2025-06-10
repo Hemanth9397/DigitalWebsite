@@ -1,5 +1,8 @@
 import express from 'express';
 import cors from 'cors';
+import bodyParser from 'body-parser';
+import portifolioRoutes from './routes/portifolio-routes.js';
+
 const app = express();
 
 app.use(cors());
@@ -13,16 +16,11 @@ const entries = [
   { id: 3, title: "Entry 3", content: "This is entry 3" },
 ];
 
-// app.use((req, res, next
-
-// app.use((req, res, next) => {
-//   console.log("This is middleware");
-//   next();
-// });
-
 app.get("/", (req, res) => {
   res.send("server is running");
 });
+
+app.use("/api/v1/portifolio",portifolioRoutes);
 
 app.get("/about", (req, res) => {
   setTimeout(()=>{
@@ -32,5 +30,5 @@ app.get("/about", (req, res) => {
 });
 
 app.listen(5000, () => {
-  console.log("serve is running on server");
+  console.log("server is running on server");
 });
