@@ -1,9 +1,9 @@
 import { NavLink, Outlet, useNavigation } from "react-router-dom";
 import "./layout.scss";
 import styled from "styled-components";
-import { Button } from "antd";
 import ModeScroller from "../../utils/modeScroller/ModeScroller";
 import Spinner from "../../utils/spinner/Spinner";
+import CustomButton from "../../utils/customButton/CustomButton";
 
 const modes = ["blogger", "shopping", "portfolio"];
 
@@ -70,8 +70,8 @@ const Layout = () => {
                 <LinkContent>Contact</LinkContent>
               </StyledNavLink>
             </li>
-            <li>
-              <Button>Login</Button>
+            <li className="flex items-center" style={{marginRight: 0}}>
+              <CustomButton >Authenticate</CustomButton>
             </li>
           </ul>
         </nav>

@@ -7,6 +7,7 @@ import {
 import styled from "styled-components";
 import { useLoaderData } from "react-router-dom";
 import DownloadPDFButton from "../../utils/downloadPdfButton/DownloadPDFButton";
+import CustomButton from "../../utils/customButton/CustomButton";
 
 const StyledGithubIcon = styled(GithubOutlined)`
   filter: drop-shadow(0 0 2px #6e5494) drop-shadow(0 0 5px #6e5494);
@@ -16,6 +17,62 @@ const StyledLinkedinIcon = styled(LinkedinOutlined)`
 `;
 const StyledMailIcon = styled(MailOutlined)`
   filter: drop-shadow(0 0 2px #d93025) drop-shadow(0 0 5px #d93025);
+`;
+
+const StyledCard = styled(Card)`
+  margin: 0 auto;
+  border: none;
+  color: #f0f0f0 !important;
+  background-color: #161a20 !important;
+  border-radius: 10px;
+  position: relative;
+  width: 100%;
+  height: 100%;
+
+  .ant-card-head-title {
+    color: #f0f0f0 !important;
+  }
+
+  &::after, &::before{
+    content: '';
+    position: absolute;
+    height: 102%;
+    width: 101%;
+    background-image: linear-gradient(#ff4545);
+    top:50%;
+    left: 50%;
+    translate: -50% -50%;
+    z-index: -1;
+    padding: 0px;
+    border-radius: 10px;
+  }
+
+  &::before{
+    filter: blur(0.5rem);
+    opacity: 0.5;
+  }
+`;
+
+const StyledSpan = styled.span`
+padding: 0.5em 1em;
+background-color: #161a20 !important;
+border: none;
+color: #f0f0f0 !important;
+border-radius: 1000px;
+position: relative;
+display: flex;
+justify-content: center;
+align-items: center;
+
+&::after{
+  content: '';
+  position: absolute;
+  height: 107%;
+  width: 102%;
+  border-radius: 1000px;
+  background-image: linear-gradient(#ff4545);
+  z-index: -1;
+}
 `;
 
 const Portifolio = () => {
@@ -67,8 +124,7 @@ const Portifolio = () => {
         </h2>
         <div className="grid md:grid-cols-2 gap-6">
           {portifolioData?.projects.map((project, index) => (
-            <Card 
-              className="bg-blue-100 text-blue-800 text-sm font-medium"
+            <StyledCard 
               key={index}
               title={project.title}
               extra={
@@ -78,7 +134,7 @@ const Portifolio = () => {
               }
             >
               <p>{project.description}</p>
-            </Card>
+            </StyledCard>
           ))}
         </div>
       </section>
@@ -89,21 +145,20 @@ const Portifolio = () => {
         </h2>
         <div className="flex flex-wrap gap-2">
           {portifolioData?.skills.map((skill, index) => (
-            <span
+            <StyledSpan
               key={index}
-              className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium"
             >
               {skill}
-            </span>
+            </StyledSpan>
           ))}
         </div>
       </section>
 
       <section className="mb-12 flex items-center gap-8">
         <h2 className="text-2xl font-semibold text-primaryColor">
-          If you want the Soft copy of Resume.? (Please click on the Download PDF Button...📥📑)
+          If you want the Soft copy of Resume.? (Please click on the Download PDF...📥📑)
         </h2>
-        <DownloadPDFButton/>
+        <DownloadPDFButton/> <CustomButton>testing</CustomButton>
       </section>
 
       <section className="text-center">

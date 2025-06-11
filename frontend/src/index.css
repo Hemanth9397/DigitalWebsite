@@ -6,7 +6,7 @@
 .hover-text-shadow-purple {
   @apply transition-all duration-300;
 
-  color: inherit !important;
+  color: #f0f0f0 !important;
   &:hover {
     color: inherit !important;
     text-shadow: 1px 1px 0px #6e5494, -1px 1px 0px #6e5494, 1px -1px 0px #6e5494, -1px -1px 0px #6e5494 !important;
