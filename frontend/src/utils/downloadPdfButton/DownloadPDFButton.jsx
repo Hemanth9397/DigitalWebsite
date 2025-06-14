@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Spin, message } from "antd";
+import { Button, Spin } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
 import axios from "axios";
 import styled from "styled-components";
@@ -32,9 +32,9 @@ align-items: center;
 `;
 
 
-const DownloadPDFButton = () => {
+const DownloadPDFButton = (props) => {
   const [loading, setLoading] = useState(false);
-
+ console.log(props);
   const handleDownload = async () => {
     setLoading(true);
     try {
@@ -50,10 +50,19 @@ const DownloadPDFButton = () => {
       link.click();
       link.remove();
 
-      message.success("Download started!");
+      props.notify({
+      type: "success",
+      message: "Download Successful",
+      description: "Your file has been downloaded successfully.",
+    });
+
     } catch (error) {
       console.error(error);
-      message.error("Download failed");
+      props.notify({
+      type: "error",
+      message: "Download Failed",
+      description: "Something went wrong. Please try again.",
+    });
     } finally {
       setLoading(false);
     }

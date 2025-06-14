@@ -7,7 +7,7 @@ import {
 import styled from "styled-components";
 import { useLoaderData } from "react-router-dom";
 import DownloadPDFButton from "../../utils/downloadPdfButton/DownloadPDFButton";
-import CustomButton from "../../utils/customButton/CustomButton";
+import withNotification from "../../utils/notification/withNotification";
 
 const StyledGithubIcon = styled(GithubOutlined)`
   filter: drop-shadow(0 0 2px #6e5494) drop-shadow(0 0 5px #6e5494);
@@ -33,13 +33,14 @@ const StyledCard = styled(Card)`
     color: #f0f0f0 !important;
   }
 
-  &::after, &::before{
-    content: '';
+  &::after,
+  &::before {
+    content: "";
     position: absolute;
     height: 102%;
     width: 101%;
     background-image: linear-gradient(#ff4545);
-    top:50%;
+    top: 50%;
     left: 50%;
     translate: -50% -50%;
     z-index: -1;
@@ -47,41 +48,40 @@ const StyledCard = styled(Card)`
     border-radius: 10px;
   }
 
-  &::before{
+  &::before {
     filter: blur(0.5rem);
     opacity: 0.5;
   }
 `;
 
 const StyledSpan = styled.span`
-padding: 0.5em 1em;
-background-color: #161a20 !important;
-border: none;
-color: #f0f0f0 !important;
-border-radius: 1000px;
-position: relative;
-display: flex;
-justify-content: center;
-align-items: center;
-
-&::after{
-  content: '';
-  position: absolute;
-  height: 107%;
-  width: 102%;
+  padding: 0.5em 1em;
+  background-color: #161a20 !important;
+  border: none;
+  color: #f0f0f0 !important;
   border-radius: 1000px;
-  background-image: linear-gradient(#ff4545);
-  z-index: -1;
-}
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &::after {
+    content: "";
+    position: absolute;
+    height: 107%;
+    width: 102%;
+    border-radius: 1000px;
+    background-image: linear-gradient(#ff4545);
+    z-index: -1;
+  }
 `;
 
-const Portifolio = () => {
-
+const Portifolio = ({notify}) => {
   const portifolioData = useLoaderData();
-  console.log("portifolioData: ", portifolioData);
+  console.log("notify: ", notify);
   return (
-    <div className="min-h-screen bg-background-dark text-text-primaryColor p-6">
-           <section className="text-center mb-12">
+    <div>
+      <section className="text-center mb-12">
         <h1 className="text-4xl font-bold text-primaryColor mb-4">
           {portifolioData?.name}
         </h1>
@@ -113,9 +113,7 @@ const Portifolio = () => {
         <h2 className="text-2xl font-semibold text-primaryColor mb-6">
           About Me
         </h2>
-        <p>
-         {portifolioData?.aboutMe}
-        </p>
+        <p>{portifolioData?.aboutMe}</p>
       </section>
 
       <section className="mb-12">
@@ -124,11 +122,16 @@ const Portifolio = () => {
         </h2>
         <div className="grid md:grid-cols-2 gap-6">
           {portifolioData?.projects.map((project, index) => (
-            <StyledCard 
+            <StyledCard
               key={index}
               title={project.title}
               extra={
-                <a href={project.link} target="_blank" rel="noreferrer" className="hover-text-shadow-purple" >
+                <a
+                  href={project.link}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="hover-text-shadow-purple"
+                >
                   view on GitHub
                 </a>
               }
@@ -145,20 +148,17 @@ const Portifolio = () => {
         </h2>
         <div className="flex flex-wrap gap-2">
           {portifolioData?.skills.map((skill, index) => (
-            <StyledSpan
-              key={index}
-            >
-              {skill}
-            </StyledSpan>
+            <StyledSpan key={index}>{skill}</StyledSpan>
           ))}
         </div>
       </section>
 
       <section className="mb-12 flex items-center gap-8">
         <h2 className="text-2xl font-semibold text-primaryColor">
-          If you want the Soft copy of Resume.? (Please click on the Download PDF...📥📑)
+          If you want the Soft copy of Resume.? (Please click on the Download
+          PDF...📥📑)
         </h2>
-        <DownloadPDFButton/> <CustomButton>testing</CustomButton>
+        <DownloadPDFButton notify={notify}/>
       </section>
 
       <section className="text-center">
@@ -174,9 +174,9 @@ const Portifolio = () => {
         >
           Contact Me
         </a>
-      </section>     
+      </section>
     </div>
   );
 };
 
-export default Portifolio;
+export default withNotification(Portifolio);

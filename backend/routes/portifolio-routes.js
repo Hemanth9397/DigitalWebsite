@@ -46,7 +46,12 @@ router.get("/download-pdf", (req, res) => {
     "../files",
     "Frontend@HemanthGidijala.pdf"
   );
-  res.download(filePath, "Frontend@HemanthGidijala.pdf");
+  res.download(filePath, "Frontend@HemanthGidijala.pdf", (err) => {
+    if (err) {
+      console.error("Error during file download:", err);
+      res.status(500).send("File not found or internal error.");
+    }
+  });
 });
 
 export default router;

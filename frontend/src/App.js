@@ -43,7 +43,7 @@ const websitesRoutes = [
     path: "shopping",
     element: <ShoppingComponent />,
   },
-  {
+  { 
     path: "portfolio",
     loader: PortifolioLoader,
     element: <PortifolioComponent />,
@@ -56,8 +56,8 @@ const router = createBrowserRouter([
     loader: ({ request }) => {
       const url = new URL(request.url);
       const currentPath = url.pathname;
-      if (currentPath !== "/home") {
-        return redirect("/home");
+      if (currentPath !== "/portfolio") {
+        return redirect("/portfolio");
       }
       return null;
     },

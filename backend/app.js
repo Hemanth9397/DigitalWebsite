@@ -29,6 +29,19 @@ app.get("/about", (req, res) => {
   
 });
 
+// 404 handler (keep this at the very bottom)
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    message: `Route not found: ${req.originalUrl}`,
+  });
+});
+
+// Error handler
+app.use((err, req, res, next) => {
+  res.status(500).json({ message: "Internal server error" });
+});
+
 app.listen(5000, () => {
-  console.log("server is running on server");
+  console.log("app.js is running on server");
 });

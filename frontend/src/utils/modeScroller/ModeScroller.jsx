@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useDispatch } from 'react-redux';
+import { useDispatch } from "react-redux";
 import "./ModeScroller.scss";
 import { setMode } from "../../slicers/mode/modeSlice";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -39,21 +39,34 @@ const ModeScroller = ({ modes = [] }) => {
 
     return () => container.removeEventListener("scroll", handleScroll);
   }, []);
- 
-   const location = useLocation();
+
+  const location = useLocation();
   // Click to scroll into view
   const handleClick = (index) => {
-   if (`/${modes[index]}` === location.pathname ) return;
+    if (`/${modes[index]}` === location.pathname) return;
     const item = scrollerRef.current.children[index];
     item.scrollIntoView({
       behavior: "smooth",
       inline: "center",
       block: "nearest",
     });
-    dispatch(setMode(modes[index]))
+    dispatch(setMode(modes[index]));
     navigate(`/${modes[index]}`);
     setActiveIndex(index);
   };
+
+  //change to default portfolio
+
+  useEffect(() => {
+    const item = scrollerRef.current.children[2]; // index of 'portfolio'
+    if (item) {
+      item.scrollIntoView({
+        behavior: "smooth",
+        inline: "center",
+        block: "nearest",
+      });
+    }
+  }, []);
 
   return (
     <div className="mode-wrapper">

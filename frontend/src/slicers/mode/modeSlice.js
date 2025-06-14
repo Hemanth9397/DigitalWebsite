@@ -1,7 +1,7 @@
 import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
-    currentMode: 'blogger-page'
+    currentMode: 'portfolio'
 };
 
 const modeSlice = createSlice({

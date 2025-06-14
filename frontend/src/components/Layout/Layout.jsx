@@ -15,7 +15,7 @@ const LinkContent = styled.label`
   position: relative;
   font-size: 1.2rem;
   padding: 0.75rem 0.5rem;
-  color: var(--text-primary);
+  color: var(--nav-label-color);
   transition: color 0.4s ease;
 
   &::after {
@@ -25,7 +25,7 @@ const LinkContent = styled.label`
     left: 50%;
     height: 2px;
     width: 0;
-    background-color: var(--background-color);
+    background-color: var(--nav-active-color);
     transform: translateX(-50%);
     transition: width 0.4s ease;
   }
