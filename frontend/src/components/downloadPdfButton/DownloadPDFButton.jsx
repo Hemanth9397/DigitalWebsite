@@ -38,7 +38,7 @@ const DownloadPDFButton = (props) => {
   const handleDownload = async () => {
     setLoading(true);
     try {
-      const response = await axios.get("http://localhost:5000/api/v1/portifolio/download-pdf", {
+      const response = await axios.get("http://localhost:5000/api/v1/portfolio/download-pdf", {
         responseType: "blob",
       });
 

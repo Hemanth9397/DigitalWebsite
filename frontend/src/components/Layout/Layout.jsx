@@ -1,9 +1,9 @@
 import { NavLink, Outlet, useNavigation } from "react-router-dom";
 import "./layout.scss";
 import styled from "styled-components";
-import ModeScroller from "../../utils/modeScroller/ModeScroller";
-import Spinner from "../../utils/spinner/Spinner";
-import CustomButton from "../../utils/customButton/CustomButton";
+import ModeScroller from "../modeScroller/ModeScroller";
+import Spinner from "../spinner/Spinner";
+import CustomButton from "../customButton/CustomButton";
 
 const modes = ["blogger", "shopping", "portfolio"];
 
@@ -47,7 +47,7 @@ const Layout = () => {
           <ul>
             <li>
               <StyledNavLink
-                to="/home"
+                to="api/v1/home"
                 end
                 className={({ isActive }) => (isActive ? "active" : "")}
               >
@@ -56,7 +56,7 @@ const Layout = () => {
             </li>
             <li>
               <StyledNavLink
-                to="/about"
+                to="api/v1/about"
                 className={({ isActive }) => (isActive ? "active" : "")}
               >
                 <LinkContent>About</LinkContent>
@@ -64,7 +64,7 @@ const Layout = () => {
             </li>
             <li>
               <StyledNavLink
-                to="/contact"
+                to="api/v1/contact"
                 className={({ isActive }) => (isActive ? "active" : "")}
               >
                 <LinkContent>Contact</LinkContent>

@@ -6,7 +6,7 @@ import {
 } from "@ant-design/icons";
 import styled from "styled-components";
 import { useLoaderData } from "react-router-dom";
-import DownloadPDFButton from "../../utils/downloadPdfButton/DownloadPDFButton";
+import DownloadPDFButton from "../../components/downloadPdfButton/DownloadPDFButton";
 import withNotification from "../../utils/notification/withNotification";
 
 const StyledGithubIcon = styled(GithubOutlined)`
@@ -76,17 +76,17 @@ const StyledSpan = styled.span`
   }
 `;
 
-const Portifolio = ({notify}) => {
-  const portifolioData = useLoaderData();
+const Portfolio = ({notify}) => {
+  const portfolioData = useLoaderData();
   console.log("notify: ", notify);
   return (
     <div>
       <section className="text-center mb-12">
         <h1 className="text-4xl font-bold text-primaryColor mb-4">
-          {portifolioData?.name}
+          {portfolioData?.name}
         </h1>
         <p className="text-text-secondary max-w-2xl mx-auto">
-          {portifolioData?.shortNote}
+          {portfolioData?.shortNote}
         </p>
         <div className="flex justify-center gap-6 mt-4 text-2xl">
           <a
@@ -113,7 +113,7 @@ const Portifolio = ({notify}) => {
         <h2 className="text-2xl font-semibold text-primaryColor mb-6">
           About Me
         </h2>
-        <p>{portifolioData?.aboutMe}</p>
+        <p>{portfolioData?.aboutMe}</p>
       </section>
 
       <section className="mb-12">
@@ -121,7 +121,7 @@ const Portifolio = ({notify}) => {
           Projects
         </h2>
         <div className="grid md:grid-cols-2 gap-6">
-          {portifolioData?.projects.map((project, index) => (
+          {portfolioData?.projects.map((project, index) => (
             <StyledCard
               key={index}
               title={project.title}
@@ -147,7 +147,7 @@ const Portifolio = ({notify}) => {
           Skills
         </h2>
         <div className="flex flex-wrap gap-2">
-          {portifolioData?.skills.map((skill, index) => (
+          {portfolioData?.skills.map((skill, index) => (
             <StyledSpan key={index}>{skill}</StyledSpan>
           ))}
         </div>
@@ -179,4 +179,4 @@ const Portifolio = ({notify}) => {
   );
 };
 
-export default withNotification(Portifolio);
+export default withNotification(Portfolio);

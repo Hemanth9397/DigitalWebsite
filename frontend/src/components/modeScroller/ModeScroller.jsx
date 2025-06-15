@@ -51,7 +51,7 @@ const ModeScroller = ({ modes = [] }) => {
       block: "nearest",
     });
     dispatch(setMode(modes[index]));
-    navigate(`/${modes[index]}`);
+    navigate(`/api/v1/${modes[index]}`);
     setActiveIndex(index);
   };
 

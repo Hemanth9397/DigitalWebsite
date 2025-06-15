@@ -12,8 +12,8 @@ import "./index.css";
 import { lazy, Suspense } from "react";
 import Layout from "./components/Layout/Layout";
 import { store } from "./store/store";
-import PortifolioLoader from "./loader/PortifolioLoader";
-import Spinner from "./utils/spinner/Spinner";
+import PortfolioLoader from "./loaders/PortfolioLoader";
+import Spinner from "./components/spinner/Spinner";
 
 const HomeComponent = lazy(
   () =>
@@ -30,23 +30,23 @@ const ContactComponent = lazy(
 const AboutComponent = lazy(() => import("./react-pages/about/About"));
 const BloggerComponent = lazy(() => import("./react-pages/blogger/Blogger"));
 const ShoppingComponent = lazy(() => import("./react-pages/shopping/Shopping"));
-const PortifolioComponent = lazy(() =>
-  import("./react-pages/portifolio/Portifolio")
+const PortfolioComponent = lazy(() =>
+  import("./react-pages/portfolio/Portfolio")
 );
 
 const websitesRoutes = [
   {
-    path: "blogger",
+    path: "api/v1/blogger",
     element: <BloggerComponent />,
   },
   {
-    path: "shopping",
+    path: "api/v1/shopping",
     element: <ShoppingComponent />,
   },
   { 
-    path: "portfolio",
-    loader: PortifolioLoader,
-    element: <PortifolioComponent />,
+    path: "api/v1/portfolio",
+    loader: PortfolioLoader,
+    element: <PortfolioComponent />,
   },
 ];
 
@@ -56,8 +56,8 @@ const router = createBrowserRouter([
     loader: ({ request }) => {
       const url = new URL(request.url);
       const currentPath = url.pathname;
-      if (currentPath !== "/portfolio") {
-        return redirect("/portfolio");
+      if (currentPath !== "/api/v1/portfolio") {
+        return redirect("/api/v1/portfolio");
       }
       return null;
     },
@@ -65,15 +65,15 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       {
-        path: "home",
+        path: "api/v1/home",
         element: <HomeComponent />,
       },
       {
-        path: "about",
+        path: "api/v1/about",
         element: <AboutComponent />,
       },
       {
-        path: "contact",
+        path: "api/v1/contact",
         element: <ContactComponent />,
       },
       ...websitesRoutes,
