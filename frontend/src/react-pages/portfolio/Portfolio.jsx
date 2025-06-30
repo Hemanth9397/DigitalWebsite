@@ -8,6 +8,8 @@ import styled from "styled-components";
 import { useLoaderData } from "react-router-dom";
 import DownloadPDFButton from "../../components/downloadPdfButton/DownloadPDFButton";
 import withNotification from "../../utils/notification/withNotification";
+import EditPortfolio from "./EditPortfolio";
+import _ from 'lodash';
 
 const StyledGithubIcon = styled(GithubOutlined)`
   filter: drop-shadow(0 0 2px #6e5494) drop-shadow(0 0 5px #6e5494);
@@ -78,9 +80,10 @@ const StyledSpan = styled.span`
 
 const Portfolio = ({notify}) => {
   const portfolioData = useLoaderData();
-  console.log("notify: ", notify);
+
   return (
-    <div>
+    
+    !_.isEmpty(portfolioData) ? (<div>
       <section className="text-center mb-12">
         <h1 className="text-4xl font-bold text-primaryColor mb-4">
           {portfolioData?.name}
@@ -175,7 +178,7 @@ const Portfolio = ({notify}) => {
           Contact Me
         </a>
       </section>
-    </div>
+    </div>) : <EditPortfolio/>
   );
 };
 

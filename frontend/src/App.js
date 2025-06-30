@@ -45,7 +45,7 @@ const websitesRoutes = [
   },
   { 
     path: "api/v1/portfolio",
-    loader: PortfolioLoader,
+    //loader: PortfolioLoader,
     element: <PortfolioComponent />,
   },
 ];
