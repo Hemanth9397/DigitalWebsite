@@ -1,4 +1,5 @@
 // import logo from './logo.svg';
+import { ConfigProvider, theme } from 'antd';
 import "./App.css";
 import {
   createBrowserRouter,
@@ -87,12 +88,25 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-
+    <ConfigProvider
+      theme={{
+        algorithm: theme.darkAlgorithm,
+        token: {
+          colorPrimary: '#0077b5', //'#ff4545',      // affects buttons, borders, etc.
+          colorBgBase: '#161a20',       // background of modal, inputs, etc.
+          colorTextBase: '#f0f0f0',     // text color
+          colorTextHeading: '#f0f0f0',
+          colorInfo: '#0077b5',         // divider label text, links, etc.
+          borderRadius: 8,
+        },
+      }}
+    >
     <Provider store={store}>
       <Suspense fallback={<Spinner/>}>
       <RouterProvider router={router} />
       </Suspense>
     </Provider>
+    </ConfigProvider>
   );
 }
 

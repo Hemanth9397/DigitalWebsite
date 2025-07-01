@@ -3,16 +3,6 @@ import cors from "cors";
 import portfolioRoutes from "./routes/portfolio-routes.js";
 import mongoose from "mongoose";
 
-mongoose
-  .connect(
-    `mongodb+srv://Hemanth:${"G8kFA6c11FD0Ao3I"}@cluster0.qofgk9v.mongodb.net/`
-  )
-  .then(() => {
-    console.log("Connected to database!");
-  })
-  .catch(() => {
-    console.log("Connection failed!");
-  });
 
 const app = express();
 
@@ -44,4 +34,15 @@ app.use((error, req, res, next) => {
   res.json({ message: error.message || "An unknown error occurred!" });
 });
 
-app.listen(5000);
+
+mongoose
+  .connect(
+    `mongodb+srv://Hemanth:${"G8kFA6c11FD0Ao3I"}@cluster0.qofgk9v.mongodb.net/digitalWebsiteDB?retryWrites=true&w=majority&appName=Cluster0`
+  )
+  .then(() => {
+    app.listen(5000);
+    console.log("Connected to database!");
+  })
+  .catch(() => {
+    console.log("Connection failed!");
+  });

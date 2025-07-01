@@ -11,7 +11,7 @@ const portfolioSchema = new mongoose.Schema({
     shortNote: String,
     aboutMe: String,
     projects: [projectsSchema],
-    skills: [string]
+    skills: [String]
 });
 
-export const Portfolio = mongoose.modal('Portfolio', portfolioSchema);
+export const Portfolio = mongoose.model('Portfolio', portfolioSchema);
