@@ -4,7 +4,7 @@ import { Input } from "antd";
 
 const Wrapper = styled.div`
   position: relative;
-  margin: 12px 0;
+  margin: 6px 0;
 `;
 
 const StyledInput = styled(Input)`
@@ -14,8 +14,8 @@ const StyledInput = styled(Input)`
   border: 1px solid #444;
   border-radius: 6px;
 
-  ${({ isActive }) =>
-    isActive &&
+  ${({ $isActive }) =>
+    $isActive &&
     css`
       border-color: #0077b5;
     `}
@@ -41,8 +41,8 @@ const FloatingLabel = styled.label`
   pointer-events: none;
   transition: 0.2s ease all;
 
-  ${({ isActive }) =>
-    isActive &&
+  ${({ $isActive }) =>
+    $isActive &&
     css`
       left: 10px;
       top: -4px;
@@ -54,7 +54,7 @@ const FloatingLabel = styled.label`
     `}
 `;
 
-const FloatingLabelInput = ({ value, onChange, label, ...rest }) => {
+const FloatingLabelInput = ({ value, onChange, onBlur, label, ...rest }) => {
   const [isFocused, setIsFocused] = useState(false);
 
   const isActive = isFocused || value;
@@ -62,14 +62,16 @@ const FloatingLabelInput = ({ value, onChange, label, ...rest }) => {
   return (
     <Wrapper>
       <StyledInput
-        isActive={isActive}
+        $isActive={isActive}
         value={value}
         onChange={onChange}
         onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
+        onBlur={(e) => {setIsFocused(false);  if (typeof onBlur === "function") {
+            onBlur(e); // Call Formik's handleBlur
+          }}}
         {...rest}
       />
-      <FloatingLabel isActive={isActive}>{label}</FloatingLabel>
+      <FloatingLabel $isActive={isActive}>{label}</FloatingLabel>
     </Wrapper>
   );
 };

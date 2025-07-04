@@ -1,0 +1,100 @@
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap");
+
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: #000;
+}
+
+.digital-logo {
+  font-family: "Orbitron", sans-serif;
+  font-size: 3rem;
+  color: #fafbfb;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  position: relative;
+
+  /* Caret as pseudo element */
+  &::after {
+    content: "";
+    display: inline-block;
+    width: 2px;
+    height: 1.2em;
+    background-color: #e74c3c;
+    margin-left: 4px;
+    animation: blink-caret 0.6s step-end infinite;
+    vertical-align: bottom;
+  }
+
+  /* Hide caret after typing finishes */
+  &.glow-glitch::after {
+    animation: none;
+    visibility: hidden;
+  }
+}
+
+/* Caret blink */
+@keyframes blink-caret {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* Glow + glitch effect active after typing */
+.glow-glitch {
+  animation: blink-scale-fade 2.5s ease-in-out infinite,
+    glitch 1.2s infinite;
+
+  text-shadow: 
+    0 0 5px #007bff,
+    0 0 10px #007bff,
+    0 0 20px #007bff,
+    0 0 40px #007bff;
+}
+
+/* Blink + scale */
+@keyframes blink-scale-fade {
+  0% {
+    opacity: 0;
+    transform: scale(1.5);
+  }
+  25% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  75% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+}
+
+/* Glitch */
+@keyframes glitch {
+  0% {
+    transform: translate(0);
+  }
+  20% {
+    transform: translate(-2px, 2px);
+  }
+  40% {
+    transform: translate(2px, -2px);
+  }
+  60% {
+    transform: translate(-1px, 1px);
+  }
+  80% {
+    transform: translate(1px, -1px);
+  }
+  100% {
+    transform: translate(0);
+  }
+}

@@ -1,4 +1,4 @@
-import { Card } from "antd";
+import { Card, Skeleton } from "antd";
 import {
   GithubOutlined,
   LinkedinOutlined,
@@ -9,7 +9,9 @@ import { useLoaderData } from "react-router-dom";
 import DownloadPDFButton from "../../components/downloadPdfButton/DownloadPDFButton";
 import withNotification from "../../utils/notification/withNotification";
 import EditPortfolio from "./EditPortfolio";
-import _ from 'lodash';
+import _ from "lodash";
+import { useEffect, useState } from "react";
+import axios, { Axios } from "axios";
 
 const StyledGithubIcon = styled(GithubOutlined)`
   filter: drop-shadow(0 0 2px #6e5494) drop-shadow(0 0 5px #6e5494);
@@ -78,16 +80,55 @@ const StyledSpan = styled.span`
   }
 `;
 
-const Portfolio = ({notify}) => {
-  const portfolioData = useLoaderData();
+const Portfolio = ({ notify }) => {
+  //const portfolioData = useLoaderData();
+  const [{ portfolioData, isLoading }, setPortfolioData] = useState({
+    portfolioData: {},
+    isLoading: false,
+  });
 
-  return (
-    
-    !_.isEmpty(portfolioData) ? (<div>
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  async function fetchData() {
+    setPortfolioData((prevState) => ({ ...prevState, isLoading: true }));
+    try {
+      const res = await axios.get("http://localhost:5000/api/v1/portfolio");
+      console.log("res:", res?.data);
+      setPortfolioData((prevState) => ({
+        ...prevState,
+        portfolioData: res?.data || {},
+        isLoading: false,
+      }));
+      notify({
+        type: "success",
+        message: res?.data?.message,
+        description: "PLease find the portfolio details on UI.",
+      });
+    } catch (err) {
+      setPortfolioData((prevState) => ({ ...prevState, isLoading: false }));
+      notify({
+        type: "error",
+        message: err.message,
+        description: "Unable to get the portfolio details. Try later",
+      });
+    }
+  }
+
+  return isLoading ? (
+    <Skeleton />
+  ) : !_.isEmpty(portfolioData) ? (
+    <div>
       <section className="text-center mb-12">
         <h1 className="text-4xl font-bold text-primaryColor mb-4">
           {portfolioData?.name}
         </h1>
+        <EditPortfolio
+          initialValues={portfolioData}
+          fetchData={fetchData}
+          notify={notify}
+        />
         <p className="text-text-secondary max-w-2xl mx-auto">
           {portfolioData?.shortNote}
         </p>
@@ -161,7 +202,7 @@ const Portfolio = ({notify}) => {
           If you want the Soft copy of Resume.? (Please click on the Download
           PDF...📥📑)
         </h2>
-        <DownloadPDFButton notify={notify}/>
+        <DownloadPDFButton notify={notify} />
       </section>
 
       <section className="text-center">
@@ -178,7 +219,9 @@ const Portfolio = ({notify}) => {
           Contact Me
         </a>
       </section>
-    </div>) : <EditPortfolio/>
+    </div>
+  ) : (
+    <EditPortfolio fetchData={fetchData} notify={notify} />
   );
 };
 

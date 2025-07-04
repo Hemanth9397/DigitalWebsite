@@ -36,8 +36,7 @@ const skills = [
   "REST APIs",
 ];
 
-
- const getDownloadPDF = (req, res, next) => {
+const getDownloadPDF = (req, res, next) => {
   const filePath = path.join(
     __dirname,
     "../files",
@@ -57,15 +56,34 @@ const skills = [
   });
 };
 
- const getPortfolioDetails = async(req, res, next) => {
-  try{
-    const portfolio = await Portfolio.find();
-    res.json(portfolio);
-  }
-  catch(err){
-    res.status(500).json({error: err.message});
+const getPortfolioDetails = async (req, res, next) => {
+  try {
+    const portfolio = await Portfolio.findOne();
+
+    if (!portfolio) {
+      return next(new HttpError("No portfolio found", 404));
+    }
+    res.status(200).json(portfolio);
+  } catch (err) {
+    return next(
+      new HttpError("Internal Server Issue. Try some other time.", 500)
+    );
   }
 };
 
-export default {getDownloadPDF, getPortfolioDetails};
+const postPortfolioDetails = async (req, res, next) => {
+  try {
+    await Portfolio.findOneAndUpdate(
+      {}, // find any existing document (only one allowed)
+      { $set: req.body }, // update with request data
+      { new: true, upsert: true } // create if not exists
+    );
+    res.status(201).json({ message: "Portfolio saved!" });
+  } catch (error) {
+    return next(
+      new HttpError("Error saving portfolio. Try later.", 500)
+    );
+  }
+};
 
+export default { getDownloadPDF, getPortfolioDetails, postPortfolioDetails };

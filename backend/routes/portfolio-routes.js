@@ -4,6 +4,8 @@ const router = express.Router();
 
 router.get("/", portfolioController.getPortfolioDetails);
 
+router.post("/", portfolioController.postPortfolioDetails);
+
 router.get("/download-pdf", portfolioController.getDownloadPDF);
 
 export default router;

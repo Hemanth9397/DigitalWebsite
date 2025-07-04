@@ -1,19 +1,26 @@
 // withNotification.js
+import React from "react";
 import { notification } from "antd";
 
 const withNotification = (WrappedComponent) => {
-
   return (props) => {
+    const [api, contextHolder] = notification.useNotification();
+
     const openNotification = ({ type = "info", message, description }) => {
-      notification[type]({
+      api[type]({
         message,
         description,
         placement: "topRight",
-        duration: 300,
+        duration: 3,
       });
     };
 
-    return <WrappedComponent {...props} notify={openNotification} />;
+    return (
+      <>
+        {contextHolder}
+        <WrappedComponent {...props} notify={openNotification} />
+      </>
+    );
   };
 };
 

@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import CustomButton from "../../components/customButton/CustomButton";
-import { Button, Divider, Input, Modal, notification, Space } from "antd";
+import { Button, Divider, Input, Modal, Space } from "antd";
 import { useFormik } from "formik";
 import axios from "axios";
 import styled from "styled-components";
@@ -43,30 +43,30 @@ const StyledModal = styled(Modal)`
   }
 `;
 
-const initialValues = {
-  name: "",
-  email: "",
-  shortNote: "",
-  aboutMe: "",
-  projects: [
-    {
-      title: "",
-      description: "",
-      link: "",
-    },
-  ],
-  skills: "",
-};
-
-const EditPortfolio = () => {
+const EditPortfolio = ({ notify, initialValues, fetchData }) => {
   const [showEditPortfolio, setShowEditPortfolio] = useState(false);
+  console.log("initialValues: ",initialValues);
 
   const formik = useFormik({
-    initialValues: initialValues,
+    initialValues: initialValues || {
+      name: "",
+      email: "",
+      shortNote: "",
+      aboutMe: "",
+      projects: [
+        {
+          title: "",
+          description: "",
+          link: "",
+        },
+      ],
+      skills: "",
+    },
     validationSchema: validationSchema,
     onSubmit: submitHandler,
     validateOnMount: true,
     validateOnBlur: true,
+    enableReinitialize: true
   });
 
   async function submitHandler(values) {
@@ -76,8 +76,8 @@ const EditPortfolio = () => {
     };
 
     try {
-      await axios.post("https://localhost:5000/api/v1/portfolio", payload);
-      notification({
+      await axios.post("http://localhost:5000/api/v1/portfolio", payload);
+      notify({
         type: "success",
         message: "Portfolio Submitted",
         description: "Your portfolio has been saved to the database.",
@@ -85,7 +85,8 @@ const EditPortfolio = () => {
       setShowEditPortfolio(false);
       formik.resetForm();
     } catch (err) {
-      notification({
+      console.log("err: ", err);
+      notify({
         type: "error",
         message: "Error Occured",
         description: "Failed to save portfolio. Please try again.",
@@ -138,6 +139,7 @@ const EditPortfolio = () => {
         onOk={async () => {
           await formik.submitForm(); // await is required
           scrollToFirstError(); // will now detect errors correctly
+          fetchData();
         }}
         okButtonProps={{ disabled: !formik.isValid }}
         title="Portfolio Details"
@@ -152,7 +154,7 @@ const EditPortfolio = () => {
             name="name"
             value={formik.values.name}
             onChange={(e) => formik.setFieldValue("name", e.target.value)}
-            //onBlur={() => formik.setFieldTouched("name", true)}
+            onBlur={formik.handleBlur}
             label="Name"
           />
           {formik.touched.name && formik.errors.name && (
@@ -164,7 +166,7 @@ const EditPortfolio = () => {
             name="email"
             value={formik.values.email}
             onChange={(e) => formik.setFieldValue("email", e.target.value)}
-            //onBlur={() => formik.setFieldTouched("email", true)}
+            onBlur={formik.handleBlur}
             label="Email"
           />
           {formik.touched.email && formik.errors.email && (
@@ -176,7 +178,7 @@ const EditPortfolio = () => {
             name="skills"
             value={formik.values.skills}
             onChange={(e) => formik.setFieldValue("skills", e.target.value)}
-            //onBlur={() => formik.setFieldTouched("skills", true)}
+            onBlur={formik.handleBlur}
             label="Skills (comma-separated)"
           />
           {formik.touched.skills && formik.errors.skills && (
@@ -188,7 +190,7 @@ const EditPortfolio = () => {
             name="shortNote"
             value={formik.values.shortNote}
             onChange={(e) => formik.setFieldValue("shortNote", e.target.value)}
-            //onBlur={() => formik.setFieldTouched("shortNote", true)}
+            onBlur={formik.handleBlur}
             label="Short Note"
           />
           {formik.touched.shortNote && formik.errors.shortNote && (
@@ -200,7 +202,7 @@ const EditPortfolio = () => {
             name="aboutMe"
             value={formik.values.aboutMe}
             onChange={(e) => formik.setFieldValue("aboutMe", e.target.value)}
-            //onBlur={() => formik.setFieldTouched("aboutMe", true)}
+            onBlur={formik.handleBlur}
             label="About Me"
           />
           {formik.touched.aboutMe && formik.errors.aboutMe && (
@@ -235,7 +237,7 @@ const EditPortfolio = () => {
                       e.target.value
                     )
                   }
-                  //onBlur={() => formik.setFieldTouched(`projects[${index}].title`, true)}
+                  onBlur={formik.handleBlur}
                 />
                 {formik.errors.projects?.[index]?.title && (
                   <div style={{ color: "#e74c3c", fontSize: 12 }}>
@@ -253,7 +255,7 @@ const EditPortfolio = () => {
                       e.target.value
                     )
                   }
-                  //onBlur={() => formik.setFieldTouched(`projects[${index}].description`, true)}
+                  onBlur={formik.handleBlur}
                 />
                 {formik.errors.projects?.[index]?.description && (
                   <div style={{ color: "#e74c3c", fontSize: 12 }}>
@@ -270,7 +272,7 @@ const EditPortfolio = () => {
                       e.target.value
                     )
                   }
-                  //onBlur={() => formik.setFieldTouched(`projects[${index}].link`, true)}
+                  onBlur={formik.handleBlur}
                 />
                 {formik.errors.projects?.[index]?.link && (
                   <div style={{ color: "#e74c3c", fontSize: 12 }}>

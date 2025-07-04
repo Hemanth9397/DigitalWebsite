@@ -1,5 +1,5 @@
 // import logo from './logo.svg';
-import { ConfigProvider, theme } from 'antd';
+import { App as AntdApp, ConfigProvider, theme } from "antd";
 import "./App.css";
 import {
   createBrowserRouter,
@@ -15,6 +15,7 @@ import Layout from "./components/Layout/Layout";
 import { store } from "./store/store";
 import PortfolioLoader from "./loaders/PortfolioLoader";
 import Spinner from "./components/spinner/Spinner";
+import DigitalLogo from "./components/digitalLogo/DigitalLogo";
 
 const HomeComponent = lazy(
   () =>
@@ -44,7 +45,7 @@ const websitesRoutes = [
     path: "api/v1/shopping",
     element: <ShoppingComponent />,
   },
-  { 
+  {
     path: "api/v1/portfolio",
     //loader: PortfolioLoader,
     element: <PortfolioComponent />,
@@ -92,20 +93,22 @@ function App() {
       theme={{
         algorithm: theme.darkAlgorithm,
         token: {
-          colorPrimary: '#0077b5', //'#ff4545',      // affects buttons, borders, etc.
-          colorBgBase: '#161a20',       // background of modal, inputs, etc.
-          colorTextBase: '#f0f0f0',     // text color
-          colorTextHeading: '#f0f0f0',
-          colorInfo: '#0077b5',         // divider label text, links, etc.
+          colorPrimary: "#0077b5", //'#ff4545',      // affects buttons, borders, etc.
+          colorBgBase: "#161a20", // background of modal, inputs, etc.
+          colorTextBase: "#f0f0f0", // text color
+          colorTextHeading: "#f0f0f0",
+          colorInfo: "#0077b5", // divider label text, links, etc.
           borderRadius: 8,
         },
       }}
     >
-    <Provider store={store}>
-      <Suspense fallback={<Spinner/>}>
-      <RouterProvider router={router} />
-      </Suspense>
-    </Provider>
+      <AntdApp>
+        <Provider store={store}>
+          <Suspense fallback={<DigitalLogo />}>
+            <RouterProvider router={router} />
+          </Suspense>
+        </Provider>
+      </AntdApp>
     </ConfigProvider>
   );
 }
