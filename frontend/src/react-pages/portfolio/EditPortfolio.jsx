@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import CustomButton from "../../components/customButton/CustomButton";
 import { Button, Divider, Input, Modal, Space } from "antd";
+import { EditOutlined } from "@ant-design/icons";
 import { useFormik } from "formik";
 import axios from "axios";
 import styled from "styled-components";
@@ -43,9 +44,26 @@ const StyledModal = styled(Modal)`
   }
 `;
 
-const EditPortfolio = ({ notify, initialValues, fetchData }) => {
+const StyledEditIcon = styled(EditOutlined)`
+  color: #f0f0f0 !important;
+
+  svg {
+    width: 1.2rem;
+    height: 1.2rem;
+  }
+
+  &:hover{
+    filter: drop-shadow(0 0 2px #28A745) drop-shadow(0 0 5px #28A745);
+  }
+`;
+
+const EditPortfolio = ({
+  notify,
+  editIcon = false,
+  initialValues,
+  fetchData,
+}) => {
   const [showEditPortfolio, setShowEditPortfolio] = useState(false);
-  console.log("initialValues: ",initialValues);
 
   const formik = useFormik({
     initialValues: initialValues || {
@@ -66,7 +84,7 @@ const EditPortfolio = ({ notify, initialValues, fetchData }) => {
     onSubmit: submitHandler,
     validateOnMount: true,
     validateOnBlur: true,
-    enableReinitialize: true
+    enableReinitialize: true,
   });
 
   async function submitHandler(values) {
@@ -131,9 +149,13 @@ const EditPortfolio = ({ notify, initialValues, fetchData }) => {
 
   return (
     <>
-      <CustomButton onClick={() => setShowEditPortfolio(true)}>
-        Edit Portfolio
-      </CustomButton>
+      {editIcon ? (
+        <StyledEditIcon  className="hover:scale-125 transition-transform duration-300 ease-in-out ml-4" onClick={() => setShowEditPortfolio(true)} />
+      ) : (
+        <CustomButton onClick={() => setShowEditPortfolio(true)}>
+          Edit Portfolio
+        </CustomButton>
+      )}
       <StyledModal
         open={showEditPortfolio}
         onOk={async () => {

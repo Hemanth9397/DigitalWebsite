@@ -14,12 +14,15 @@ import { useEffect, useState } from "react";
 import axios, { Axios } from "axios";
 
 const StyledGithubIcon = styled(GithubOutlined)`
+  color: #f0f0f0 !important;
   filter: drop-shadow(0 0 2px #6e5494) drop-shadow(0 0 5px #6e5494);
 `;
 const StyledLinkedinIcon = styled(LinkedinOutlined)`
+  color: #f0f0f0 !important;
   filter: drop-shadow(0 0 2px #0077b5) drop-shadow(0 0 5px #0077b5);
 `;
 const StyledMailIcon = styled(MailOutlined)`
+  color: #f0f0f0 !important;
   filter: drop-shadow(0 0 2px #d93025) drop-shadow(0 0 5px #d93025);
 `;
 
@@ -117,19 +120,84 @@ const Portfolio = ({ notify }) => {
   }
 
   return isLoading ? (
-    <Skeleton />
+    <div className="space-y-12">
+      {/* Header section skeleton */}
+      <Skeleton
+        active
+        title={{ width: 200 }}
+        paragraph={{ rows: 2, width: ["60%", "80%"] }}
+      />
+
+      {/* Social Icons */}
+      <div className="flex justify-center gap-6 mt-4">
+        {[...Array(3)].map((_, index) => (
+          <Skeleton.Avatar key={index} active shape="circle" size="large" />
+        ))}
+      </div>
+
+      {/* About Me section skeleton */}
+      <div>
+        <Skeleton active title={{ width: 150 }} paragraph={{ rows: 3 }} />
+      </div>
+
+      {/* Projects section skeleton */}
+      <div>
+        <Skeleton active title={{ width: 150 }} />
+        <div className="grid md:grid-cols-2 gap-6 mt-4">
+          {[...Array(2)].map((_, index) => (
+            <Skeleton.Input key={index} active style={{ height: 120 }} block />
+          ))}
+        </div>
+      </div>
+
+      {/* Skills section skeleton */}
+      <div>
+        <Skeleton active title={{ width: 150 }} paragraph={false} />
+        <div className="flex flex-wrap gap-2 mt-4">
+          {[...Array(8)].map((_, index) => (
+            <Skeleton.Button key={index} active size="small" shape="round" />
+          ))}
+        </div>
+      </div>
+
+      {/* Resume button */}
+      <div className="flex gap-4 items-center">
+        <Skeleton.Input active style={{ width: 300 }} />
+        <Skeleton.Button active shape="round" />
+      </div>
+
+      {/* Contact section */}
+      <Skeleton
+        active
+        title={{ width: 150 }}
+        paragraph={{ rows: 2, width: ["70%", "50%"] }}
+      />
+      <div className="text-center">
+        <Skeleton.Button
+          active
+          style={{ width: 160, height: 48 }}
+          shape="round"
+        />
+      </div>
+    </div>
   ) : !_.isEmpty(portfolioData) ? (
     <div>
       <section className="text-center mb-12">
-        <h1 className="text-4xl font-bold text-primaryColor mb-4">
-          {portfolioData?.name}
-        </h1>
-        <EditPortfolio
-          initialValues={portfolioData}
-          fetchData={fetchData}
-          notify={notify}
-        />
-        <p className="text-text-secondary max-w-2xl mx-auto">
+        <span>
+          <h1
+            style={{ display: "inline" }}
+            className="text-4xl font-bold text-primaryColor"
+          >
+            {portfolioData?.name}
+          </h1>
+          <EditPortfolio
+            initialValues={portfolioData}
+            fetchData={fetchData}
+            notify={notify}
+            editIcon
+          />
+        </span>
+        <p className="text-text-secondary max-w-2xl mx-auto mt-4">
           {portfolioData?.shortNote}
         </p>
         <div className="flex justify-center gap-6 mt-4 text-2xl">

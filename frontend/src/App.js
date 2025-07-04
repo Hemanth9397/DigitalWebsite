@@ -68,15 +68,15 @@ const router = createBrowserRouter([
     children: [
       {
         path: "api/v1/home",
-        element: <HomeComponent />,
+        element: <Suspense fallback={<Spinner/>}><HomeComponent /></Suspense>,
       },
       {
         path: "api/v1/about",
-        element: <AboutComponent />,
+        element: <Suspense fallback={<Spinner/>}><AboutComponent /></Suspense>,
       },
       {
         path: "api/v1/contact",
-        element: <ContactComponent />,
+        element: <Suspense fallback={<Spinner/>}><ContactComponent /></Suspense>,
       },
       ...websitesRoutes,
     ],
