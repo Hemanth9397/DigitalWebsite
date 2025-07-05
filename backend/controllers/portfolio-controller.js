@@ -24,18 +24,6 @@ const projects = [
   },
 ];
 
-const skills = [
-  "JavaScript",
-  "React",
-  "Redux",
-  "Tailwind CSS",
-  "Node.js",
-  "MongoDB",
-  "Ant Design",
-  "Git",
-  "REST APIs",
-];
-
 const getDownloadPDF = (req, res, next) => {
   const filePath = path.join(
     __dirname,

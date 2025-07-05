@@ -1,7 +1,9 @@
 import express from "express";
 import cors from "cors";
 import portfolioRoutes from "./routes/portfolio-routes.js";
+import UserRoutes from "./routes/user-routes.js";
 import mongoose from "mongoose";
+
 
 
 const app = express();
@@ -10,12 +12,15 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
+app.use('/files/uploads', express.static('uploads'));
+
 
 app.get("/", (req, res) => {
   res.send("server is running");
 });
 
 app.use("/api/v1/portfolio", portfolioRoutes);
+app.use("/api/v1", UserRoutes);
 
 // 404 handler (keep this at the very bottom)
 app.use((req, res) => {

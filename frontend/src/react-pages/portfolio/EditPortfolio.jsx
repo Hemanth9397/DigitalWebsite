@@ -10,7 +10,8 @@ import FloatingLabelInput from "../../components/customInput/FloatingLabelInput"
 import { parseSkills } from "../../utils/parseSkills";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
-import { isLoggedIn } from "../../utils/auth/isLoggedIn";
+import { isLoggedIn } from "../../utils/auth/auth";
+import ApiCall from "../../utils/auth/apiCall";
 
 const projectSchema = Yup.object().shape({
   title: Yup.string().required("Project title is required"),
@@ -100,7 +101,7 @@ const EditPortfolio = ({
     };
 
     try {
-      await axios.post("http://localhost:5000/api/v1/portfolio", payload);
+      await ApiCall.post("/portfolio", payload);
       notify({
         type: "success",
         message: "Portfolio Submitted",
@@ -168,7 +169,7 @@ const EditPortfolio = ({
       <StyledModal
         open={showEditPortfolio}
         onOk={async () => {
-          if (!isLoggedIn()) {
+          if (!isLoggedIn) {
             navigate("/login");
             return;
           }

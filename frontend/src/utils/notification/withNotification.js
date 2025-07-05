@@ -11,7 +11,7 @@ const withNotification = (WrappedComponent) => {
         message,
         description,
         placement: "topRight",
-        duration: 3,
+        duration: 2,
       });
     };
 

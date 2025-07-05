@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import axios from "axios";
 import { Modal, Typography } from "antd";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -11,6 +10,9 @@ import {
   PlusOutlined,
 } from "@ant-design/icons";
 import { Upload, message } from "antd";
+import ApiCall from "../../utils/auth/apiCall";
+import { saveToken } from "../../utils/auth/auth";
+import withNotification from "../../utils/notification/withNotification";
 
 const StyledModal = styled(Modal)`
   .ant-modal-content {
@@ -22,7 +24,7 @@ const StyledModal = styled(Modal)`
   }
 `;
 
-export default function LoginSignupForm({ isLogin: isLoginProp = true }) {
+function LoginSignupForm({ notify, isLogin: isLoginProp = true }) {
   const [isLogin, setIsLogin] = useState(isLoginProp);
   const [imagePreview, setImagePreview] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
@@ -61,38 +63,33 @@ export default function LoginSignupForm({ isLogin: isLoginProp = true }) {
           formData.append("image", selectedImage);
         }
 
-        const endpoint = isLogin ? "/api/login" : "/api/signup";
-        const res = await axios.post(endpoint, formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
+        const endpoint = isLogin ? "/login" : "/signup";
+        const res = await ApiCall.post(endpoint, formData);
+        isLogin && saveToken(res.data.token);
+        notify({
+          type: "success",
+          message: res.data.message,
+          description: isLogin ? "Successful Login." : "Successful Signup.",
         });
 
-        alert("Success: " + res.data.message);
-        localStorage.setItem("isAuthenticated", "true"); // store login state
         resetForm();
-        navigate("/api/v1/portfolio"); // or dashboard
+        isLogin ? navigate("/api/v1/portfolio",{ replace: true }) : setIsLogin(true);
       } catch (err) {
         const msg = err.response?.data?.message || "Something went wrong";
         if (msg === "Email already exists.") {
           formik.setFieldError("email", msg);
         } else {
-          alert(msg);
+          notify({
+            type: "error",
+            message: msg,
+            description: msg,
+          });
         }
       } finally {
         setSubmitting(false);
       }
     },
   });
-
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setSelectedImage(file);
-      setImagePreview(URL.createObjectURL(file));
-      formik.setFieldValue("image", file);
-    }
-  };
 
   return (
     <StyledModal
@@ -242,3 +239,5 @@ export default function LoginSignupForm({ isLogin: isLoginProp = true }) {
     </StyledModal>
   );
 }
+
+export default withNotification(LoginSignupForm);

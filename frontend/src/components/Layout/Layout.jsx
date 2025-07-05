@@ -4,9 +4,9 @@ import styled from "styled-components";
 import ModeScroller from "../modeScroller/ModeScroller";
 import Spinner from "../spinner/Spinner";
 import CustomButton from "../customButton/CustomButton";
-import { isLoggedIn } from "../../utils/auth/isLoggedIn";
-
-
+import { isLoggedIn } from "../../utils/auth/auth";
+import withNotification from "../../utils/notification/withNotification";
+import { replace } from "lodash";
 
 const modes = ["blogger", "shopping", "portfolio"];
 
@@ -39,17 +39,20 @@ const LinkContent = styled.label`
   }
 `;
 
-const Layout = () => {
-
+const Layout = ({ notify }) => {
   const navigation = useNavigation();
   const navigate = useNavigate();
 
   const handleAuthClick = () => {
-    if (!isLoggedIn()) {
-      navigate("/login");
+    if (!isLoggedIn) {
+      navigate("/login",{ replace: true });
     } else {
-      alert("You are already logged in.");
-      // or navigate to dashboard/profile
+      notify({
+        type: "warning",
+        message: "Already authenticated",
+        description:
+          "No need to authenticate. Because, You're already logged!",
+      });
     }
   };
   return (
@@ -83,18 +86,20 @@ const Layout = () => {
                 <LinkContent>Contact</LinkContent>
               </StyledNavLink>
             </li>
-            <li className="flex items-center" style={{marginRight: 0}}>
-              <CustomButton onClick={handleAuthClick}>Authenticate</CustomButton>
+            <li className="flex items-center" style={{ marginRight: 0 }}>
+              <CustomButton onClick={handleAuthClick}>
+                {isLoggedIn ? "Authenticated" : "Authenticate"}
+              </CustomButton>
             </li>
           </ul>
         </nav>
       </header>
       <hr />
       <main className="page-container">
-       {navigation.state === "loading" ? <Spinner/> : <Outlet />}
+        {navigation.state === "loading" ? <Spinner /> : <Outlet />}
       </main>
     </div>
   );
 };
 
-export default Layout;
+export default withNotification(Layout);

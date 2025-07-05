@@ -16,7 +16,6 @@ import { store } from "./store/store";
 import PortfolioLoader from "./loaders/PortfolioLoader";
 import Spinner from "./components/spinner/Spinner";
 import DigitalLogo from "./components/digitalLogo/DigitalLogo";
-import { isLoggedIn } from "./utils/auth/isLoggedIn";
 
 const HomeComponent = lazy(
   () =>
