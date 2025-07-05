@@ -16,6 +16,7 @@ import { store } from "./store/store";
 import PortfolioLoader from "./loaders/PortfolioLoader";
 import Spinner from "./components/spinner/Spinner";
 import DigitalLogo from "./components/digitalLogo/DigitalLogo";
+import { isLoggedIn } from "./utils/auth/isLoggedIn";
 
 const HomeComponent = lazy(
   () =>
@@ -35,6 +36,7 @@ const ShoppingComponent = lazy(() => import("./react-pages/shopping/Shopping"));
 const PortfolioComponent = lazy(() =>
   import("./react-pages/portfolio/Portfolio")
 );
+const LogInorSignInComponent = lazy(() => import("./react-pages/logInOrSignIn/LoginSignupForm"));
 
 const websitesRoutes = [
   {
@@ -53,6 +55,22 @@ const websitesRoutes = [
 ];
 
 const router = createBrowserRouter([
+  {
+    path: "/signUp",
+    element: (
+      <Suspense fallback={<Spinner />}>
+        <LogInorSignInComponent isLogin={false}/>
+      </Suspense>
+    ),
+  },
+  {
+    path: "/login",
+    element: (
+      <Suspense fallback={<Spinner />}>
+        <LogInorSignInComponent isLogin={true}/>
+      </Suspense>
+    ),
+  },
   {
     path: "/",
     loader: ({ request }) => {

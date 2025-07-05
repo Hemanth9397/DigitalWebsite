@@ -1,9 +1,12 @@
-import { NavLink, Outlet, useNavigation } from "react-router-dom";
+import { NavLink, Outlet, useNavigate, useNavigation } from "react-router-dom";
 import "./layout.scss";
 import styled from "styled-components";
 import ModeScroller from "../modeScroller/ModeScroller";
 import Spinner from "../spinner/Spinner";
 import CustomButton from "../customButton/CustomButton";
+import { isLoggedIn } from "../../utils/auth/isLoggedIn";
+
+
 
 const modes = ["blogger", "shopping", "portfolio"];
 
@@ -39,6 +42,16 @@ const LinkContent = styled.label`
 const Layout = () => {
 
   const navigation = useNavigation();
+  const navigate = useNavigate();
+
+  const handleAuthClick = () => {
+    if (!isLoggedIn()) {
+      navigate("/login");
+    } else {
+      alert("You are already logged in.");
+      // or navigate to dashboard/profile
+    }
+  };
   return (
     <div>
       <header className="header">
@@ -71,7 +84,7 @@ const Layout = () => {
               </StyledNavLink>
             </li>
             <li className="flex items-center" style={{marginRight: 0}}>
-              <CustomButton >Authenticate</CustomButton>
+              <CustomButton onClick={handleAuthClick}>Authenticate</CustomButton>
             </li>
           </ul>
         </nav>

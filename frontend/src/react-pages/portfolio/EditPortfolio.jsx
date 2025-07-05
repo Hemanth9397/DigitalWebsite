@@ -9,6 +9,8 @@ import styled from "styled-components";
 import FloatingLabelInput from "../../components/customInput/FloatingLabelInput";
 import { parseSkills } from "../../utils/parseSkills";
 import * as Yup from "yup";
+import { useNavigate } from "react-router-dom";
+import { isLoggedIn } from "../../utils/auth/isLoggedIn";
 
 const projectSchema = Yup.object().shape({
   title: Yup.string().required("Project title is required"),
@@ -52,8 +54,8 @@ const StyledEditIcon = styled(EditOutlined)`
     height: 1.2rem;
   }
 
-  &:hover{
-    filter: drop-shadow(0 0 2px #28A745) drop-shadow(0 0 5px #28A745);
+  &:hover {
+    filter: drop-shadow(0 0 2px #28a745) drop-shadow(0 0 5px #28a745);
   }
 `;
 
@@ -63,23 +65,27 @@ const EditPortfolio = ({
   initialValues,
   fetchData,
 }) => {
+  const navigate = useNavigate();
+
   const [showEditPortfolio, setShowEditPortfolio] = useState(false);
 
   const formik = useFormik({
-    initialValues: initialValues || {
-      name: "",
-      email: "",
-      shortNote: "",
-      aboutMe: "",
-      projects: [
-        {
-          title: "",
-          description: "",
-          link: "",
+    initialValues: initialValues
+      ? { ...initialValues, skills: initialValues.skills.join(",") }
+      : {
+          name: "",
+          email: "",
+          shortNote: "",
+          aboutMe: "",
+          projects: [
+            {
+              title: "",
+              description: "",
+              link: "",
+            },
+          ],
+          skills: "",
         },
-      ],
-      skills: "",
-    },
     validationSchema: validationSchema,
     onSubmit: submitHandler,
     validateOnMount: true,
@@ -150,7 +156,10 @@ const EditPortfolio = ({
   return (
     <>
       {editIcon ? (
-        <StyledEditIcon  className="hover:scale-125 transition-transform duration-300 ease-in-out ml-4" onClick={() => setShowEditPortfolio(true)} />
+        <StyledEditIcon
+          className="hover:scale-125 transition-transform duration-300 ease-in-out ml-4"
+          onClick={() => setShowEditPortfolio(true)}
+        />
       ) : (
         <CustomButton onClick={() => setShowEditPortfolio(true)}>
           Edit Portfolio
@@ -159,6 +168,10 @@ const EditPortfolio = ({
       <StyledModal
         open={showEditPortfolio}
         onOk={async () => {
+          if (!isLoggedIn()) {
+            navigate("/login");
+            return;
+          }
           await formik.submitForm(); // await is required
           scrollToFirstError(); // will now detect errors correctly
           fetchData();
