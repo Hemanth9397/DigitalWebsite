@@ -11,8 +11,10 @@ import {
 } from "@ant-design/icons";
 import { Upload, message } from "antd";
 import ApiCall from "../../utils/auth/apiCall";
-import { saveToken } from "../../utils/auth/auth";
 import withNotification from "../../utils/notification/withNotification";
+import { useDispatch } from "react-redux";
+import { login } from "../../slicers/auth/authSlice";
+import axios from "axios";
 
 const StyledModal = styled(Modal)`
   .ant-modal-content {
@@ -31,6 +33,7 @@ function LoginSignupForm({ notify, isLogin: isLoginProp = true }) {
   const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const loginSchema = Yup.object({
     email: Yup.string().email("Invalid email").required("Required"),
@@ -64,16 +67,22 @@ function LoginSignupForm({ notify, isLogin: isLoginProp = true }) {
         }
 
         const endpoint = isLogin ? "/login" : "/signup";
-        const res = await ApiCall.post(endpoint, formData);
-        isLogin && saveToken(res.data.token);
+        const res = await axios.post(`${ApiCall + endpoint}`, formData, {
+          withCredentials: true, // ✅ Send cookie (JWT) with request
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        resetForm();
         notify({
           type: "success",
           message: res.data.message,
           description: isLogin ? "Successful Login." : "Successful Signup.",
         });
-
-        resetForm();
-        isLogin ? navigate("/api/v1/portfolio",{ replace: true }) : setIsLogin(true);
+        isLogin && dispatch(login(res.data.user));
+        isLogin
+          ? navigate("/api/v1/portfolio", { replace: true })
+          : setIsLogin(true);
       } catch (err) {
         const msg = err.response?.data?.message || "Something went wrong";
         if (msg === "Email already exists.") {

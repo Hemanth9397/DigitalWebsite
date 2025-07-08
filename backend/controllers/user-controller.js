@@ -43,13 +43,33 @@ const postLogin = async (req, res, next) => {
     if (!isMatch) return next(new HttpError("Invalid credentials", 401));
 
     const token = jwt.sign({ userId: user._id }, JWT_SECRET, {
-      expiresIn: "1d",
+      expiresIn: "15m",
     });
 
-    res.status(200).json({ message: "Login successful", token, user });
+     // Set the token as an HttpOnly cookie
+    res.cookie('access_token', token, {
+      httpOnly: true,        // Can't be accessed by JavaScript
+      secure: process.env.NODE_ENV === 'production',  // Only for HTTPS in production
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 15 * 60 * 1000, // 15 min
+    });
+
+    res.status(200).json({ message: "Login successful", user: user["_id"] });
   } catch (err) {
     return next(new HttpError("Wrong Creditial", 403));
   }
 };
 
-export default { postSignup, postLogin };
+ const postLogout =(req, res) => {
+  res.clearCookie('access_token',{
+  httpOnly: true,
+  secure: process.env.NODE_ENV === 'production',
+  sameSite: 'lax',
+  path: '/', // 👈 this is where you define the path
+  maxAge: 15 * 60 * 1000, // 15 min
+});
+  res.json({ message: 'Logged out' });
+};
+
+export default { postSignup, postLogin, postLogout};

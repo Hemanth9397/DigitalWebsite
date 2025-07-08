@@ -3,7 +3,7 @@ import fs from "fs";
 import userController from "../controllers/user-controller.js";
 import multer from "multer";
 import path from 'path';
-
+import authenticate from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
@@ -22,5 +22,7 @@ const upload = multer({ storage });
 
 router.post('/signup', upload.single('image'), userController.postSignup);
 router.post('/login', multer().none(), userController.postLogin);
+
+router.post('/logout', userController.postLogout)
 
 export default router;

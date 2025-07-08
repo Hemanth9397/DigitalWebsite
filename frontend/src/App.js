@@ -119,12 +119,12 @@ function App() {
         },
       }}
     >
-      <AntdApp>
+      <AntdApp> 
         <Provider store={store}>
-          <Suspense fallback={<DigitalLogo />}>
+          <Suspense fallback={<DigitalLogo />}> 
             <RouterProvider router={router} />
           </Suspense>
-        </Provider>
+        </Provider>  
       </AntdApp>
     </ConfigProvider>
   );

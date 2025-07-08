@@ -10,8 +10,8 @@ import FloatingLabelInput from "../../components/customInput/FloatingLabelInput"
 import { parseSkills } from "../../utils/parseSkills";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
-import { isLoggedIn } from "../../utils/auth/auth";
 import ApiCall from "../../utils/auth/apiCall";
+import { useSelector } from "react-redux";
 
 const projectSchema = Yup.object().shape({
   title: Yup.string().required("Project title is required"),
@@ -67,6 +67,7 @@ const EditPortfolio = ({
   fetchData,
 }) => {
   const navigate = useNavigate();
+  const user = useSelector((state) => state.auth.user);
 
   const [showEditPortfolio, setShowEditPortfolio] = useState(false);
 
@@ -101,7 +102,9 @@ const EditPortfolio = ({
     };
 
     try {
-      await ApiCall.post("/portfolio", payload);
+      await axios.post(`${ApiCall}/portfolio`, payload, {
+        withCredentials: true, // ✅ Send cookie (JWT) with request
+      });
       notify({
         type: "success",
         message: "Portfolio Submitted",
@@ -110,7 +113,6 @@ const EditPortfolio = ({
       setShowEditPortfolio(false);
       formik.resetForm();
     } catch (err) {
-      console.log("err: ", err);
       notify({
         type: "error",
         message: "Error Occured",
@@ -163,14 +165,19 @@ const EditPortfolio = ({
         />
       ) : (
         <CustomButton onClick={() => setShowEditPortfolio(true)}>
-          Edit Portfolio
+          Add Portfolio
         </CustomButton>
       )}
       <StyledModal
         open={showEditPortfolio}
         onOk={async () => {
-          if (!isLoggedIn) {
-            navigate("/login");
+          if (!user) {
+            notify({
+              type: "warning",
+              message: "You're not authorised.",
+              description: "Please, login for modify the portfolio..!",
+            });
+            setTimeout(()=>{navigate("/login", { replace: true });},2000);  
             return;
           }
           await formik.submitForm(); // await is required

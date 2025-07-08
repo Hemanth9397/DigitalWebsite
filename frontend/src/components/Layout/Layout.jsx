@@ -4,9 +4,12 @@ import styled from "styled-components";
 import ModeScroller from "../modeScroller/ModeScroller";
 import Spinner from "../spinner/Spinner";
 import CustomButton from "../customButton/CustomButton";
-import { isLoggedIn } from "../../utils/auth/auth";
 import withNotification from "../../utils/notification/withNotification";
-import { replace } from "lodash";
+import axios from "axios";
+import useAutoLogout from "../../hooks/useAutoLogout";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../slicers/auth/authSlice";
+
 
 const modes = ["blogger", "shopping", "portfolio"];
 
@@ -42,9 +45,12 @@ const LinkContent = styled.label`
 const Layout = ({ notify }) => {
   const navigation = useNavigation();
   const navigate = useNavigate();
+  const user = useSelector((state) => state.auth.user);
+  const dispatch = useDispatch();
+  useAutoLogout();
 
   const handleAuthClick = () => {
-    if (!isLoggedIn) {
+    if (!user) {
       navigate("/login",{ replace: true });
     } else {
       notify({
@@ -55,6 +61,17 @@ const Layout = ({ notify }) => {
       });
     }
   };
+
+   const handleLogout = async () => {
+    try {
+      await axios.post('http://localhost:5000/api/v1/logout', {}, { withCredentials: true });
+      dispatch(logout());
+      navigate('/login', { replace: true });
+    } catch (err) {
+      console.error('Logout failed:', err.message);
+    }
+  };
+
   return (
     <div>
       <header className="header">
@@ -87,9 +104,12 @@ const Layout = ({ notify }) => {
               </StyledNavLink>
             </li>
             <li className="flex items-center" style={{ marginRight: 0 }}>
-              <CustomButton onClick={handleAuthClick}>
-                {isLoggedIn ? "Authenticated" : "Authenticate"}
+              {user ? <CustomButton onClick={handleLogout}>
+                Logout
+              </CustomButton> : <CustomButton onClick={handleAuthClick}>
+                {user ? "Authenticated" : "Authenticate"}
               </CustomButton>
+              }
             </li>
           </ul>
         </nav>

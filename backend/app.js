@@ -3,13 +3,14 @@ import cors from "cors";
 import portfolioRoutes from "./routes/portfolio-routes.js";
 import UserRoutes from "./routes/user-routes.js";
 import mongoose from "mongoose";
-
-
+import cookieParser from "cookie-parser";
+import authenticate from "./middleware/authMiddleware.js";
 
 const app = express();
 
-app.use(cors());
+app.use(cors({origin: 'http://localhost:3000', credentials: true}));
 app.use(express.json());
+app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.use('/files/uploads', express.static('uploads'));
@@ -21,6 +22,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/v1/portfolio", portfolioRoutes);
 app.use("/api/v1", UserRoutes);
+//app.use("/api/v1",authenticate, UserRoutes);
 
 // 404 handler (keep this at the very bottom)
 app.use((req, res) => {
@@ -37,6 +39,7 @@ app.use((error, req, res, next) => {
   }
   res.status(error.code || 500);
   res.json({ message: error.message || "An unknown error occurred!" });
+
 });
 
 

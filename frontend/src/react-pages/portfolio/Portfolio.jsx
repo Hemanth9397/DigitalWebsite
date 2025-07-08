@@ -96,7 +96,7 @@ const Portfolio = ({ notify }) => {
   async function fetchData() {
     setPortfolioData((prevState) => ({ ...prevState, isLoading: true }));
     try {
-      const res = await ApiCall.get("/portfolio");
+      const res = await axios.get(`${ApiCall}/portfolio`, {withCredentials: true});
       setPortfolioData((prevState) => ({
         ...prevState,
         portfolioData: res?.data || {},
