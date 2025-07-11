@@ -26,7 +26,7 @@ const HomeComponent = lazy(
 const ContactComponent = lazy(
   () =>
     new Promise((resolve) =>
-      setTimeout(() => resolve(import("./react-pages/contact/Contact")), 5000)
+      setTimeout(() => resolve(import("./react-pages/contact/Contact")), 15000)
     )
 );
 const AboutComponent = lazy(() => import("./react-pages/about/About"));
@@ -35,7 +35,9 @@ const ShoppingComponent = lazy(() => import("./react-pages/shopping/Shopping"));
 const PortfolioComponent = lazy(() =>
   import("./react-pages/portfolio/Portfolio")
 );
-const LogInorSignInComponent = lazy(() => import("./react-pages/logInOrSignIn/LoginSignupForm"));
+const LogInorSignInComponent = lazy(() =>
+  import("./react-pages/logInOrSignIn/LoginSignupForm")
+);
 
 const websitesRoutes = [
   {
@@ -57,16 +59,20 @@ const router = createBrowserRouter([
   {
     path: "/signUp",
     element: (
-      <Suspense fallback={<Spinner />}>
-        <LogInorSignInComponent isLogin={false}/>
+      <Suspense
+        fallback={<div style={{ minHeight: "300px", display: "grid", placeItems: "center" }}><Spinner/> </div>}
+      >
+        <LogInorSignInComponent isLogin={false} />
       </Suspense>
     ),
   },
   {
     path: "/login",
     element: (
-      <Suspense fallback={<Spinner />}>
-        <LogInorSignInComponent isLogin={true}/>
+      <Suspense 
+        fallback={<div style={{ minHeight: "300px", display: "grid", placeItems: "center" }}><Spinner/> </div>}
+      >
+        <LogInorSignInComponent isLogin={true} />
       </Suspense>
     ),
   },
@@ -85,15 +91,27 @@ const router = createBrowserRouter([
     children: [
       {
         path: "api/v1/home",
-        element: <Suspense fallback={<Spinner/>}><HomeComponent /></Suspense>,
+        element: (
+          <Suspense fallback={<Spinner />}>
+            <HomeComponent />
+          </Suspense>
+        ),
       },
       {
         path: "api/v1/about",
-        element: <Suspense fallback={<Spinner/>}><AboutComponent /></Suspense>,
+        element: (
+          <Suspense fallback={<Spinner />}>
+            <AboutComponent />
+          </Suspense>
+        ),
       },
       {
         path: "api/v1/contact",
-        element: <Suspense fallback={<Spinner/>}><ContactComponent /></Suspense>,
+        element: (
+          <Suspense fallback={<div style={{ minHeight: "300px", display: "grid", placeItems: "center" }}><Spinner/> </div>}>
+            <ContactComponent />
+          </Suspense>
+        ),
       },
       ...websitesRoutes,
     ],
@@ -119,12 +137,12 @@ function App() {
         },
       }}
     >
-      <AntdApp> 
+      <AntdApp>
         <Provider store={store}>
-          <Suspense fallback={<DigitalLogo />}> 
+          <Suspense fallback={<DigitalLogo />}>
             <RouterProvider router={router} />
           </Suspense>
-        </Provider>  
+        </Provider>
       </AntdApp>
     </ConfigProvider>
   );

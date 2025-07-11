@@ -1,46 +1,55 @@
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Input } from "antd";
-import React, { useState } from "react";
 
 const Wrapper = styled.div`
-  position: relative;
+  display: flex;
+  align-items: center;
   width: 100%;
+`;
+
+const Label = styled.span`
+  min-width: 70px;
+  color: #0077b5;
+  font-weight: 500;
+  display: ${({ $show }) => ($show ? "inline-block" : "none")};
+  margin-right: 8px;
 `;
 
 const StyledInput = styled(Input)`
   background-color: #1e222a !important;
   color: #f0f0f0 !important;
   border: 1px solid #444;
-  padding-left: 12px;
   height: 40px;
 
-  &:hover + .placeholder {
-    color: #0077b5;
-    font-weight: 600;
-  }
-
-  &:focus + .placeholder {
-    display: none;
+  &::placeholder {
+    color: #888;
   }
 `;
 
-const PlaceholderText = styled.span`
-  position: absolute;
-  top: 50%;
-  left: 12px;
-  transform: translateY(-50%);
-  color: #999;
-  pointer-events: none;
-  transition: color 0.2s ease;
-`;
+const FloatingLeftLabelInput = ({ value, onChange, placeholder, onFocus, onBlur, ...rest }) => {
+  const [isFocused, setIsFocused] = useState(false);
+  const isActive = isFocused || !!value;
 
-const FloatingPlaceholderInput = ({ value, onChange, placeholder }) => {
   return (
     <Wrapper>
-      <StyledInput value={value} onChange={onChange} />
-      {!value && <PlaceholderText className="placeholder">{placeholder}</PlaceholderText>}
+      <Label $show={isActive}>{placeholder}:</Label>
+      <StyledInput
+        value={value}
+        onChange={onChange}
+        onFocus={(e) => {
+          setIsFocused(true);
+          onFocus?.(e);
+        }}
+        onBlur={(e) => {
+          setIsFocused(false);
+          onBlur?.(e);
+        }}
+        placeholder={!isActive ? placeholder : ""}
+        {...rest}
+      />
     </Wrapper>
   );
 };
 
-export default FloatingPlaceholderInput;
+export default FloatingLeftLabelInput;

@@ -7,15 +7,46 @@
   justify-content: space-between;
   align-items: center;
   z-index: 999;
+  flex: 0 0 auto;
   position: sticky;
   top: 0;
 }
 
+.root-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
 
 .page-container {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: #444 #000;
   margin: auto;
   padding: 2rem;
 }
+
+.page-container::-webkit-scrollbar {
+  width: 16px;
+}
+
+.page-container::-webkit-scrollbar-thumb {
+  background-color: #444;
+  border-radius: 4px;
+}
+
+.page-container::-webkit-scrollbar-thumb:hover {
+  background-color: #222;
+}
+
+.page-container::-webkit-scrollbar-track {
+  background: #000;
+  border-radius: 4px;
+}
+
 
 .nav-bar ul {
   list-style: none;

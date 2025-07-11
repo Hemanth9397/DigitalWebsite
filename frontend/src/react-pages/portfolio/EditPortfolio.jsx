@@ -3,10 +3,11 @@ import { useState } from "react";
 import CustomButton from "../../components/customButton/CustomButton";
 import { Button, Divider, Input, Modal, Space } from "antd";
 import { EditOutlined } from "@ant-design/icons";
-import { useFormik } from "formik";
+import { useFormik, getIn } from "formik";
 import axios from "axios";
-import styled from "styled-components";
+import styled, { createGlobalStyle, css } from "styled-components";
 import FloatingLabelInput from "../../components/customInput/FloatingLabelInput";
+import FloatingPlaceholderInput from "../../components/customInput/FloatingPlaceholderInput";
 import { parseSkills } from "../../utils/parseSkills";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
@@ -26,18 +27,48 @@ const validationSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
   shortNote: Yup.string().required("Short Note is required"),
   aboutMe: Yup.string().required("About Me is required"),
-  skills: Yup.string()
-    .required("At least one skill is required")
-    .test("nonEmpty", "Please enter at least one skill", (value) => {
-      return (
-        Array.isArray(value?.split(",")) &&
-        value.split(",").filter((s) => s.trim() !== "").length > 0
-      );
-    }),
+  technical: Yup.object().shape({
+    frontend: Yup.string().required("Frontend skills required"),
+    backend: Yup.string().required("Backend skills required"),
+    database: Yup.string().required("Database skills required"),
+    verisonControl: Yup.string().required("Version control skills required"),
+    toolsAndUtilities: Yup.string().required("Tools & Utilities required"),
+  }),
   projects: Yup.array()
     .of(projectSchema)
     .min(1, "At least one project is required"),
 });
+
+
+
+const ModalScrollbarGlobalStyles = createGlobalStyle`
+  .ant-modal-wrap {
+    overflow: auto !important;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+
+    &::-webkit-scrollbar {
+      width: 24px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: #444;
+      border-radius: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background-color: #222;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: #000;
+      border-radius: 4px;
+    }
+
+    scrollbar-width: thin;
+    scrollbar-color: #444 #000;
+  }
+`;
 
 const StyledModal = styled(Modal)`
   .ant-modal-content {
@@ -45,6 +76,27 @@ const StyledModal = styled(Modal)`
     box-shadow: 0 4px 20px rgba(255, 69, 69, 0.4);
     border: 1px solid #007bff;
   }
+`;
+
+const Label = styled.label`
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 0 4px;
+  pointer-events: none;
+  transition: 0.2s ease all;
+
+  ${({ $isActive }) =>
+    $isActive &&
+    css`
+      left: 10px;
+      top: -4px;
+      font-size: 16px;
+      color: var(--text-primary);
+      background: #28364c;
+      text-shadow: 0px 0px 5px #007bff, 0px 0px 10px #007bff,
+        0px 0px 15px #007bff, 0px 0px 20px #007bff;
+    `}
 `;
 
 const StyledEditIcon = styled(EditOutlined)`
@@ -72,28 +124,35 @@ const EditPortfolio = ({
   const [showEditPortfolio, setShowEditPortfolio] = useState(false);
 
   const formik = useFormik({
-    initialValues: initialValues
-      ? { ...initialValues, skills: initialValues.skills.join(",") }
-      : {
-          name: "",
-          email: "",
-          shortNote: "",
-          aboutMe: "",
-          projects: [
-            {
-              title: "",
-              description: "",
-              link: "",
-            },
-          ],
-          skills: "",
-        },
+    initialValues: {
+      name: initialValues?.name || "",
+      email: initialValues?.email || "",
+      shortNote: initialValues?.shortNote || "",
+      aboutMe: initialValues?.aboutMe || "",
+      projects: initialValues?.projects || [
+        { title: "", description: "", link: "" },
+      ],
+      technical: {
+        frontend: initialValues?.technical?.frontend || "",
+        backend: initialValues?.technical?.backend || "",
+        database: initialValues?.technical?.database || "",
+        verisonControl: initialValues?.technical?.verisonControl || "",
+        toolsAndUtilities: initialValues?.technical?.toolsAndUtilities || "",
+      },
+    },
     validationSchema: validationSchema,
     onSubmit: submitHandler,
     validateOnMount: true,
     validateOnBlur: true,
     enableReinitialize: true,
   });
+
+  //Extract helper:
+
+  const getFieldError = (name) =>
+  getIn(formik.touched, name) && getIn(formik.errors, name)
+    ? getIn(formik.errors, name)
+    : null;
 
   async function submitHandler(values) {
     const payload = {
@@ -168,6 +227,7 @@ const EditPortfolio = ({
           Add Portfolio
         </CustomButton>
       )}
+      <ModalScrollbarGlobalStyles />
       <StyledModal
         open={showEditPortfolio}
         onOk={async () => {
@@ -177,7 +237,9 @@ const EditPortfolio = ({
               message: "You're not authorised.",
               description: "Please, login for modify the portfolio..!",
             });
-            setTimeout(()=>{navigate("/login", { replace: true });},2000);  
+            setTimeout(() => {
+              navigate("/login", { replace: true });
+            }, 2000);
             return;
           }
           await formik.submitForm(); // await is required
@@ -217,24 +279,94 @@ const EditPortfolio = ({
               {formik.errors.email}
             </div>
           )}
-          <FloatingLabelInput
-            name="skills"
-            value={formik.values.skills}
-            onChange={(e) => formik.setFieldValue("skills", e.target.value)}
+
+          <Label>Technical Skills</Label>
+          <FloatingPlaceholderInput
+            name="frontend"
+            value={formik.values.technical.frontend}
+            onChange={(e) =>
+              formik.setFieldValue("technical.frontend", e.target.value)
+            }
             onBlur={formik.handleBlur}
-            label="Skills (comma-separated)"
+            placeholder="Frontend"
           />
-          {formik.touched.skills && formik.errors.skills && (
+          {getFieldError("technical.frontend") && (
             <div style={{ color: "#e74c3c", fontSize: 12 }}>
-              {formik.errors.skills}
+              {getFieldError("technical.frontend")}
             </div>
           )}
+
+          <FloatingPlaceholderInput
+            name="backend"
+            value={formik.values.technical.backend}
+            onChange={(e) =>
+              formik.setFieldValue("technical.backend", e.target.value)
+            }
+            onBlur={formik.handleBlur}
+            placeholder="Backend"
+          />
+          {getFieldError("technical.backend") && (
+            <div style={{ color: "#e74c3c", fontSize: 12 }}>
+              {getFieldError("technical.backend")}
+            </div>
+          )}
+
+          <FloatingPlaceholderInput
+            name="database"
+            value={formik.values.technical.database}
+            onChange={(e) =>
+              formik.setFieldValue("technical.database", e.target.value)
+            }
+            onBlur={formik.handleBlur}
+            placeholder="Database"
+          />
+          {getFieldError("technical.database") && (
+            <div style={{ color: "#e74c3c", fontSize: 12 }}>
+              {getFieldError("technical.database")}
+            </div>
+          )}
+
+          <FloatingPlaceholderInput
+            name="verisonControl"
+            value={formik.values.technical.verisonControl}
+            onChange={(e) =>
+              formik.setFieldValue("technical.verisonControl", e.target.value)
+            }
+            onBlur={formik.handleBlur}
+            placeholder="Verison Control"
+          />
+          {getFieldError("technical.verisonControl") && (
+            <div style={{ color: "#e74c3c", fontSize: 12 }}>
+              {getFieldError("technical.verisonControl")}
+            </div>
+          )}
+
+          <FloatingPlaceholderInput
+            name="toolsAndUtilities"
+            value={formik.values.technical.toolsAndUtilities}
+            onChange={(e) =>
+              formik.setFieldValue(
+                "technical.toolsAndUtilities",
+                e.target.value
+              )
+            }
+            onBlur={formik.handleBlur}
+            placeholder="Tools & Utilities"
+          />
+          {getFieldError("technical.toolsAndUtilities") && (
+            <div style={{ color: "#e74c3c", fontSize: 12 }}>
+              {getFieldError("technical.toolsAndUtilities")}
+            </div>
+          )}
+
           <FloatingLabelInput
             name="shortNote"
             value={formik.values.shortNote}
             onChange={(e) => formik.setFieldValue("shortNote", e.target.value)}
             onBlur={formik.handleBlur}
             label="Short Note"
+            textarea
+            autoSize={{ minRows: 2, maxRows: 8 }}
           />
           {formik.touched.shortNote && formik.errors.shortNote && (
             <div style={{ color: "#e74c3c", fontSize: 12 }}>
@@ -247,6 +379,8 @@ const EditPortfolio = ({
             onChange={(e) => formik.setFieldValue("aboutMe", e.target.value)}
             onBlur={formik.handleBlur}
             label="About Me"
+            textarea
+            autoSize={{ minRows: 2, maxRows: 8 }}
           />
           {formik.touched.aboutMe && formik.errors.aboutMe && (
             <div style={{ color: "#e74c3c", fontSize: 12 }}>

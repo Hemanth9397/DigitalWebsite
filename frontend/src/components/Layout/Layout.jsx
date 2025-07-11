@@ -10,7 +10,6 @@ import useAutoLogout from "../../hooks/useAutoLogout";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../slicers/auth/authSlice";
 
-
 const modes = ["blogger", "shopping", "portfolio"];
 
 const StyledNavLink = styled(NavLink)`
@@ -51,29 +50,37 @@ const Layout = ({ notify }) => {
 
   const handleAuthClick = () => {
     if (!user) {
-      navigate("/login",{ replace: true });
+      navigate("/login", { replace: true });
     } else {
       notify({
         type: "warning",
         message: "Already authenticated",
-        description:
-          "No need to authenticate. Because, You're already logged!",
+        description: "No need to authenticate. Because, You're already logged!",
       });
     }
   };
 
-   const handleLogout = async () => {
+  const handleLogout = async () => {
     try {
-      await axios.post('http://localhost:5000/api/v1/logout', {}, { withCredentials: true });
+      await axios.post(
+        "http://localhost:5000/api/v1/logout",
+        {},
+        { withCredentials: true }
+      );
       dispatch(logout());
-      navigate('/login', { replace: true });
+      notify({
+        type: "success",
+        message: "Logout Successfully!",
+        description: "You have successfully logged out.",
+      });
+      //navigate('/login', { replace: true });
     } catch (err) {
-      console.error('Logout failed:', err.message);
+      console.error("Logout failed:", err.message);
     }
   };
 
   return (
-    <div>
+    <div className="root-container">
       <header className="header">
         <ModeScroller modes={modes} />
         <nav className="nav-bar">
@@ -104,19 +111,32 @@ const Layout = ({ notify }) => {
               </StyledNavLink>
             </li>
             <li className="flex items-center" style={{ marginRight: 0 }}>
-              {user ? <CustomButton onClick={handleLogout}>
-                Logout
-              </CustomButton> : <CustomButton onClick={handleAuthClick}>
-                {user ? "Authenticated" : "Authenticate"}
-              </CustomButton>
-              }
+              {user ? (
+                <CustomButton onClick={handleLogout}>Logout</CustomButton>
+              ) : (
+                <CustomButton onClick={handleAuthClick}>
+                  Authenticate
+                </CustomButton>
+              )}
             </li>
           </ul>
         </nav>
       </header>
       <hr />
       <main className="page-container">
-        {navigation.state === "loading" ? <Spinner /> : <Outlet />}
+        {navigation.state === "loading" ? (
+          <div
+            style={{
+              minHeight: "300px",
+              display: "grid",
+              placeItems: "center",
+            }}
+          >
+            <Spinner />{" "}
+          </div>
+        ) : (
+          <Outlet />
+        )}
       </main>
     </div>
   );
