@@ -47,7 +47,8 @@ app.use((error, req, res, next) => {
 
 });
 
-console.log("Running with DB_USER:", process.env.DB_USER);
+console.log('CORS Origin:', process.env.CORS_ORIGIN_FRONTEND_URL);  // Debugging line
+
 
 
 mongoose
