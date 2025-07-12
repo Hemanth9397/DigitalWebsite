@@ -1,19 +1,29 @@
 import express from "express";
-import cors from "cors";
+import cors from 'cors';
 import portfolioRoutes from "./routes/portfolio-routes.js";
 import UserRoutes from "./routes/user-routes.js";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import authenticate from "./middleware/authMiddleware.js";
 import dotenv from 'dotenv';
+
 dotenv.config();
 
-// Now you can access process.env.DB_USER, etc.
+const allowedOrigins = [process.env.CORS_ORIGIN_FRONTEND_URL];
 
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true, // ✅ MUST be true to allow sending cookies
+}));
 
 const app = express();
 
-app.use(cors({origin: process.env.CORS_ORIGIN_FRONTEND_URL, credentials: true}));
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
@@ -46,9 +56,6 @@ app.use((error, req, res, next) => {
   res.json({ message: error.message || "An unknown error occurred!" });
 
 });
-
-console.log('CORS Origin:', process.env.CORS_ORIGIN_FRONTEND_URL);  // Debugging line
-
 
 
 mongoose

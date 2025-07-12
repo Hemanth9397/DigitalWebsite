@@ -9,7 +9,7 @@ const useAutoLogout = (user, timeoutDuration = 15 * 60 * 1000) => {
 
   const logout = useCallback(async () => {
     try {
-      await axios.post(process.env.REACT_APP_BACKEND_URL + `/api/v1/logout`, {}, { withCredentials: 'include' });
+      await axios.post(process.env.REACT_APP_BACKEND_URL + `/api/v1/logout`, {}, { withCredentials: true });
     } catch (error) {
       console.error('Logout failed:', error);
     } finally {

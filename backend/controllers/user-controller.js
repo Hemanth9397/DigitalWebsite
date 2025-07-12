@@ -48,8 +48,8 @@ const postLogin = async (req, res, next) => {
      // Set the token as an HttpOnly cookie
     res.cookie('access_token', token, {
       httpOnly: true,        // Can't be accessed by JavaScript
-      secure: process.env.NODE_ENV === 'production',  // Only for HTTPS in production
-      sameSite: 'lax',
+      secure: true,  // Only for HTTPS in production
+      sameSite: 'None',
       path: '/',
       maxAge: 15 * 60 * 1000, // 15 min
     });
@@ -63,8 +63,8 @@ const postLogin = async (req, res, next) => {
  const postLogout =(req, res) => {
   res.clearCookie('access_token',{
   httpOnly: true,
-  secure: process.env.NODE_ENV === 'production',
-  sameSite: 'lax',
+  secure: true,
+  sameSite: 'None',
   path: '/', // 👈 this is where you define the path
   maxAge: 15 * 60 * 1000, // 15 min
 });

@@ -9,20 +9,6 @@ import { Portfolio } from "../models/portifolio.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const projects = [
-  {
-    title: "MERN Ecommerce",
-    description:
-      "Full-featured eCommerce site using MongoDB, Express, React, Node.js.",
-    link: "https://github.com/Hemanth9397/DigitalWebsite",
-  },
-  {
-    title: "Blog App",
-    description:
-      "Blog platform with user authentication, CRUD and rich text editor.",
-    link: "https://github.com/Hemanth9397/DigitalWebsite",
-  },
-];
 
 const getDownloadPDF = (req, res, next) => {
   const filePath = path.join(
