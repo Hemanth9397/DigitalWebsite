@@ -17,11 +17,11 @@ import PortfolioLoader from "./loaders/PortfolioLoader";
 import Spinner from "./components/spinner/Spinner";
 import DigitalLogo from "./components/digitalLogo/DigitalLogo";
 
-const HomeComponent = lazy(() => import("./react-pages/home/Home"));
-const ContactComponent = lazy(() => import("./react-pages/contact/Contact"));
-const AboutComponent = lazy(() => import("./react-pages/about/About"));
-const BloggerComponent = lazy(() => import("./react-pages/blogger/Blogger"));
-const ShoppingComponent = lazy(() => import("./react-pages/shopping/Shopping"));
+const HomeComponent = lazy(() => import("./react-pages/Home"));
+const ContactComponent = lazy(() => import("./react-pages/Contact"));
+const AboutComponent = lazy(() => import("./react-pages/About"));
+const BloggerComponent = lazy(() => import("./react-pages/Blogger"));
+const ShoppingComponent = lazy(() => import("./react-pages/Shopping"));
 const PortfolioComponent = lazy(() =>
   import("./react-pages/portfolio/Portfolio")
 );
