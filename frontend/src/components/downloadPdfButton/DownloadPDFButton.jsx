@@ -34,12 +34,13 @@ align-items: center;
 
 const DownloadPDFButton = (props) => {
   const [loading, setLoading] = useState(false);
- console.log(props);
   const handleDownload = async () => {
     setLoading(true);
     try {
-      const response = await axios.get("http://localhost:5000/api/v1/portfolio/download-pdf", {
+      const response = await axios.get(process.env.REACT_APP_BACKEND_URL + `/api/v1/portfolio/download-pdf`, {
         responseType: "blob",
+      },{
+        withCredentials: true, // ✅ Send cookie (JWT) with request
       });
 
       const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -57,7 +58,6 @@ const DownloadPDFButton = (props) => {
     });
 
     } catch (error) {
-      console.error(error);
       props.notify({
       type: "error",
       message: "Download Failed",
