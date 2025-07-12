@@ -5,9 +5,14 @@
 frontend/build/
 backend/dist/
 
+
 # Env
 .env
 .env.local
+frontend/.env
+frontend/.env.production
+backend/nodemon.json
+backend/.env
 
 # Logs
 npm-debug.log*
