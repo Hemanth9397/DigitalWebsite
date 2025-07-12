@@ -16,7 +16,7 @@ const About = () => {
       try {
         setData((prevState) => ({ ...prevState, isLoading: true }));
 
-        const response = await axios.get("http://localhost:5000/about");
+        const response = await axios.get(process.env.REACT_APP_BACKEND_URL + `/about`, {withCredentials: true});
         setData((prevState) => ({
           ...prevState,
           isLoading: false,
