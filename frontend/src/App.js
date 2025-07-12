@@ -17,18 +17,8 @@ import PortfolioLoader from "./loaders/PortfolioLoader";
 import Spinner from "./components/spinner/Spinner";
 import DigitalLogo from "./components/digitalLogo/DigitalLogo";
 
-const HomeComponent = lazy(
-  () =>
-    new Promise((resolve) =>
-      setTimeout(() => resolve(import("./react-pages/home/Home")), 2000)
-    )
-);
-const ContactComponent = lazy(
-  () =>
-    new Promise((resolve) =>
-      setTimeout(() => resolve(import("./react-pages/contact/Contact")), 15000)
-    )
-);
+const HomeComponent = lazy(() => import("./react-pages/home/Home"));
+const ContactComponent = lazy(() => import("./react-pages/contact/Contact"));
 const AboutComponent = lazy(() => import("./react-pages/about/About"));
 const BloggerComponent = lazy(() => import("./react-pages/blogger/Blogger"));
 const ShoppingComponent = lazy(() => import("./react-pages/shopping/Shopping"));
@@ -60,7 +50,17 @@ const router = createBrowserRouter([
     path: "/signUp",
     element: (
       <Suspense
-        fallback={<div style={{ minHeight: "300px", display: "grid", placeItems: "center" }}><Spinner/> </div>}
+        fallback={
+          <div
+            style={{
+              minHeight: "300px",
+              display: "grid",
+              placeItems: "center",
+            }}
+          >
+            <Spinner />
+          </div>
+        }
       >
         <LogInorSignInComponent isLogin={false} />
       </Suspense>
@@ -69,8 +69,18 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: (
-      <Suspense 
-        fallback={<div style={{ minHeight: "300px", display: "grid", placeItems: "center" }}><Spinner/> </div>}
+      <Suspense
+        fallback={
+          <div
+            style={{
+              minHeight: "300px",
+              display: "grid",
+              placeItems: "center",
+            }}
+          >
+            <Spinner />
+          </div>
+        }
       >
         <LogInorSignInComponent isLogin={true} />
       </Suspense>
@@ -92,7 +102,19 @@ const router = createBrowserRouter([
       {
         path: "api/v1/home",
         element: (
-          <Suspense fallback={<Spinner />}>
+          <Suspense
+            fallback={
+              <div
+                style={{
+                  minHeight: "300px",
+                  display: "grid",
+                  placeItems: "center",
+                }}
+              >
+                <Spinner />
+              </div>
+            }
+          >
             <HomeComponent />
           </Suspense>
         ),
@@ -100,7 +122,19 @@ const router = createBrowserRouter([
       {
         path: "api/v1/about",
         element: (
-          <Suspense fallback={<Spinner />}>
+          <Suspense
+            fallback={
+              <div
+                style={{
+                  minHeight: "300px",
+                  display: "grid",
+                  placeItems: "center",
+                }}
+              >
+                <Spinner />
+              </div>
+            }
+          >
             <AboutComponent />
           </Suspense>
         ),
@@ -108,7 +142,19 @@ const router = createBrowserRouter([
       {
         path: "api/v1/contact",
         element: (
-          <Suspense fallback={<div style={{ minHeight: "300px", display: "grid", placeItems: "center" }}><Spinner/> </div>}>
+          <Suspense
+            fallback={
+              <div
+                style={{
+                  minHeight: "300px",
+                  display: "grid",
+                  placeItems: "center",
+                }}
+              >
+                <Spinner />
+              </div>
+            }
+          >
             <ContactComponent />
           </Suspense>
         ),
