@@ -62,31 +62,52 @@ const StyledCard = styled(Card)`
 `;
 
 const StyledSpan = styled.span`
-  padding: 0.5em 1em;
-  background-color: #161a20 !important;
+  padding: 0.2em 0.8em;
+  background-color: #161a20;
   border: none;
-  color: #f0f0f0 !important;
+  color: #f0f0f0;
   border-radius: 1000px;
   position: relative;
-  display: flex;
+  display: inline-flex;
   justify-content: center;
   align-items: center;
+  z-index: 1;
+  overflow: hidden;
 
   &::after {
     content: "";
     position: absolute;
-    height: 107%;
-    width: 102%;
-    border-radius: 1000px;
-    background-image: linear-gradient(#ff4545);
+    inset: 0; /* replaces width/height + top/left */
+    border-radius: inherit;
+    background-image: linear-gradient(90deg, #ff4545, #ff7b54);
     z-index: -1;
+    transform: scale(1.05); /* slight oversize */
   }
 `;
 
+
+const Wrapper = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 10px;
+`;
+
+const Label = styled.span`
+  min-width: 70px;
+  font-weight: 500;
+  font-size: 24px;
+  text-decoration: underline #ff4545;
+  display: inline-block;
+  margin-right: 8px;
+`;
+
+
 const Portfolio = ({ notify }) => {
-  const [{ portfolioData, isLoading }, setPortfolioData] = useState({
+  const [{ portfolioData, isLoading, hasFetched }, setPortfolioData] = useState({
     portfolioData: {},
     isLoading: false,
+    hasFetched: false
   });
 
   useEffect(() => {
@@ -101,14 +122,10 @@ const Portfolio = ({ notify }) => {
         ...prevState,
         portfolioData: res?.data || {},
         isLoading: false,
+        hasFetched: true
       }));
-      // notify({
-      //   type: "success",
-      //   message: res?.data?.message,
-      //   description: "PLease find the portfolio details on UI.",
-      // });
     } catch (err) {
-      setPortfolioData((prevState) => ({ ...prevState, isLoading: false }));
+      setPortfolioData((prevState) => ({ ...prevState, isLoading: false,  hasFetched: true}));
       notify({
         type: "error",
         message: err.message,
@@ -178,7 +195,7 @@ const Portfolio = ({ notify }) => {
         />
       </div>
     </div>
-  ) : !_.isEmpty(portfolioData) ? (
+  ) : hasFetched && !_.isEmpty(portfolioData) ? (
     <div>
       <section className="text-center mb-12">
         <span>
@@ -254,13 +271,48 @@ const Portfolio = ({ notify }) => {
 
       <section className="mb-12">
         <h2 className="text-2xl font-semibold text-primaryColor mb-4">
-          Skills
+          Technical Skills
         </h2>
-        <div className="flex flex-wrap gap-2">
-          {portfolioData?.skills.map((skill, index) => (
+      <Wrapper>
+        <Label>Frontend</Label> {" :"}
+        <div className="flex flex-wrap gap-2 ml-2">
+          {portfolioData?.technicalSkills?.frontend.map((skill, index) => (
             <StyledSpan key={index}>{skill}</StyledSpan>
           ))}
         </div>
+        </Wrapper>
+        <Wrapper>
+        <Label>Backend</Label> {" :"}
+        <div className="flex flex-wrap gap-2 ml-2">
+          {portfolioData?.technicalSkills?.backend.map((skill, index) => (
+            <StyledSpan key={index}>{skill}</StyledSpan>
+          ))}
+        </div>
+        </Wrapper>
+        <Wrapper>
+        <Label>Database</Label> {" :"}
+        <div className="flex flex-wrap gap-2 ml-2">
+          {portfolioData?.technicalSkills?.database.map((skill, index) => (
+            <StyledSpan key={index}>{skill}</StyledSpan>
+          ))}
+        </div>
+        </Wrapper>
+        <Wrapper>
+        <Label>Verison Control</Label> {" :"}
+        <div className="flex flex-wrap gap-2 ml-2">
+          {portfolioData?.technicalSkills?.verisonControl.map((skill, index) => (
+            <StyledSpan key={index}>{skill}</StyledSpan>
+          ))}
+        </div>
+        </Wrapper>
+        <Wrapper>
+        <Label>Tools & Utilities</Label> {" :"}
+        <div className="flex flex-wrap gap-2 ml-2">
+          {portfolioData?.technicalSkills?.toolsAndUtilities.map((skill, index) => (
+            <StyledSpan key={index}>{skill}</StyledSpan>
+          ))}
+        </div>
+        </Wrapper>
       </section>
 
       <section className="mb-12 flex items-center gap-8">
@@ -286,9 +338,9 @@ const Portfolio = ({ notify }) => {
         </a>
       </section>
     </div>
-  ) : (
+  ) : hasFetched && _.isEmpty(portfolioData) ? (
     <EditPortfolio fetchData={fetchData} notify={notify} />
-  );
+  ) : null;
 };
 
 export default withNotification(Portfolio);

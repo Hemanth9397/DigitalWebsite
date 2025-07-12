@@ -3,7 +3,7 @@ import { useState } from "react";
 import CustomButton from "../../components/customButton/CustomButton";
 import { Button, Divider, Input, Modal, Space } from "antd";
 import { EditOutlined } from "@ant-design/icons";
-import { useFormik, getIn } from "formik";
+import { getIn, useFormik } from "formik";
 import axios from "axios";
 import styled, { createGlobalStyle, css } from "styled-components";
 import FloatingLabelInput from "../../components/customInput/FloatingLabelInput";
@@ -27,19 +27,21 @@ const validationSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
   shortNote: Yup.string().required("Short Note is required"),
   aboutMe: Yup.string().required("About Me is required"),
-  technical: Yup.object().shape({
-    frontend: Yup.string().required("Frontend skills required"),
-    backend: Yup.string().required("Backend skills required"),
-    database: Yup.string().required("Database skills required"),
-    verisonControl: Yup.string().required("Version control skills required"),
-    toolsAndUtilities: Yup.string().required("Tools & Utilities required"),
+  technicalSkills: Yup.object().shape({
+    frontend: Yup.array().of(Yup.string()).min(1, "Frontend skills required"),
+    backend: Yup.array().of(Yup.string()).min(1, "Backend skills required"),
+    database: Yup.array().of(Yup.string()).min(1, "Database skills required"),
+    verisonControl: Yup.array()
+      .of(Yup.string())
+      .min(1, "Version control skills required"),
+    toolsAndUtilities: Yup.array()
+      .of(Yup.string())
+      .min(1, "Tools & Utilities required"),
   }),
   projects: Yup.array()
     .of(projectSchema)
     .min(1, "At least one project is required"),
 });
-
-
 
 const ModalScrollbarGlobalStyles = createGlobalStyle`
   .ant-modal-wrap {
@@ -132,12 +134,13 @@ const EditPortfolio = ({
       projects: initialValues?.projects || [
         { title: "", description: "", link: "" },
       ],
-      technical: {
-        frontend: initialValues?.technical?.frontend || "",
-        backend: initialValues?.technical?.backend || "",
-        database: initialValues?.technical?.database || "",
-        verisonControl: initialValues?.technical?.verisonControl || "",
-        toolsAndUtilities: initialValues?.technical?.toolsAndUtilities || "",
+      technicalSkills: {
+        frontend: initialValues?.technicalSkills?.frontend || "",
+        backend: initialValues?.technicalSkills?.backend || "",
+        database: initialValues?.technicalSkills?.database || "",
+        verisonControl: initialValues?.technicalSkills?.verisonControl || "",
+        toolsAndUtilities:
+          initialValues?.technicalSkills?.toolsAndUtilities || "",
       },
     },
     validationSchema: validationSchema,
@@ -150,14 +153,23 @@ const EditPortfolio = ({
   //Extract helper:
 
   const getFieldError = (name) =>
-  getIn(formik.touched, name) && getIn(formik.errors, name)
-    ? getIn(formik.errors, name)
-    : null;
+    getIn(formik.touched, name) && getIn(formik.errors, name)
+      ? getIn(formik.errors, name)
+      : null;
 
   async function submitHandler(values) {
     const payload = {
       ...values,
-      skills: parseSkills(values.skills),
+      technicalSkills: {
+        ...values.technicalSkills,
+        frontend: parseSkills(values?.technicalSkills?.frontend),
+        backend: parseSkills(values?.technicalSkills?.backend),
+        database: parseSkills(values?.technicalSkills?.database),
+        verisonControl: parseSkills(values?.technicalSkills?.verisonControl),
+        toolsAndUtilities: parseSkills(
+          values?.technicalSkills?.toolsAndUtilities
+        ),
+      },
     };
 
     try {
@@ -282,82 +294,64 @@ const EditPortfolio = ({
 
           <Label>Technical Skills</Label>
           <FloatingPlaceholderInput
-            name="frontend"
-            value={formik.values.technical.frontend}
+            name="technicalSkills.frontend"
+            value={formik.values.technicalSkills.frontend}
             onChange={(e) =>
-              formik.setFieldValue("technical.frontend", e.target.value)
+              formik.setFieldValue("technicalSkills.frontend", e.target.value)
             }
+            onError={getFieldError("technicalSkills.frontend")}
             onBlur={formik.handleBlur}
             placeholder="Frontend"
           />
-          {getFieldError("technical.frontend") && (
-            <div style={{ color: "#e74c3c", fontSize: 12 }}>
-              {getFieldError("technical.frontend")}
-            </div>
-          )}
 
           <FloatingPlaceholderInput
-            name="backend"
-            value={formik.values.technical.backend}
+            name="technicalSkills.backend"
+            value={formik.values.technicalSkills.backend}
             onChange={(e) =>
-              formik.setFieldValue("technical.backend", e.target.value)
+              formik.setFieldValue("technicalSkills.backend", e.target.value)
             }
+            onError={getFieldError("technicalSkills.backend")}
             onBlur={formik.handleBlur}
             placeholder="Backend"
           />
-          {getFieldError("technical.backend") && (
-            <div style={{ color: "#e74c3c", fontSize: 12 }}>
-              {getFieldError("technical.backend")}
-            </div>
-          )}
 
           <FloatingPlaceholderInput
-            name="database"
-            value={formik.values.technical.database}
+            name="technicalSkills.database"
+            value={formik.values.technicalSkills.database}
             onChange={(e) =>
-              formik.setFieldValue("technical.database", e.target.value)
+              formik.setFieldValue("technicalSkills.database", e.target.value)
             }
+            onError={getFieldError("technicalSkills.database")}
             onBlur={formik.handleBlur}
             placeholder="Database"
           />
-          {getFieldError("technical.database") && (
-            <div style={{ color: "#e74c3c", fontSize: 12 }}>
-              {getFieldError("technical.database")}
-            </div>
-          )}
 
           <FloatingPlaceholderInput
-            name="verisonControl"
-            value={formik.values.technical.verisonControl}
-            onChange={(e) =>
-              formik.setFieldValue("technical.verisonControl", e.target.value)
-            }
-            onBlur={formik.handleBlur}
-            placeholder="Verison Control"
-          />
-          {getFieldError("technical.verisonControl") && (
-            <div style={{ color: "#e74c3c", fontSize: 12 }}>
-              {getFieldError("technical.verisonControl")}
-            </div>
-          )}
-
-          <FloatingPlaceholderInput
-            name="toolsAndUtilities"
-            value={formik.values.technical.toolsAndUtilities}
+            name="technicalSkills.verisonControl"
+            value={formik.values.technicalSkills.verisonControl}
             onChange={(e) =>
               formik.setFieldValue(
-                "technical.toolsAndUtilities",
+                "technicalSkills.verisonControl",
                 e.target.value
               )
             }
+            onError={getFieldError("technicalSkills.verisonControl")}
+            onBlur={formik.handleBlur}
+            placeholder="Verison Control"
+          />
+          <FloatingPlaceholderInput
+            name="technicalSkills.toolsAndUtilities"
+            value={formik.values.technicalSkills.toolsAndUtilities}
+            onChange={(e) =>
+              formik.setFieldValue(
+                "technicalSkills.toolsAndUtilities",
+                e.target.value
+              )
+            }
+            onError={getFieldError("technicalSkills.toolsAndUtilities")}
             onBlur={formik.handleBlur}
             placeholder="Tools & Utilities"
           />
-          {getFieldError("technical.toolsAndUtilities") && (
-            <div style={{ color: "#e74c3c", fontSize: 12 }}>
-              {getFieldError("technical.toolsAndUtilities")}
-            </div>
-          )}
 
           <FloatingLabelInput
             name="shortNote"

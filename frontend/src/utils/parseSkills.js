@@ -39,9 +39,16 @@ function formatSkill(rawSkill) {
     .join(' ');
 }
 
-export function parseSkills(skillString) {
-  return skillString
-    .split(',')
-    .map(s => formatSkill(s.trim()))
-    .filter(Boolean);
+export function parseSkills(input) {
+  if (Array.isArray(input)) return input.map(formatSkill).filter(Boolean);
+
+  if (typeof input === "string") {
+    return input
+      .split(",")
+      .map((s) => formatSkill(s.trim()))
+      .filter(Boolean);
+  }
+
+  return []; // fallback for null/undefined/invalid inputs
 }
+

@@ -6,12 +6,31 @@ const projectsSchema = new mongoose.Schema({
     link: String
 });
 
+const technicalSkillsSchema = new mongoose.Schema( {
+        frontend: [
+            String
+        ],
+        backend: [
+            String
+        ],
+        database: [
+           String
+        ],
+        verisonControl: [
+           String
+        ],
+        toolsAndUtilities: [
+           String
+        ]
+    });
+
 const portfolioSchema = new mongoose.Schema({
     name: String,
+    email: {type: String, unique: true},
     shortNote: String,
     aboutMe: String,
     projects: [projectsSchema],
-    skills: [String]
+    technicalSkills: technicalSkillsSchema
 });
 
 export const Portfolio = mongoose.model('Portfolio', portfolioSchema);
