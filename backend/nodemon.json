@@ -3,6 +3,7 @@
         "DB_USER": "Hemanth",
         "DB_PASSWORD": "G8kFA6c11FD0Ao3I",
         "DB_NAME" : "digitalWebsiteDB",
-        "JWT_KEY" : "your_jwt_secret"
+        "JWT_KEY" : "your_jwt_secret",
+        "CORS_ORIGIN_FRONTEND_URL" : "http://frontend.com"
     }
 }
