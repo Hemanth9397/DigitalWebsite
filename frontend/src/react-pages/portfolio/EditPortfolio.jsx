@@ -11,7 +11,6 @@ import FloatingPlaceholderInput from "../../components/customInput/FloatingPlace
 import { parseSkills } from "../../utils/parseSkills";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
-import ApiCall from "../../utils/auth/apiCall";
 import { useSelector } from "react-redux";
 
 const projectSchema = Yup.object().shape({
@@ -173,7 +172,7 @@ const EditPortfolio = ({
     };
 
     try {
-      await axios.post(`${ApiCall}/portfolio`, payload, {
+      await axios.post(process.env.REACT_APP_BACKEND_URL + `/portfolio`, payload, {
         withCredentials: true, // ✅ Send cookie (JWT) with request
       });
       notify({

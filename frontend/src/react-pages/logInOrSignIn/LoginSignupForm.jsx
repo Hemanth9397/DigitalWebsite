@@ -10,7 +10,6 @@ import {
   PlusOutlined,
 } from "@ant-design/icons";
 import { Upload, message } from "antd";
-import ApiCall from "../../utils/auth/apiCall";
 import withNotification from "../../utils/notification/withNotification";
 import { useDispatch } from "react-redux";
 import { login } from "../../slicers/auth/authSlice";
@@ -67,7 +66,7 @@ function LoginSignupForm({ notify, isLogin: isLoginProp = true }) {
         }
 
         const endpoint = isLogin ? "/login" : "/signup";
-        const res = await axios.post(`${ApiCall + endpoint}`, formData, {
+        const res = await axios.post(process.env.REACT_APP_BACKEND_URL + `${endpoint}`, formData, {
           withCredentials: true, // ✅ Send cookie (JWT) with request
           headers: {
             "Content-Type": "multipart/form-data",

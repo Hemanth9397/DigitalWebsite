@@ -9,9 +9,8 @@ import DownloadPDFButton from "../../components/downloadPdfButton/DownloadPDFBut
 import withNotification from "../../utils/notification/withNotification";
 import EditPortfolio from "./EditPortfolio";
 import _ from "lodash";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
-import ApiCall from "../../utils/auth/apiCall";
 
 const StyledGithubIcon = styled(GithubOutlined)`
   color: #f0f0f0 !important;
@@ -110,14 +109,10 @@ const Portfolio = ({ notify }) => {
     hasFetched: false
   });
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  async function fetchData() {
+  const fetchData = useCallback(async()=>{
     setPortfolioData((prevState) => ({ ...prevState, isLoading: true }));
     try {
-      const res = await axios.get(`${ApiCall}/portfolio`, {withCredentials: true});
+      const res = await axios.get(process.env.REACT_APP_BACKEND_URL + `/portfolio`, {withCredentials: true});
       setPortfolioData((prevState) => ({
         ...prevState,
         portfolioData: res?.data || {},
@@ -132,7 +127,11 @@ const Portfolio = ({ notify }) => {
         description: "Unable to get the portfolio details. Try later",
       });
     }
-  }
+  },[setPortfolioData, notify]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   return isLoading ? (
     <div className="space-y-12">

@@ -64,7 +64,7 @@ const Layout = ({ notify }) => {
   const handleLogout = async () => {
     try {
       await axios.post(
-        "http://localhost:5000/api/v1/logout",
+        process.env.REACT_APP_BACKEND_URL + `/logout`,
         {},
         { withCredentials: true }
       );
