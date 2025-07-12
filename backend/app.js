@@ -42,10 +42,12 @@ app.use((error, req, res, next) => {
 
 });
 
+console.log("Running with DB_USER:", process.env.DB_USER);
+
 
 mongoose
   .connect(
-    `mongodb+srv://Hemanth:${"G8kFA6c11FD0Ao3I"}@cluster0.qofgk9v.mongodb.net/digitalWebsiteDB?retryWrites=true&w=majority&appName=Cluster0`
+    `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.qofgk9v.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority&appName=Cluster0`
   )
   .then(() => {
     app.listen(5000);

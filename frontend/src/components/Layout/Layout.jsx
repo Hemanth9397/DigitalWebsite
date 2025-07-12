@@ -46,7 +46,8 @@ const Layout = ({ notify }) => {
   const navigate = useNavigate();
   const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
-  useAutoLogout();
+
+  useAutoLogout(user);
 
   const handleAuthClick = () => {
     if (!user) {

@@ -3,7 +3,6 @@ import HttpError from "../models/http-error.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-const JWT_SECRET = 'your_jwt_secret';
 
 const postSignup = async (req, res, next) => {
   const { name, email, password } = req.body;
@@ -42,7 +41,7 @@ const postLogin = async (req, res, next) => {
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return next(new HttpError("Invalid credentials", 401));
 
-    const token = jwt.sign({ userId: user._id }, JWT_SECRET, {
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_KEY, {
       expiresIn: "15m",
     });
 

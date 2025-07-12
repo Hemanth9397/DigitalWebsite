@@ -1,0 +1,8 @@
+{
+    "env": {
+        "DB_USER": "Hemanth",
+        "DB_PASSWORD": "G8kFA6c11FD0Ao3I",
+        "DB_NAME" : "digitalWebsiteDB",
+        "JWT_KEY" : "your_jwt_secret"
+    }
+}

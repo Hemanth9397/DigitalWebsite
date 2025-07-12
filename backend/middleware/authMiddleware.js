@@ -1,7 +1,6 @@
 // authMiddleware.js
 
 import jwt from "jsonwebtoken";
-const JWT_SECRET = 'your_jwt_secret';  // Same secret key used for signing JWT
 
 
 // Authentication middleware
@@ -15,7 +14,7 @@ const authenticate = (req, res, next) => {
 
   try {
     // Verify the token
-    const decoded = jwt.verify(token, JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_KEY);
 
     // Attach the user info to the request object for use in the route
     req.user = decoded;  // Add user data to req, e.g., userId
