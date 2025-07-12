@@ -65,7 +65,7 @@ function LoginSignupForm({ notify, isLogin: isLoginProp = true }) {
           formData.append("image", selectedImage);
         }
 
-        const endpoint = isLogin ? "/login" : "/signup";
+        const endpoint = isLogin ? "/api/v1/login" : "/api/v1/signup";
         const res = await axios.post(process.env.REACT_APP_BACKEND_URL + `${endpoint}`, formData, {
           withCredentials: true, // ✅ Send cookie (JWT) with request
           headers: {

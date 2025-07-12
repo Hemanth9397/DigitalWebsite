@@ -172,7 +172,7 @@ const EditPortfolio = ({
     };
 
     try {
-      await axios.post(process.env.REACT_APP_BACKEND_URL + `/portfolio`, payload, {
+      await axios.post(process.env.REACT_APP_BACKEND_URL + `/api/v1/portfolio`, payload, {
         withCredentials: true, // ✅ Send cookie (JWT) with request
       });
       notify({

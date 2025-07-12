@@ -112,7 +112,7 @@ const Portfolio = ({ notify }) => {
   const fetchData = useCallback(async()=>{
     setPortfolioData((prevState) => ({ ...prevState, isLoading: true }));
     try {
-      const res = await axios.get(process.env.REACT_APP_BACKEND_URL + `/portfolio`, {withCredentials: true});
+      const res = await axios.get(process.env.REACT_APP_BACKEND_URL + `/api/v1/portfolio`, {withCredentials: true});
       setPortfolioData((prevState) => ({
         ...prevState,
         portfolioData: res?.data || {},

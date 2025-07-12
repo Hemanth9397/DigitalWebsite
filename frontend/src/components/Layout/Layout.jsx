@@ -64,7 +64,7 @@ const Layout = ({ notify }) => {
   const handleLogout = async () => {
     try {
       await axios.post(
-        process.env.REACT_APP_BACKEND_URL + `/logout`,
+        process.env.REACT_APP_BACKEND_URL + `/api/v1/logout`,
         {},
         { withCredentials: 'include' }
       );
