@@ -66,7 +66,7 @@ const Layout = ({ notify }) => {
       await axios.post(
         process.env.REACT_APP_BACKEND_URL + `/logout`,
         {},
-        { withCredentials: true }
+        { withCredentials: 'include' }
       );
       dispatch(logout());
       notify({
