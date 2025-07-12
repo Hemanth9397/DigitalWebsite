@@ -8,6 +8,7 @@ import authenticate from "./middleware/authMiddleware.js";
 import dotenv from 'dotenv';
 
 dotenv.config();
+const app = express();
 
 const allowedOrigins = [process.env.CORS_ORIGIN_FRONTEND_URL];
 
@@ -22,7 +23,6 @@ app.use(cors({
   credentials: true, // ✅ MUST be true to allow sending cookies
 }));
 
-const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
