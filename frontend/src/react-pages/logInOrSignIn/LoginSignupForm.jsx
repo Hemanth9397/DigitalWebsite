@@ -80,7 +80,7 @@ function LoginSignupForm({ notify, isLogin: isLoginProp = true }) {
         });
         isLogin && dispatch(login(res.data.user));
         isLogin
-          ? navigate("/portfolio", { replace: true })
+          ? navigate("/", { replace: true })
           : setIsLogin(true);
       } catch (err) {
         const msg = err.response?.data?.message || "Something went wrong";

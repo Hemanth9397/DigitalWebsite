@@ -11,12 +11,14 @@ import EditPortfolio from "./EditPortfolio";
 import _ from "lodash";
 import axios from "axios";
 import "./Portfolio.scss";
+import { useSelector } from "react-redux";
 
 const Portfolio = ({ notify }) => {
   const [portfolioData, setPortfolioData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [hasFetched, setHasFetched] = useState(false);
   const [error, setError] = useState(null);
+  // const user = useSelector((state) => state.auth.user);
 
   const fetchData = useCallback(async () => {
     setIsLoading(true);

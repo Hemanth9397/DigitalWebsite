@@ -35,6 +35,11 @@ app.get("/", (req, res) => {
   res.send("server is running");
 });
 
+// router.get('/auth/me', authenticate, (req, res) => {
+//   res.status(200).json({ user: req.user });
+// });
+
+
 app.use("/api/v1/portfolio", portfolioRoutes);
 app.use("/api/v1", UserRoutes);
 //app.use("/api/v1",authenticate, UserRoutes);
