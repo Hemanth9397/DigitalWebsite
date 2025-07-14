@@ -16,7 +16,7 @@ const technicalSkillsSchema = new mongoose.Schema( {
         database: [
            String
         ],
-        verisonControl: [
+        versionControl: [
            String
         ],
         toolsAndUtilities: [

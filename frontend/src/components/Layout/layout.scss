@@ -1,68 +1,101 @@
-.header {
-  background: var(--card-glass);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 1rem 2rem;
-  backdrop-filter: blur(12px);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  z-index: 999;
-  flex: 0 0 auto;
-  position: sticky;
-  top: 0;
-}
-
 .root-container {
   display: flex;
   flex-direction: column;
   height: 100vh;
 }
 
+.header {
+  background: var(--card-glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: var(--box-shadow);
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
+  flex-wrap: wrap; // important for small screens
+}
+
+.nav-bar ul {
+  display: flex;
+  gap: 1.2rem;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.nav-bar li.auth-btn {
+  margin-left: auto;
+}
 
 .page-container {
+  flex: 1;
   overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+
   scrollbar-width: thin;
   scrollbar-color: #444 #000;
-  padding: 2rem;
 }
 
 .page-container::-webkit-scrollbar {
-  width: 16px;
+  width: 12px;
 }
-
 .page-container::-webkit-scrollbar-thumb {
   background-color: #444;
-  border-radius: 4px;
+  border-radius: 6px;
 }
-
-.page-container::-webkit-scrollbar-thumb:hover {
-  background-color: #222;
-}
-
 .page-container::-webkit-scrollbar-track {
   background: #000;
-  border-radius: 4px;
 }
 
-
-.nav-bar ul {
-  list-style: none;
-  display: flex;
-  gap: 1.5rem;
-  align-items: center;
-  padding-left: 0;
-  margin: 0;
+.spinner-wrapper {
+  min-height: 300px;
+  display: grid;
+  place-items: center;
 }
 
-.nav-bar li {
-  display: flex;
-  align-items: center;
+/* ✅ Mobile responsiveness */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .nav-bar ul {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    gap: 0.75rem;
+  }
+
+  .nav-bar li.auth-btn {
+    margin-left: 0;
+    align-self: flex-end;
+  }
+
+  .page-container {
+    padding: 1rem;
+  }
 }
 
-nav ul li .active label {
-  color: var(--text-primary);
-  text-shadow: 0px 0px 10px#007bff, 0px 0px 20px#007bff, 0px 0px 30px#007bff,
-    0px 0px 40px#007bff;
+@media (max-width: 480px) {
+  .header {
+    padding: 0.75rem 1rem;
+  }
+
+  .nav-bar ul {
+    font-size: 1rem;
+  }
 }

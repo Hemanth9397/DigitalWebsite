@@ -80,7 +80,7 @@ function LoginSignupForm({ notify, isLogin: isLoginProp = true }) {
         });
         isLogin && dispatch(login(res.data.user));
         isLogin
-          ? navigate("/api/v1/portfolio", { replace: true })
+          ? navigate("/portfolio", { replace: true })
           : setIsLogin(true);
       } catch (err) {
         const msg = err.response?.data?.message || "Something went wrong";
@@ -104,7 +104,7 @@ function LoginSignupForm({ notify, isLogin: isLoginProp = true }) {
       open={true}
       footer={null}
       onCancel={() => {
-        navigate("/api/v1/portfolio");
+        navigate("/");
         formik.resetForm();
       }}
     >

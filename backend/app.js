@@ -10,7 +10,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 const app = express();
 
-const allowedOrigins = [process.env.CORS_ORIGIN_FRONTEND_URL];
+const allowedOrigins = [process.env.CORS_ORIGIN_FRONTEND_URL,  "http://localhost:3000"];
 
 app.use(cors({
   origin: function (origin, callback) {

@@ -1,6 +1,11 @@
-import { NavLink, Outlet, useNavigate, useNavigation } from "react-router-dom";
-import "./layout.scss";
+import {
+  NavLink,
+  Outlet,
+  useNavigate,
+  useNavigation,
+} from "react-router-dom";
 import styled from "styled-components";
+import "./layout.scss";
 import ModeScroller from "../modeScroller/ModeScroller";
 import Spinner from "../spinner/Spinner";
 import CustomButton from "../customButton/CustomButton";
@@ -10,10 +15,19 @@ import useAutoLogout from "../../hooks/useAutoLogout";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../slicers/auth/authSlice";
 
-const modes = ["blogger", "shopping", "portfolio"];
+const modes = ["portfolio"];
 
 const StyledNavLink = styled(NavLink)`
   text-decoration: none;
+
+  &.active label {
+    color: var(--text-primary);
+    text-shadow:
+      0px 0px 10px #007bff,
+      0px 0px 20px #007bff,
+      0px 0px 30px #007bff,
+      0px 0px 40px #007bff;
+  }
 `;
 
 const LinkContent = styled.label`
@@ -35,8 +49,8 @@ const LinkContent = styled.label`
     transition: width 0.4s ease;
   }
 
-  ${StyledNavLink}.active &::after,
-  &:hover::after {
+  ${StyledNavLink}:hover &::after,
+  ${StyledNavLink}.active &::after {
     width: 70%;
   }
 `;
@@ -56,7 +70,7 @@ const Layout = ({ notify }) => {
       notify({
         type: "warning",
         message: "Already authenticated",
-        description: "No need to authenticate. Because, You're already logged!",
+        description: "You're already logged in.",
       });
     }
   };
@@ -64,17 +78,16 @@ const Layout = ({ notify }) => {
   const handleLogout = async () => {
     try {
       await axios.post(
-        process.env.REACT_APP_BACKEND_URL + `/api/v1/logout`,
+        `${process.env.REACT_APP_BACKEND_URL}/api/v1/logout`,
         {},
         { withCredentials: true }
       );
       dispatch(logout());
       notify({
         type: "success",
-        message: "Logout Successfully!",
+        message: "Logout Successful!",
         description: "You have successfully logged out.",
       });
-      //navigate('/login', { replace: true });
     } catch (err) {
       console.error("Logout failed:", err.message);
     }
@@ -86,54 +99,31 @@ const Layout = ({ notify }) => {
         <ModeScroller modes={modes} />
         <nav className="nav-bar">
           <ul>
-            <li>
-              <StyledNavLink
-                to="api/v1/home"
-                end
-                className={({ isActive }) => (isActive ? "active" : "")}
-              >
-                <LinkContent>Home</LinkContent>
-              </StyledNavLink>
-            </li>
-            <li>
-              <StyledNavLink
-                to="api/v1/about"
-                className={({ isActive }) => (isActive ? "active" : "")}
-              >
-                <LinkContent>About</LinkContent>
-              </StyledNavLink>
-            </li>
-            <li>
-              <StyledNavLink
-                to="api/v1/contact"
-                className={({ isActive }) => (isActive ? "active" : "")}
-              >
-                <LinkContent>Contact</LinkContent>
-              </StyledNavLink>
-            </li>
-            <li className="flex items-center" style={{ marginRight: 0 }}>
+            {["home", "about", "contact"].map((route) => (
+              <li key={route}>
+                <StyledNavLink
+                  to={route}
+                  className={({ isActive }) => (isActive ? "active" : "")}
+                >
+                  <LinkContent>{route.charAt(0).toUpperCase() + route.slice(1)}</LinkContent>
+                </StyledNavLink>
+              </li>
+            ))}
+            <li className="auth-btn">
               {user ? (
                 <CustomButton onClick={handleLogout}>Logout</CustomButton>
               ) : (
-                <CustomButton onClick={handleAuthClick}>
-                  Authenticate
-                </CustomButton>
+                <CustomButton onClick={handleAuthClick}>Authenticate</CustomButton>
               )}
             </li>
           </ul>
         </nav>
       </header>
-      <hr />
+
       <main className="page-container">
         {navigation.state === "loading" ? (
-          <div
-            style={{
-              minHeight: "300px",
-              display: "grid",
-              placeItems: "center",
-            }}
-          >
-            <Spinner />{" "}
+          <div className="spinner-wrapper">
+            <Spinner />
           </div>
         ) : (
           <Outlet />

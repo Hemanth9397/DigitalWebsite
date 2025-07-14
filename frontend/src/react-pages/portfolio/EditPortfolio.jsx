@@ -30,7 +30,7 @@ const validationSchema = Yup.object().shape({
     frontend: Yup.array().of(Yup.string()).min(1, "Frontend skills required"),
     backend: Yup.array().of(Yup.string()).min(1, "Backend skills required"),
     database: Yup.array().of(Yup.string()).min(1, "Database skills required"),
-    verisonControl: Yup.array()
+    versionControl: Yup.array()
       .of(Yup.string())
       .min(1, "Version control skills required"),
     toolsAndUtilities: Yup.array()
@@ -134,12 +134,12 @@ const EditPortfolio = ({
         { title: "", description: "", link: "" },
       ],
       technicalSkills: {
-        frontend: initialValues?.technicalSkills?.frontend || "",
-        backend: initialValues?.technicalSkills?.backend || "",
-        database: initialValues?.technicalSkills?.database || "",
-        verisonControl: initialValues?.technicalSkills?.verisonControl || "",
+        frontend: initialValues?.technicalSkills?.frontend || [],
+        backend: initialValues?.technicalSkills?.backend || [],
+        database: initialValues?.technicalSkills?.database || [],
+        versionControl: initialValues?.technicalSkills?.versionControl || [],
         toolsAndUtilities:
-          initialValues?.technicalSkills?.toolsAndUtilities || "",
+          initialValues?.technicalSkills?.toolsAndUtilities || [],
       },
     },
     validationSchema: validationSchema,
@@ -164,7 +164,7 @@ const EditPortfolio = ({
         frontend: parseSkills(values?.technicalSkills?.frontend),
         backend: parseSkills(values?.technicalSkills?.backend),
         database: parseSkills(values?.technicalSkills?.database),
-        verisonControl: parseSkills(values?.technicalSkills?.verisonControl),
+        versionControl: parseSkills(values?.technicalSkills?.versionControl),
         toolsAndUtilities: parseSkills(
           values?.technicalSkills?.toolsAndUtilities
         ),
@@ -326,15 +326,15 @@ const EditPortfolio = ({
           />
 
           <FloatingPlaceholderInput
-            name="technicalSkills.verisonControl"
-            value={formik.values.technicalSkills.verisonControl}
+            name="technicalSkills.versionControl"
+            value={formik.values.technicalSkills.versionControl}
             onChange={(e) =>
               formik.setFieldValue(
-                "technicalSkills.verisonControl",
+                "technicalSkills.versionControl",
                 e.target.value
               )
             }
-            onError={getFieldError("technicalSkills.verisonControl")}
+            onError={getFieldError("technicalSkills.versionControl")}
             onBlur={formik.handleBlur}
             placeholder="Verison Control"
           />

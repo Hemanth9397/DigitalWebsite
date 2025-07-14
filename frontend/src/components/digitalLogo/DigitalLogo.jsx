@@ -1,9 +1,10 @@
+// DigitalLogo.jsx
 import React, { useEffect, useState } from "react";
 import "./DigitalLogo.scss";
 
 const DIGITAL_TEXT = "Digital Platform";
 
-const DigitalLogo = () => {
+const DigitalLogo = ({ onComplete }) => {
   const [displayText, setDisplayText] = useState("");
   const [glitchActive, setGlitchActive] = useState(false);
 
@@ -16,12 +17,17 @@ const DigitalLogo = () => {
 
       if (index > DIGITAL_TEXT.length) {
         clearInterval(typing);
-        setTimeout(() => setGlitchActive(true), 500);
+        setTimeout(() => {
+          setGlitchActive(true);
+          setTimeout(() => {
+            onComplete?.(); // 🔥 Notify when glitch is done
+          }, 1000);
+        }, 500);
       }
     }, 100);
 
     return () => clearInterval(typing);
-  }, []);
+  }, [onComplete]);
 
   return (
     <div className="logo-container">

@@ -1,15 +1,54 @@
-import React from 'react'
+import React from "react";
+import { Card, Typography, Button, Space } from "antd";
+import { FrownOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
+
+const { Title, Text } = Typography;
 
 const NotFound = () => {
-    return (
-        <div style={{ textAlign: 'center', padding: '50px', backgroundColor: '#f8d7da', color: '#721c24', border: '1px solid #f5c6cb', height: '100vh' }}>
-          <h1>404 - Page Not Found</h1>
-          <p>The page you're looking for doesn't exist or has been moved.</p>
-          <button onClick={() => window.location.href = '/'} style={{ padding: '10px 20px', backgroundColor: '#28a745', color: 'white', border: 'none', cursor: 'pointer' }}>
-            Go to Home
-          </button>
-        </div>
-      );
-}
+  const navigate = useNavigate();
 
-export default NotFound
+  return (
+    <div
+      style={{
+        height: "100vh",
+        display: "grid",
+        placeItems: "center",
+        backgroundColor: "#1f1f1f",
+        padding: "1rem",
+      }}
+    >
+      <Card
+        bordered={false}
+        style={{
+          maxWidth: 500,
+          width: "100%",
+          textAlign: "center",
+          backgroundColor: "#141414",
+          color: "#fff",
+          boxShadow: "0 0 10px rgba(0,0,0,0.3)",
+        }}
+      >
+        <Space direction="vertical" size="middle">
+          <FrownOutlined style={{ fontSize: "48px", color: "#ff4d4f" }} />
+          <Title level={2} style={{ color: "#fff", marginBottom: 0 }}>
+            404 - Page Not Found
+          </Title>
+          <Text style={{ color: "#aaa" }}>
+            The page you're looking for doesn't exist or has been moved.
+          </Text>
+          <Button
+            type="primary"
+            size="large"
+            onClick={() => navigate("/")}
+            style={{ borderRadius: 6 }}
+          >
+            Go to Home
+          </Button>
+        </Space>
+      </Card>
+    </div>
+  );
+};
+
+export default NotFound;

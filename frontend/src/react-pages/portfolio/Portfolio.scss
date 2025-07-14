@@ -1,10 +1,201 @@
-// :where(.css-dev-only-do-not-override-1m63z2v) {
-//   a {
-//     color: inherit !important;
-//     text-decoration: none !important;
+/* portfolio.scss */
 
-//     &:hover {
-//       color: inherit !important;
-//     }
-//   }
-// }
+.styled-icon {
+  color: #f0f0f0 !important;
+  font-size: 2rem;
+  transition: transform 0.3s ease;
+  filter: drop-shadow(0 0 2px var(--color)) drop-shadow(0 0 5px var(--color));
+}
+.styled-icon:hover {
+  transform: scale(1.2);
+}
+
+/* You can dynamically set --color inline in JSX */
+
+.styled-card {
+  margin: 0 auto;
+  border: none;
+  background-color: #161a20 !important;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(255, 69, 69, 0.4);
+  color: #f0f0f0 !important;
+}
+
+.styled-card .ant-card-head-title {
+  color: #f0f0f0 !important;
+  font-weight: 600;
+  font-size: 1.25rem;
+}
+
+.styled-card a {
+  color: #ff4545;
+  font-weight: 600;
+}
+
+.styled-card a:hover {
+  text-decoration: underline;
+}
+
+.skill-pill {
+  background: linear-gradient(90deg, #ff4545, #ff7b54);
+  color: #fff;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  user-select: none;
+  box-shadow: 0 0 8px rgba(255, 69, 69, 0.6);
+  transition: transform 0.2s ease;
+}
+
+.skill-pill:hover {
+  transform: scale(1.05);
+}
+
+.section {
+  max-width: 900px;
+  margin: 0 auto 3rem;
+  padding: 0 1rem;
+}
+
+.section-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #ff4545;
+  border-bottom: 2px solid #ff4545;
+  padding-bottom: 0.5rem;
+  text-align: center;
+}
+
+.centered-text {
+  max-width: 600px;
+  margin: 0 auto 1.5rem;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1rem;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.social-icons-wrapper {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+.technical-skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+}
+
+.technical-skill-category {
+  background: rgba(255, 69, 69, 0.1);
+  padding: 1.25rem 1rem;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(255, 69, 69, 0.2);
+}
+
+.technical-skill-title {
+  font-weight: 600;
+  font-size: 1.25rem;
+  color: #ff4545;
+  margin-bottom: 0.75rem;
+  text-align: center;
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.button-link {
+  background-color: #ff4545;
+  color: white;
+  padding: 0.75rem 2rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.3s ease;
+  display: inline-block;
+}
+
+.button-link:hover {
+  background-color: #ff6f61;
+}
+
+/* Small devices (phones, less than 640px) */
+@media (max-width: 639px) {
+  .section {
+    padding: 0 0.5rem;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+  }
+
+  .centered-text {
+    font-size: 0.9rem;
+  }
+
+  .technical-skills-grid {
+    grid-template-columns: 1fr !important; /* Single column for skills */
+  }
+
+  .button-group {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .button-link {
+    padding: 0.5rem 1.5rem;
+    font-size: 0.9rem;
+  }
+
+  .social-icons-wrapper {
+    gap: 1rem;
+  }
+}
+
+/* Medium devices (tablets, 640px to 1023px) */
+@media (min-width: 640px) and (max-width: 1023px) {
+  .section {
+    padding: 0 1rem;
+  }
+
+  .section-title {
+    font-size: 1.75rem;
+  }
+
+  .centered-text {
+    font-size: 1rem;
+  }
+
+  .technical-skills-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  .button-group {
+    flex-direction: row;
+    gap: 1rem;
+  }
+}
+
+/* Large devices (desktop, 1024px and up) */
+@media (min-width: 1024px) {
+  .section {
+    padding: 0 2rem;
+  }
+
+  .section-title {
+    font-size: 2rem;
+  }
+
+  .technical-skills-grid {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)) !important;
+  }
+}

@@ -1,11 +1,7 @@
 // import logo from './logo.svg';
 import { App as AntdApp, ConfigProvider, theme } from "antd";
 import "./App.css";
-import {
-  createBrowserRouter,
-  redirect,
-  RouterProvider,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ErrorPage from "./components/ErrorPage/ErrorPage";
 import { Provider } from "react-redux";
 import NotFound from "./react-pages/NotFound";
@@ -13,9 +9,7 @@ import "./index.css";
 import { lazy, Suspense } from "react";
 import Layout from "./components/Layout/Layout";
 import { store } from "./store/store";
-import PortfolioLoader from "./loaders/PortfolioLoader";
 import Spinner from "./components/spinner/Spinner";
-import DigitalLogo from "./components/digitalLogo/DigitalLogo";
 
 const HomeComponent = lazy(() => import("./react-pages/Home"));
 const ContactComponent = lazy(() => import("./react-pages/Contact"));
@@ -31,17 +25,12 @@ const LogInorSignInComponent = lazy(() =>
 
 const websitesRoutes = [
   {
-    path: "api/v1/blogger",
-    element: <BloggerComponent />,
+    path: "blogger",
+    element: <BloggerComponent/>,
   },
   {
-    path: "api/v1/shopping",
-    element: <ShoppingComponent />,
-  },
-  {
-    path: "api/v1/portfolio",
-    //loader: PortfolioLoader,
-    element: <PortfolioComponent />,
+    path: "shopping",
+    element: <ShoppingComponent/>,
   },
 ];
 
@@ -88,19 +77,15 @@ const router = createBrowserRouter([
   },
   {
     path: "/",
-    loader: ({ request }) => {
-      const url = new URL(request.url);
-      const currentPath = url.pathname;
-      if (currentPath !== "/api/v1/portfolio") {
-        return redirect("/api/v1/portfolio");
-      }
-      return null;
-    },
     element: <Layout />,
     errorElement: <ErrorPage />,
     children: [
       {
-        path: "api/v1/home",
+        index: true,
+        element: <PortfolioComponent/>,
+      },
+      {
+        path: "home",
         element: (
           <Suspense
             fallback={
@@ -115,12 +100,12 @@ const router = createBrowserRouter([
               </div>
             }
           >
-            <HomeComponent />
+            <HomeComponent/>
           </Suspense>
         ),
       },
       {
-        path: "api/v1/about",
+        path: "about",
         element: (
           <Suspense
             fallback={
@@ -135,12 +120,12 @@ const router = createBrowserRouter([
               </div>
             }
           >
-            <AboutComponent />
+            <AboutComponent/>
           </Suspense>
         ),
       },
       {
-        path: "api/v1/contact",
+        path: "contact",
         element: (
           <Suspense
             fallback={
@@ -160,6 +145,10 @@ const router = createBrowserRouter([
         ),
       },
       ...websitesRoutes,
+      {
+        path: "*",
+        element: <NotFound />,
+      },
     ],
   },
   {
@@ -185,9 +174,7 @@ function App() {
     >
       <AntdApp>
         <Provider store={store}>
-          <Suspense fallback={<DigitalLogo />}>
-            <RouterProvider router={router} />
-          </Suspense>
+          <RouterProvider router={router} />
         </Provider>
       </AntdApp>
     </ConfigProvider>

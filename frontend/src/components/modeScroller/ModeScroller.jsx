@@ -43,30 +43,38 @@ const ModeScroller = ({ modes = [] }) => {
   const location = useLocation();
   // Click to scroll into view
   const handleClick = (index) => {
-    if (`/${modes[index]}` === location.pathname) return;
-    const item = scrollerRef.current.children[index];
+  const mode = modes[index];
+  const path = mode === "portfolio" ? "/" : `/${mode}`;
+
+  if (path === location.pathname) return;
+
+  const item = scrollerRef.current.children[index];
+  item.scrollIntoView({
+    behavior: "smooth",
+    inline: "center",
+    block: "nearest",
+  });
+
+  dispatch(setMode(mode));
+  navigate(path);
+  setActiveIndex(index);
+};
+
+
+  //change to default portfolio
+
+ useEffect(() => {
+  const defaultIndex = modes.findIndex((m) => m === "portfolio");
+  const item = scrollerRef.current?.children[defaultIndex];
+  if (item) {
     item.scrollIntoView({
       behavior: "smooth",
       inline: "center",
       block: "nearest",
     });
-    dispatch(setMode(modes[index]));
-    navigate(`/api/v1/${modes[index]}`);
-    setActiveIndex(index);
-  };
+  }
+}, [modes]);
 
-  //change to default portfolio
-
-  useEffect(() => {
-    const item = scrollerRef.current.children[2]; // index of 'portfolio'
-    if (item) {
-      item.scrollIntoView({
-        behavior: "smooth",
-        inline: "center",
-        block: "nearest",
-      });
-    }
-  }, []);
 
   return (
     <div className="mode-wrapper">
