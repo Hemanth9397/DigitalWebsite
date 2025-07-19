@@ -169,7 +169,7 @@ const Admin = () => {
           emptyText: (
             <Empty
               description="No users to display"
-              imageStyle={{ height: 60 }}
+              styles={{ image: { height: 60 } }}
             />
           ),
         }}

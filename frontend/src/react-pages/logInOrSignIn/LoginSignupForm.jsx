@@ -77,11 +77,6 @@ function LoginSignupForm({ notify, isLogin: isLoginProp = true }) {
           }
         );
         resetForm();
-        notify({
-          type: "success",
-          message: res.data.message,
-          description: isLogin ? "Successful Login." : "Successful Signup.",
-        });
         isLogin &&
           dispatch(
             login({
@@ -91,14 +86,20 @@ function LoginSignupForm({ notify, isLogin: isLoginProp = true }) {
               email: res.data.user.email,
             })
           );
-        if (res.data.user.role === "admin") {
+        notify({
+          type: "success",
+          message: res.data.message,
+          description: isLogin ? "Successful Login." : "Successful Signup.",
+        });
+        if (res?.data?.user?.role === "admin") {
           setIsLogin(true);
-          navigate("/admin");
+          navigate("/admin", { replace: true });
         } else {
           navigate("/", { replace: true });
         }
       } catch (err) {
-        const msg = err.response?.data?.message || "Something went wrong";
+        console.log("error: ", err);
+        const msg = err?.data?.message || "Something went wrong";
         if (msg === "Email already exists.") {
           formik.setFieldError("email", msg);
         } else {
