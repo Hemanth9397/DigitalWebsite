@@ -81,7 +81,7 @@ const postLogin = async (req, res, next) => {
     res.status(200).json({
       message: "Login successful",
       user: {
-        __id: user["_id"],
+        user: user["_id"],
         role: user.role,
         name: user.name,
         email: user.email,
