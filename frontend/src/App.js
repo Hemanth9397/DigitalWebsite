@@ -13,6 +13,7 @@ import Spinner from "./components/spinner/Spinner";
 import { lazy, Suspense, useEffect } from "react";
 import "./index.css";
 import "./App.css";
+import RequireAdmin from "./react-pages/Admin/RequireAdmin.jsx";
 
 // Lazy imports...
 const HomeComponent = lazy(() => import("./react-pages/Home"));
@@ -23,6 +24,7 @@ const ShoppingComponent = lazy(() => import("./react-pages/Shopping"));
 const PortfolioComponent = lazy(() =>
   import("./react-pages/portfolio/Portfolio")
 );
+const AdminComponent = lazy(() => import("./react-pages/Admin/Admin.jsx"));
 const LogInorSignInComponent = lazy(() =>
   import("./react-pages/logInOrSignIn/LoginSignupForm")
 );
@@ -84,6 +86,21 @@ const router = createBrowserRouter([
             <ContactComponent />
           </Suspense>
         ),
+      },
+      {
+        path: "admin",
+        element: <RequireAdmin />,
+        children: [
+          {
+            index: true,
+            element: (
+              <Suspense fallback={<SpinnerCentered />}>
+                <AdminComponent />
+              </Suspense>
+            ),
+          },
+          { path: "*", element: <NotFound /> },
+        ],
       },
       ...websitesRoutes,
       { path: "*", element: <NotFound /> },

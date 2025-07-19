@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import "./ModeScroller.scss";
 import { setMode } from "../../slicers/mode/modeSlice";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -9,8 +9,16 @@ const ModeScroller = ({ modes = [] }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
-  // Scroll-based active index detection
+  const user = useSelector((state) => state.auth.user);
+
+  // Add Admin mode ONLY if user is admin
+  const extendedModes = [...modes];
+  if (user?.role === "admin") {
+    extendedModes.push("admin-website");
+  }
+
   useEffect(() => {
     const container = scrollerRef.current;
     const handleScroll = () => {
@@ -40,54 +48,59 @@ const ModeScroller = ({ modes = [] }) => {
     return () => container.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const location = useLocation();
-  // Click to scroll into view
   const handleClick = (index) => {
-  const mode = modes[index];
-  const path = mode === "portfolio" ? "/" : `/${mode}`;
+    const mode = extendedModes[index];
 
-  if (path === location.pathname) return;
+    if (mode === "admin-website") {
+      navigate("/admin");
+      return;
+    }
 
-  const item = scrollerRef.current.children[index];
-  item.scrollIntoView({
-    behavior: "smooth",
-    inline: "center",
-    block: "nearest",
-  });
+    const path = mode === "portfolio" ? "/" : `/${mode}`;
+    if (path === location.pathname) return;
 
-  dispatch(setMode(mode));
-  navigate(path);
-  setActiveIndex(index);
-};
-
-
-  //change to default portfolio
-
- useEffect(() => {
-  const defaultIndex = modes.findIndex((m) => m === "portfolio");
-  const item = scrollerRef.current?.children[defaultIndex];
-  if (item) {
+    const item = scrollerRef.current.children[index];
     item.scrollIntoView({
       behavior: "smooth",
       inline: "center",
       block: "nearest",
     });
-  }
-}, [modes]);
 
+    dispatch(setMode(mode));
+    navigate(path);
+    setActiveIndex(index);
+  };
+
+  useEffect(() => {
+    const defaultIndex = extendedModes.findIndex((m) => m === "portfolio");
+    const item = scrollerRef.current?.children[defaultIndex];
+    if (item) {
+      item.scrollIntoView({
+        behavior: "smooth",
+        inline: "center",
+        block: "nearest",
+      });
+    }
+  }, [extendedModes]);
 
   return (
     <div className="mode-wrapper">
       <div className="mode-scroller" ref={scrollerRef}>
-        {modes.map((mode, index) => (
-          <div
-            key={index}
-            className={`mode-title ${index === activeIndex ? "active" : ""}`}
-            onClick={() => handleClick(index)}
-          >
-            {mode.charAt(0).toUpperCase() + mode.slice(1) + " Website"}
-          </div>
-        ))}
+        {extendedModes.map((mode, index) => {
+          let displayName = mode.charAt(0).toUpperCase() + mode.slice(1);
+          if (mode === "admin-website") displayName = "Admin Website";
+          else displayName += " Website";
+
+          return (
+            <div
+              key={index}
+              className={`mode-title ${index === activeIndex ? "active" : ""}`}
+              onClick={() => handleClick(index)}
+            >
+              {displayName}
+            </div>
+          );
+        })}
       </div>
     </div>
   );

@@ -13,7 +13,7 @@ const useAuthInitializer = () => {
           withCredentials: true,
         });
         if (res.data?.user) {
-          dispatch(login(res.data.user)); // Update Redux with user info
+          dispatch(login(res.data.user));  // Update Redux with user info
         }
       } catch (err) {
         console.log("Not authenticated or session expired");

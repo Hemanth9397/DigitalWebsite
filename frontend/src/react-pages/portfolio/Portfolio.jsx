@@ -51,8 +51,86 @@ const Portfolio = ({ notify }) => {
 
   if (isLoading) {
     return (
-      <div className="space-y-12">
-        <Skeleton active paragraph={{ rows: 4 }} />
+      <div className="portfolio-container" style={{ padding: "2rem 1rem" }}>
+        {/* Title */}
+        <Skeleton.Input
+          style={{ width: 300, height: 50, marginBottom: 16 }}
+          active
+        />
+
+        {/* Short Note */}
+        <Skeleton paragraph={{ rows: 2, width: "60%" }} active />
+
+        {/* Social Icons */}
+        <div style={{ display: "flex", gap: 16, marginBottom: 24 }}>
+          {[...Array(3)].map((_, idx) => (
+            <Skeleton.Avatar key={idx} size="large" shape="circle" active />
+          ))}
+        </div>
+
+        {/* About Me Section */}
+        <Skeleton.Input
+          style={{ width: 200, height: 32, marginBottom: 12 }}
+          active
+        />
+        <Skeleton paragraph={{ rows: 3, width: "80%" }} active />
+
+        {/* Projects Section */}
+        <Skeleton.Input
+          style={{ width: 150, height: 32, marginBottom: 12 }}
+          active
+        />
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill,minmax(300px,1fr))",
+            gap: 16,
+          }}
+        >
+          {[...Array(2)].map((_, idx) => (
+            <Card key={idx} style={{ padding: 16 }}>
+              <Skeleton.Input
+                style={{ width: "60%", height: 24, marginBottom: 12 }}
+                active
+              />
+              <Skeleton paragraph={{ rows: 2 }} active />
+              <Skeleton.Button style={{ width: 120, height: 24 }} active />
+            </Card>
+          ))}
+        </div>
+
+        {/* Technical Skills Section */}
+        <Skeleton.Input
+          style={{ width: 180, height: 32, marginTop: 24, marginBottom: 12 }}
+          active
+        />
+        <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+          {[...Array(6)].map((_, idx) => (
+            <Skeleton.Button
+              key={idx}
+              style={{ width: 80, height: 28, borderRadius: 16 }}
+              active
+            />
+          ))}
+        </div>
+
+        {/* Resume Section */}
+        <Skeleton.Input
+          style={{ width: 220, height: 32, marginTop: 36, marginBottom: 12 }}
+          active
+        />
+        <Skeleton.Button style={{ width: 150, height: 40 }} active />
+
+        {/* Contact Buttons */}
+        <div style={{ marginTop: 32, display: "flex", gap: 24 }}>
+          {[...Array(2)].map((_, idx) => (
+            <Skeleton.Button
+              key={idx}
+              style={{ width: 140, height: 36, borderRadius: 20 }}
+              active
+            />
+          ))}
+        </div>
       </div>
     );
   }
@@ -206,7 +284,9 @@ const Portfolio = ({ notify }) => {
 
       <section className="section">
         <h2 className="section-title">Let's Connect</h2>
-        <p className="centered-text">I'm open to new opportunities and collaborations.</p>
+        <p className="centered-text">
+          I'm open to new opportunities and collaborations.
+        </p>
 
         <div className="button-group">
           <a
@@ -214,7 +294,7 @@ const Portfolio = ({ notify }) => {
             aria-label="Call Saudi Arabia Number"
             className="button-link"
           >
-            Call Saudi 🇨🇦
+            Call Saudi 🇸🇦
           </a>
           <a
             href="tel:+919640777368"

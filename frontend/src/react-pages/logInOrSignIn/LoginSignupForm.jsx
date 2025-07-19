@@ -66,22 +66,37 @@ function LoginSignupForm({ notify, isLogin: isLoginProp = true }) {
         }
 
         const endpoint = isLogin ? "/api/v1/login" : "/api/v1/signup";
-        const res = await axios.post(process.env.REACT_APP_BACKEND_URL + `${endpoint}`, formData, {
-          withCredentials: true, // ✅ Send cookie (JWT) with request
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
+        const res = await axios.post(
+          process.env.REACT_APP_BACKEND_URL + `${endpoint}`,
+          formData,
+          {
+            withCredentials: true, // ✅ Send cookie (JWT) with request
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
         resetForm();
         notify({
           type: "success",
           message: res.data.message,
           description: isLogin ? "Successful Login." : "Successful Signup.",
         });
-        isLogin && dispatch(login(res.data.user));
-        isLogin
-          ? navigate("/", { replace: true })
-          : setIsLogin(true);
+        isLogin &&
+          dispatch(
+            login({
+              user: res.data.user._id,
+              role: res.data.user.role,
+              name: res.data.user.name,
+              email: res.data.user.email,
+            })
+          );
+        if (res.data.user.role === "admin") {
+          setIsLogin(true);
+          navigate("/admin");
+        } else {
+          navigate("/", { replace: true });
+        }
       } catch (err) {
         const msg = err.response?.data?.message || "Something went wrong";
         if (msg === "Email already exists.") {
