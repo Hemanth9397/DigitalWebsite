@@ -1,3 +1,4 @@
+// Portfolio.jsx
 import React, { useCallback, useEffect, useState } from "react";
 import { Card, Skeleton } from "antd";
 import {
@@ -18,7 +19,8 @@ const Portfolio = ({ notify }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [hasFetched, setHasFetched] = useState(false);
   const [error, setError] = useState(null);
-  // const user = useSelector((state) => state.auth.user);
+
+  const isDark = useSelector((state) => state.theme.isDark);
 
   const fetchData = useCallback(async () => {
     setIsLoading(true);
@@ -75,7 +77,10 @@ const Portfolio = ({ notify }) => {
   }
 
   return (
-    <div style={{ padding: "2rem 1rem" }}>
+    <div
+      className={`portfolio-container ${isDark ? "theme-dark" : "theme-light"}`}
+      style={{ padding: "2rem 1rem" }}
+    >
       <section className="section">
         <h1 className="text-5xl font-extrabold text-center text-primaryColor mb-4">
           {portfolioData?.name}
@@ -138,11 +143,16 @@ const Portfolio = ({ notify }) => {
                   target="_blank"
                   rel="noreferrer"
                   className="hover-text-shadow-purple"
+                  style={{ color: isDark ? "#66ccff" : "#0077b5" }}
                 >
                   View on GitHub
                 </a>
               }
               className="styled-card"
+              style={{
+                backgroundColor: isDark ? "#1e2633" : "#ffffff",
+                color: isDark ? "#ffffff" : "#000000",
+              }}
             >
               <p>{project.description}</p>
             </Card>
@@ -204,7 +214,7 @@ const Portfolio = ({ notify }) => {
             aria-label="Call Saudi Arabia Number"
             className="button-link"
           >
-            Call Saudi 🇸🇦
+            Call Saudi 🇨🇦
           </a>
           <a
             href="tel:+919640777368"

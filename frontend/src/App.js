@@ -1,16 +1,20 @@
-// import logo from './logo.svg';
 import { App as AntdApp, ConfigProvider, theme } from "antd";
-import "./App.css";
+import { useSelector } from "react-redux";
+
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import ErrorPage from "./components/ErrorPage/ErrorPage";
 import { Provider } from "react-redux";
-import NotFound from "./react-pages/NotFound";
-import "./index.css";
-import { lazy, Suspense } from "react";
-import Layout from "./components/Layout/Layout";
 import { store } from "./store/store";
+
+import Layout from "./components/Layout/Layout";
+import ErrorPage from "./components/ErrorPage/ErrorPage";
+import NotFound from "./react-pages/NotFound";
 import Spinner from "./components/spinner/Spinner";
 
+import { lazy, Suspense, useEffect } from "react";
+import "./index.css";
+import "./App.css";
+
+// Lazy imports...
 const HomeComponent = lazy(() => import("./react-pages/Home"));
 const ContactComponent = lazy(() => import("./react-pages/Contact"));
 const AboutComponent = lazy(() => import("./react-pages/About"));
@@ -23,34 +27,22 @@ const LogInorSignInComponent = lazy(() =>
   import("./react-pages/logInOrSignIn/LoginSignupForm")
 );
 
+const SpinnerCentered = () => (
+  <div style={{ minHeight: "300px", display: "grid", placeItems: "center" }}>
+    <Spinner />
+  </div>
+);
+
 const websitesRoutes = [
-  {
-    path: "blogger",
-    element: <BloggerComponent/>,
-  },
-  {
-    path: "shopping",
-    element: <ShoppingComponent/>,
-  },
+  { path: "blogger", element: <BloggerComponent /> },
+  { path: "shopping", element: <ShoppingComponent /> },
 ];
 
 const router = createBrowserRouter([
   {
     path: "/signUp",
     element: (
-      <Suspense
-        fallback={
-          <div
-            style={{
-              minHeight: "300px",
-              display: "grid",
-              placeItems: "center",
-            }}
-          >
-            <Spinner />
-          </div>
-        }
-      >
+      <Suspense fallback={<SpinnerCentered />}>
         <LogInorSignInComponent isLogin={false} />
       </Suspense>
     ),
@@ -58,19 +50,7 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: (
-      <Suspense
-        fallback={
-          <div
-            style={{
-              minHeight: "300px",
-              display: "grid",
-              placeItems: "center",
-            }}
-          >
-            <Spinner />
-          </div>
-        }
-      >
+      <Suspense fallback={<SpinnerCentered />}>
         <LogInorSignInComponent isLogin={true} />
       </Suspense>
     ),
@@ -80,104 +60,72 @@ const router = createBrowserRouter([
     element: <Layout />,
     errorElement: <ErrorPage />,
     children: [
-      {
-        index: true,
-        element: <PortfolioComponent/>,
-      },
+      { index: true, element: <PortfolioComponent /> },
       {
         path: "home",
         element: (
-          <Suspense
-            fallback={
-              <div
-                style={{
-                  minHeight: "300px",
-                  display: "grid",
-                  placeItems: "center",
-                }}
-              >
-                <Spinner />
-              </div>
-            }
-          >
-            <HomeComponent/>
+          <Suspense fallback={<SpinnerCentered />}>
+            <HomeComponent />
           </Suspense>
         ),
       },
       {
         path: "about",
         element: (
-          <Suspense
-            fallback={
-              <div
-                style={{
-                  minHeight: "300px",
-                  display: "grid",
-                  placeItems: "center",
-                }}
-              >
-                <Spinner />
-              </div>
-            }
-          >
-            <AboutComponent/>
+          <Suspense fallback={<SpinnerCentered />}>
+            <AboutComponent />
           </Suspense>
         ),
       },
       {
         path: "contact",
         element: (
-          <Suspense
-            fallback={
-              <div
-                style={{
-                  minHeight: "300px",
-                  display: "grid",
-                  placeItems: "center",
-                }}
-              >
-                <Spinner />
-              </div>
-            }
-          >
+          <Suspense fallback={<SpinnerCentered />}>
             <ContactComponent />
           </Suspense>
         ),
       },
       ...websitesRoutes,
-      {
-        path: "*",
-        element: <NotFound />,
-      },
+      { path: "*", element: <NotFound /> },
     ],
   },
-  {
-    path: "*",
-    element: <NotFound />,
-  },
+  { path: "*", element: <NotFound /> },
 ]);
+
+function AppContent() {
+  const isDark = useSelector((state) => state.theme.isDark); // ✅
+
+  useEffect(() => {
+    document.body.classList.toggle("light-theme", !isDark);
+    document.body.classList.toggle("dark-theme", isDark);
+  }, [isDark]);
+
+  const themeConfig = {
+    algorithm: isDark ? theme.darkAlgorithm : theme.defaultAlgorithm,
+    token: {
+      colorPrimary: "#0077b5",
+      colorBgBase: isDark ? "#161a20" : "#ffffff",
+      colorTextBase: isDark ? "#f0f0f0" : "#1a1a1a",
+      colorTextHeading: isDark ? "#f0f0f0" : "#000000",
+      colorInfo: "#0077b5",
+      borderRadius: 8,
+    },
+  };
+
+  return (
+    <ConfigProvider theme={themeConfig}>
+      <AntdApp>
+        <RouterProvider router={router} />
+      </AntdApp>
+    </ConfigProvider>
+  );
+}
 
 function App() {
   return (
-    <ConfigProvider
-      theme={{
-        algorithm: theme.darkAlgorithm,
-        token: {
-          colorPrimary: "#0077b5", //'#ff4545',      // affects buttons, borders, etc.
-          colorBgBase: "#161a20", // background of modal, inputs, etc.
-          colorTextBase: "#f0f0f0", // text color
-          colorTextHeading: "#f0f0f0",
-          colorInfo: "#0077b5", // divider label text, links, etc.
-          borderRadius: 8,
-        },
-      }}
-    >
-      <AntdApp>
-        <Provider store={store}>
-          <RouterProvider router={router} />
-        </Provider>
-      </AntdApp>
-    </ConfigProvider>
+    <Provider store={store}>
+      <AppContent />
+    </Provider>
   );
 }
 

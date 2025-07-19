@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import axios from "axios";
-import { login } from "../slicers/auth/authSlice"; // You should have this action
+import { login } from "../slicers/auth/authSlice";
 
 const useAuthInitializer = () => {
   const dispatch = useDispatch();

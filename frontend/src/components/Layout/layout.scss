@@ -10,51 +10,49 @@
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border-color);
   box-shadow: var(--box-shadow);
-  padding: 1rem 2rem;
+  padding: 1rem 0.8rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   position: sticky;
   top: 0;
   z-index: 1000;
-
-  flex-wrap: nowrap; /* Prevent wrapping */
 }
 
-.mode-wrapper {
-  @media (max-width: 768px) {
-    display: none;
-  }
+.nav-bar {
+  display: inline-flex;
+  gap: 1.2rem;
+
+}
+
+.auth-btn {
+  display: grid;
+  place-items: center;
 }
 
 .nav-bar ul {
   display: flex;
-  gap: 1.2rem;
+  flex: 1;
+  flex-wrap: wrap;
   align-items: center;
   list-style: none;
   margin: 0;
   padding: 0;
+  gap: 1.2rem;
 
-  flex-wrap: nowrap; /* Prevent wrapping */
-  justify-content: flex-start; /* Align left */
-  overflow-x: auto; /* Allow horizontal scroll if needed */
-  -webkit-overflow-scrolling: touch; /* Smooth scroll on iOS */
-
-  scrollbar-width: none; /* Hide scrollbar Firefox */
-  -ms-overflow-style: none; /* Hide scrollbar IE 10+ */
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 .nav-bar ul::-webkit-scrollbar {
-  display: none; /* Hide scrollbar Chrome, Safari */
+  display: none;
 }
 
 .nav-bar li.auth-btn {
   margin-left: auto;
-
-  @media (max-width: 768px) {
-    margin-left: 0;
-    align-self: flex-end;
-  }
+  flex-shrink: 0;
 }
 
 .page-container {
@@ -87,44 +85,29 @@
   place-items: center;
 }
 
-/* Remove flex-direction: column on smaller screens to keep nav horizontal */
-/* You can keep padding and font-size adjustments */
-@media (max-width: 768px) {
-  .header {
-    /* flex-direction: column; */  /* Removed */
-    align-items: center; /* Keep vertical alignment centered */
-    gap: 1rem;
-    padding: 1rem;
-  }
-
-  .nav-bar ul {
-    /* flex-direction: column; */  /* Removed */
-    width: 100%;
-    gap: 0.75rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .header {
-    padding: 0.75rem 1rem;
-  }
-
-  .nav-bar ul {
-    font-size: 1rem;
-  }
-}
-
 .nav-icon {
-  margin-right: 0.5rem;
   font-size: 1.2rem;
+}
+
+.nav-label-text {
+    margin-left: 0.5rem;
 }
 
 @media (max-width: 600px) {
   .nav-label-text {
+    margin-left: 0;
     display: none;
   }
 
   .nav-icon {
     font-size: 1.4rem;
+  }
+
+  .nav-bar ul {
+    justify-content: center;
+  }
+
+  .nav-bar li.auth-btn {
+    align-self: center;
   }
 }

@@ -42,7 +42,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/v1/portfolio", portfolioRoutes);
 app.use("/api/v1", UserRoutes);
-//app.use("/api/v1",authenticate, UserRoutes);
+app.use("/api/v1/auth/me",authenticate);
 
 // 404 handler (keep this at the very bottom)
 app.use((req, res) => {

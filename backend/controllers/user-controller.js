@@ -3,6 +3,8 @@ import HttpError from "../models/http-error.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
+const isProduction = process.env.NODE_ENV === "production";
+
 
 const postSignup = async (req, res, next) => {
   const { name, email, password } = req.body;
@@ -48,8 +50,8 @@ const postLogin = async (req, res, next) => {
      // Set the token as an HttpOnly cookie
     res.cookie('access_token', token, {
       httpOnly: true,        // Can't be accessed by JavaScript
-      secure: true,  // Only for HTTPS in production
-      sameSite: 'None',
+      secure: isProduction,  // Only for HTTPS in production
+      sameSite: isProduction ? "None" : "Lax",
       path: '/',
       maxAge: 15 * 60 * 1000, // 15 min
     });
@@ -63,8 +65,8 @@ const postLogin = async (req, res, next) => {
  const postLogout =(req, res) => {
   res.clearCookie('access_token',{
   httpOnly: true,
-  secure: true,
-  sameSite: 'None',
+  secure: isProduction,
+  sameSite: isProduction ? "None" : "Lax",
   path: '/', // 👈 this is where you define the path
   maxAge: 15 * 60 * 1000, // 15 min
 });

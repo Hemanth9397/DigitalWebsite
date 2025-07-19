@@ -62,3 +62,9 @@
   right: 0;
   background: linear-gradient(to left, #e74c3c, transparent);
 }
+
+@media (max-width: 600px) {
+  .mode-scroller{
+    display: none;
+  }
+}

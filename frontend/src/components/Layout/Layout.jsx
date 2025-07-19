@@ -1,9 +1,4 @@
-import {
-  NavLink,
-  Outlet,
-  useNavigate,
-  useNavigation,
-} from "react-router-dom";
+import { NavLink, Outlet, useNavigate, useNavigation } from "react-router-dom";
 import styled from "styled-components";
 import "./layout.scss";
 import ModeScroller from "../modeScroller/ModeScroller";
@@ -14,6 +9,7 @@ import axios from "axios";
 import useAutoLogout from "../../hooks/useAutoLogout";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../slicers/auth/authSlice";
+import ThemeToggle from "./ThemeToggle";
 import useAuthInitializer from "../../hooks/useAuthInitializer";
 
 const modes = ["portfolio"];
@@ -23,11 +19,8 @@ const StyledNavLink = styled(NavLink)`
 
   &.active label {
     color: var(--text-primary);
-    text-shadow:
-      0px 0px 10px #007bff,
-      0px 0px 20px #007bff,
-      0px 0px 30px #007bff,
-      0px 0px 40px #007bff;
+    text-shadow: 0px 0px 10px #007bff, 0px 0px 20px #007bff,
+      0px 0px 30px #007bff, 0px 0px 40px #007bff;
   }
 `;
 
@@ -61,7 +54,7 @@ const Layout = ({ notify }) => {
   const navigate = useNavigate();
   const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
- // useAuthInitializer();
+  useAuthInitializer();
   useAutoLogout(user);
 
   const handleAuthClick = () => {
@@ -97,7 +90,10 @@ const Layout = ({ notify }) => {
   return (
     <div className="root-container">
       <header className="header">
-        <ModeScroller modes={modes} />
+        <span style={{display: "inline-flex", gap: "1.2rem", alignItems: "center"}}>
+          <ThemeToggle />
+          <ModeScroller modes={modes} />
+        </span>
         <nav className="nav-bar">
           <ul>
             {["home", "about", "contact"].map((route) => (
@@ -119,20 +115,24 @@ const Layout = ({ notify }) => {
                 </StyledNavLink>
               </li>
             ))}
-            <li className="auth-btn">
-              {user ? (
-                <CustomButton onClick={handleLogout}>
-                  <span className="nav-icon">{String.fromCodePoint(0x1f513)}</span>
-                  <span className="nav-label-text">Logout</span>
-                </CustomButton>
-              ) : (
-                <CustomButton onClick={handleAuthClick}>
-                  <span className="nav-icon">{String.fromCodePoint(0x1f512)}</span>
-                  <span className="nav-label-text">Authenticate</span>
-                </CustomButton>
-              )}
-            </li>
           </ul>
+          <div className="auth-btn">
+            {user ? (
+              <CustomButton onClick={handleLogout}>
+                <span className="nav-icon">
+                  {String.fromCodePoint(0x1f513)}
+                </span>
+                <span className="nav-label-text">Logout</span>
+              </CustomButton>
+            ) : (
+              <CustomButton onClick={handleAuthClick}>
+                <span className="nav-icon">
+                  {String.fromCodePoint(0x1f512)}
+                </span>
+                <span className="nav-label-text">Authenticate</span>
+              </CustomButton>
+            )}
+          </div>
         </nav>
       </header>
 

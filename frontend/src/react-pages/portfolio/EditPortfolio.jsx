@@ -47,25 +47,20 @@ const ModalScrollbarGlobalStyles = createGlobalStyle`
     overflow: auto !important;
     -webkit-overflow-scrolling: touch;
     scroll-behavior: smooth;
-
     &::-webkit-scrollbar {
       width: 24px;
     }
-
     &::-webkit-scrollbar-thumb {
       background-color: #444;
       border-radius: 4px;
     }
-
     &::-webkit-scrollbar-thumb:hover {
       background-color: #222;
     }
-
     &::-webkit-scrollbar-track {
       background: #000;
       border-radius: 4px;
     }
-
     scrollbar-width: thin;
     scrollbar-color: #444 #000;
   }
@@ -73,41 +68,30 @@ const ModalScrollbarGlobalStyles = createGlobalStyle`
 
 const StyledModal = styled(Modal)`
   .ant-modal-content {
-    filter: drop-shadow(0 0 8px #007bff);
-    box-shadow: 0 4px 20px rgba(255, 69, 69, 0.4);
-    border: 1px solid #007bff;
+    background-color: ${({ theme }) => theme.modalBg};
+    background: ${({ theme }) => theme.modalBg};
+    color: ${({ theme }) => theme.textColor};
+    border: 1px solid ${({ theme }) => theme.modalBorder};
+    box-shadow: ${({ theme }) => theme.modalShadow};
   }
 `;
 
 const Label = styled.label`
-  left: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  padding: 0 4px;
-  pointer-events: none;
-  transition: 0.2s ease all;
-
-  ${({ $isActive }) =>
+  color: ${({ theme }) => theme.textColor};
+  ${({ $isActive, theme }) =>
     $isActive &&
     css`
-      left: 10px;
-      top: -4px;
-      font-size: 16px;
-      color: var(--text-primary);
-      background: #28364c;
-      text-shadow: 0px 0px 5px #007bff, 0px 0px 10px #007bff,
-        0px 0px 15px #007bff, 0px 0px 20px #007bff;
+      background: ${theme.mode === "dark" ? "#28364c" : "#e0e0e0"};
+      text-shadow: 0px 0px 5px ${theme.modalBorder};
     `}
 `;
 
 const StyledEditIcon = styled(EditOutlined)`
-  color: #f0f0f0 !important;
-
+  color: ${({ theme }) => theme.textColor} !important;
   svg {
     width: 1.2rem;
     height: 1.2rem;
   }
-
   &:hover {
     filter: drop-shadow(0 0 2px #28a745) drop-shadow(0 0 5px #28a745);
   }
@@ -121,6 +105,7 @@ const EditPortfolio = ({
 }) => {
   const navigate = useNavigate();
   const user = useSelector((state) => state.auth.user);
+  const isDark = useSelector((state) => state.theme.isDark);
 
   const [showEditPortfolio, setShowEditPortfolio] = useState(false);
 
@@ -226,6 +211,22 @@ const EditPortfolio = ({
     formik.setFieldValue("projects", filtered);
   };
 
+  const lightTheme = {
+  mode: "light",
+  modalBg: "var(--background-gradient)",
+  modalBorder: "#007bff",
+  modalShadow: "0 4px 20px rgba(255, 69, 69, 0.15)",
+  textColor: "#333333",
+};
+
+const darkTheme = {
+  mode: "dark",
+  modalBg: "#1e2633",
+  modalBorder: "#66ccff",
+  modalShadow: "0 4px 20px rgba(0, 119, 181, 0.5)",
+  textColor: "#f0f0f0",
+};
+
   return (
     <>
       {editIcon ? (
@@ -239,7 +240,7 @@ const EditPortfolio = ({
         </CustomButton>
       )}
       <ModalScrollbarGlobalStyles />
-      <StyledModal
+      <StyledModal theme={isDark ? darkTheme : lightTheme}
         open={showEditPortfolio}
         onOk={async () => {
           if (!user) {

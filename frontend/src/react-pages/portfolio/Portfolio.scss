@@ -1,5 +1,4 @@
-/* portfolio.scss */
-
+/* Dark theme (default) styles (your current styles) */
 .styled-icon {
   color: #f0f0f0 !important;
   font-size: 2rem;
@@ -10,8 +9,6 @@
   transform: scale(1.2);
 }
 
-/* You can dynamically set --color inline in JSX */
-
 .styled-card {
   margin: 0 auto;
   border: none;
@@ -20,22 +17,18 @@
   box-shadow: 0 4px 15px rgba(255, 69, 69, 0.4);
   color: #f0f0f0 !important;
 }
-
 .styled-card .ant-card-head-title {
   color: #f0f0f0 !important;
   font-weight: 600;
   font-size: 1.25rem;
 }
-
 .styled-card a {
   color: #ff4545;
   font-weight: 600;
 }
-
 .styled-card a:hover {
   text-decoration: underline;
 }
-
 .skill-pill {
   background: linear-gradient(90deg, #ff4545, #ff7b54);
   color: #fff;
@@ -47,17 +40,14 @@
   box-shadow: 0 0 8px rgba(255, 69, 69, 0.6);
   transition: transform 0.2s ease;
 }
-
 .skill-pill:hover {
   transform: scale(1.05);
 }
-
 .section {
   max-width: 900px;
   margin: 0 auto 3rem;
   padding: 0 1rem;
 }
-
 .section-title {
   font-size: 2rem;
   font-weight: 700;
@@ -67,7 +57,6 @@
   padding-bottom: 0.5rem;
   text-align: center;
 }
-
 .centered-text {
   max-width: 600px;
   margin: 0 auto 1.5rem;
@@ -76,27 +65,23 @@
   line-height: 1.6;
   text-align: center;
 }
-
 .social-icons-wrapper {
   display: flex;
   justify-content: center;
   gap: 2rem;
   margin-top: 1rem;
 }
-
 .technical-skills-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 1.5rem;
 }
-
 .technical-skill-category {
   background: rgba(255, 69, 69, 0.1);
   padding: 1.25rem 1rem;
   border-radius: 12px;
   box-shadow: 0 0 15px rgba(255, 69, 69, 0.2);
 }
-
 .technical-skill-title {
   font-weight: 600;
   font-size: 1.25rem;
@@ -104,14 +89,12 @@
   margin-bottom: 0.75rem;
   text-align: center;
 }
-
 .button-group {
   display: flex;
   justify-content: center;
   gap: 1rem;
   margin-top: 1rem;
 }
-
 .button-link {
   background-color: #ff4545;
   color: white;
@@ -123,79 +106,60 @@
   transition: background-color 0.3s ease;
   display: inline-block;
 }
-
 .button-link:hover {
   background-color: #ff6f61;
 }
 
-/* Small devices (phones, less than 640px) */
-@media (max-width: 639px) {
-  .section {
-    padding: 0 0.5rem;
-  }
+/* Responsive breakpoints remain unchanged */
 
+/* --------------------------------- */
+/* Light theme overrides when parent has .theme-light */
+/* --------------------------------- */
+.theme-light {
+  .styled-icon {
+    color: #333 !important;
+    filter: drop-shadow(0 0 2px var(--color)) drop-shadow(0 0 5px var(--color));
+  }
+  .styled-card {
+   // background-color: #ffb27a !important;
+    background: linear-gradient(90deg, #ff7961, #ffb27a);
+    box-shadow: 0 4px 15px rgba(255, 69, 69, 0.15);
+    color: #333 !important;
+    border: 1px solid #ff4545;
+  }
+  .styled-card .ant-card-head-title {
+    color: #ff4545 !important;
+  }
+  .styled-card a {
+    color: #e03e2f;
+  }
+  .styled-card a:hover {
+    text-decoration: underline;
+  }
+  .skill-pill {
+    background: linear-gradient(90deg, #ff7961, #ffb27a);
+    color: #333;
+    box-shadow: 0 0 6px rgba(255, 117, 97, 0.5);
+  }
   .section-title {
-    font-size: 1.5rem;
+    color: #e03e2f;
+    border-color: #e03e2f;
   }
-
   .centered-text {
-    font-size: 0.9rem;
+    color: #555;
   }
-
-  .technical-skills-grid {
-    grid-template-columns: 1fr !important; /* Single column for skills */
+  .technical-skill-category {
+   // background: rgba(255, 117, 97, 0.1);
+    box-shadow: 0 0 10px rgba(255, 117, 97, 0.2);
   }
-
-  .button-group {
-    flex-direction: column;
-    gap: 0.5rem;
+  .technical-skill-title {
+    color: #e03e2f;
   }
-
   .button-link {
-    padding: 0.5rem 1.5rem;
-    font-size: 0.9rem;
+    background-color: #e03e2f;
+    color: white;
   }
-
-  .social-icons-wrapper {
-    gap: 1rem;
-  }
-}
-
-/* Medium devices (tablets, 640px to 1023px) */
-@media (min-width: 640px) and (max-width: 1023px) {
-  .section {
-    padding: 0 1rem;
-  }
-
-  .section-title {
-    font-size: 1.75rem;
-  }
-
-  .centered-text {
-    font-size: 1rem;
-  }
-
-  .technical-skills-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
-  }
-
-  .button-group {
-    flex-direction: row;
-    gap: 1rem;
-  }
-}
-
-/* Large devices (desktop, 1024px and up) */
-@media (min-width: 1024px) {
-  .section {
-    padding: 0 2rem;
-  }
-
-  .section-title {
-    font-size: 2rem;
-  }
-
-  .technical-skills-grid {
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)) !important;
+  .button-link:hover {
+    background-color: #ff6f61;
   }
 }

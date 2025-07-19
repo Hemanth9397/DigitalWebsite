@@ -9,7 +9,6 @@ import { Portfolio } from "../models/portifolio.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-
 const getDownloadPDF = (req, res, next) => {
   const filePath = path.join(
     __dirname,
@@ -54,10 +53,13 @@ const postPortfolioDetails = async (req, res, next) => {
     );
     res.status(201).json({ message: "Portfolio saved!" });
   } catch (error) {
-    return next(
-      new HttpError("Error saving portfolio. Try later.", 500)
-    );
+    return next(new HttpError("Error saving portfolio. Try later.", 500));
   }
 };
 
-export default { getDownloadPDF, getPortfolioDetails, postPortfolioDetails };
+
+export default {
+  getDownloadPDF,
+  getPortfolioDetails,
+  postPortfolioDetails
+};
