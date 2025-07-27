@@ -29,7 +29,7 @@ const Portfolio = ({ notify }) => {
 
   const isDark = useSelector((state) => state.theme.isDark);
   const { scrollYProgress } = useScroll();
-  const yParallax = useTransform(scrollYProgress, [0, 0.5], [0, -20]); // reduced shift to avoid overlap
+  const yParallax = useTransform(scrollYProgress, [0, 0.5], [0, 0]); // reduced shift to avoid overlap
 
   const fetchData = useCallback(async () => {
     setIsLoading(true);
