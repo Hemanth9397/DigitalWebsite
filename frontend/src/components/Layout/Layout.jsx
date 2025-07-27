@@ -12,6 +12,14 @@ import { logout } from "../../slicers/auth/authSlice";
 import ThemeToggle from "./ThemeToggle";
 import useAuthInitializer from "../../hooks/useAuthInitializer";
 
+import {
+  HomeOutlined,
+  InfoCircleOutlined,
+  PhoneOutlined,
+  LockOutlined,
+  UnlockOutlined,
+} from "@ant-design/icons";
+
 const modes = ["portfolio"];
 
 const StyledNavLink = styled(NavLink)`
@@ -19,8 +27,7 @@ const StyledNavLink = styled(NavLink)`
 
   &.active label {
     color: var(--text-primary);
-    text-shadow: 0px 0px 10px #007bff, 0px 0px 20px #007bff,
-      0px 0px 30px #007bff, 0px 0px 40px #007bff;
+    text-shadow: 0 0 10px #007bff, 0 0 20px #007bff, 0 0 30px #007bff;
   }
 `;
 
@@ -90,45 +97,48 @@ const Layout = ({ notify }) => {
   return (
     <div className="root-container">
       <header className="header">
-        <span style={{display: "inline-flex", gap: "1.2rem", alignItems: "center"}}>
+        <div className="left-header">
           <ThemeToggle />
           <ModeScroller modes={modes} />
-        </span>
-        <nav className="nav-bar">
+        </div>
+
+        <nav className="nav-bar" role="navigation" aria-label="Primary Navigation">
           <ul>
-            {["home", "about", "contact"].map((route) => (
-              <li key={route}>
-                <StyledNavLink
-                  to={route}
-                  className={({ isActive }) => (isActive ? "active" : "")}
-                >
-                  <LinkContent>
-                    <span className="nav-icon">
-                      {route === "home" && String.fromCodePoint(0x1f3e0)}
-                      {route === "about" && String.fromCodePoint(0x2139)}
-                      {route === "contact" && String.fromCodePoint(0x1f4de)}
-                    </span>
-                    <span className="nav-label-text">
-                      {route.charAt(0).toUpperCase() + route.slice(1)}
-                    </span>
-                  </LinkContent>
-                </StyledNavLink>
-              </li>
-            ))}
+            <li>
+              <StyledNavLink to="/home" className={({ isActive }) => (isActive ? "active" : "")}>
+                <LinkContent>
+                  <HomeOutlined className="nav-icon" />
+                  <span className="nav-label-text">Home</span>
+                </LinkContent>
+              </StyledNavLink>
+            </li>
+            <li>
+              <StyledNavLink to="/about" className={({ isActive }) => (isActive ? "active" : "")}>
+                <LinkContent>
+                  <InfoCircleOutlined className="nav-icon" />
+                  <span className="nav-label-text">About</span>
+                </LinkContent>
+              </StyledNavLink>
+            </li>
+            <li>
+              <StyledNavLink to="/contact" className={({ isActive }) => (isActive ? "active" : "")}>
+                <LinkContent>
+                  <PhoneOutlined className="nav-icon" />
+                  <span className="nav-label-text">Contact</span>
+                </LinkContent>
+              </StyledNavLink>
+            </li>
           </ul>
+
           <div className="auth-btn">
             {user ? (
               <CustomButton onClick={handleLogout}>
-                <span className="nav-icon">
-                  {String.fromCodePoint(0x1f513)}
-                </span>
+                <UnlockOutlined className="nav-icon" />
                 <span className="nav-label-text">Logout</span>
               </CustomButton>
             ) : (
               <CustomButton onClick={handleAuthClick}>
-                <span className="nav-icon">
-                  {String.fromCodePoint(0x1f512)}
-                </span>
+                <LockOutlined className="nav-icon" />
                 <span className="nav-label-text">Authenticate</span>
               </CustomButton>
             )}
@@ -136,9 +146,9 @@ const Layout = ({ notify }) => {
         </nav>
       </header>
 
-      <main className="page-container">
+      <main className="page-container" role="main">
         {navigation.state === "loading" ? (
-          <div className="spinner-wrapper">
+          <div className="spinner-wrapper" aria-busy="true" aria-live="polite">
             <Spinner />
           </div>
         ) : (

@@ -8,44 +8,76 @@
    🌐 CSS Variables – Default (Dark Theme)
 -------------------------------- */
 :root {
-  /* General Backgrounds */
-  --background-color: #1e1e1e;
+  /* Backgrounds */
+  --background-color: #1e1e1e; /* dark base */
   --background-gradient: linear-gradient(120deg, #1e1e1e, #2a2a2a);
-  --card-glass: rgba(255, 255, 255, 0.05);
+  --card-glass: rgba(255, 255, 255, 0.05); /* glass effect */
   --glass-overlay: rgba(22, 26, 32, 0.45);
 
   /* Text */
-  --text-primary: #ffffff;
-  --text-secondary: rgba(255, 255, 255, 0.7);
+  --text-primary: #ffffff; /* white */
+  --text-secondary: rgba(255, 255, 255, 0.7); /* semi-transparent */
+  --text-muted: #999999; /* neutral gray for disabled or hints */
 
-  /* Brand & Accent */
-  --highlight-color: #9ddfff;
-  --nav-label-color: #0a84ff;
-  --nav-active-color: #e74c3c;
+  /* Accent & Highlight */
+  --highlight-color: #0a84ff; /* bright blue */
+  --highlight-color-dark: #0066cc; /* darker blue */
+  --highlight-color-light: #3da9fc; /* lighter blue */
 
-  /* Border & Shadow */
+  --accent-color: #28a745; /* fresh green */
+  --accent-color-dark: #1e7e34;
+  --accent-color-light: #5cd65c;
+
+  --warning-color: #ff8c00; /* orange */
+  --warning-color-dark: #cc7000;
+  --warning-color-light: #ffa733;
+
+  /* Nav colors */
+  --nav-label-color: var(--highlight-color);
+  --nav-active-color: #e74c3c; /* tomato red */
+
+  /* Borders & Shadows */
   --border-color: rgba(255, 255, 255, 0.1);
   --box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
 }
+
 
 /* ------------------------------
    🌞 Light Theme Overrides
 -------------------------------- */
 body.light-theme {
-  --background-color: #ffffff;
-  --background-gradient: linear-gradient(120deg, #c0bbbb, #a66c6c);
-  --card-glass: rgba(0, 0, 0, 0.05);
-  --glass-overlay: rgba(255, 255, 255, 0.5);
+  /* Backgrounds */
+  --background-color: #fdf6f0; /* soft warm off-white */
+  --background-gradient: linear-gradient(120deg, #c0bbbb, #a66c6c); /* warm mauve to soft brown */
 
-  --text-primary: #1a1a1a;
-  --text-secondary: rgba(0, 0, 0, 0.7);
+  --card-glass: rgba(255, 255, 255, 0.15); /* slightly stronger glass effect for brightness */
+  --glass-overlay: rgba(255, 255, 255, 0.7); /* bright overlay for modals & cards */
 
-  --highlight-color: #0077b5;
-  --nav-label-color: #0077b5;
-  --nav-active-color: #ff4545;
+  /* Text */
+  --text-primary: #3e2f25; /* dark warm brown, good contrast on warm background */
+  --text-secondary: rgba(62, 47, 37, 0.75); /* softer brown for secondary text */
+  --text-muted: #7a6855; /* muted warm taupe */
 
-  --border-color: rgba(0, 0, 0, 0.1);
-  --box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
+  /* Accent & Highlight */
+  --highlight-color: #a66c6c; /* matching warm rose */
+  --highlight-color-dark: #7d4f4f; /* darker rose */
+  --highlight-color-light: #d19e9e; /* light rose */
+
+  --accent-color: #e07a5f; /* warm coral accent */
+  --accent-color-dark: #b65b46;
+  --accent-color-light: #f0b6a6;
+
+  --warning-color: #f2cc8f; /* soft yellow-orange */
+  --warning-color-dark: #c1a45f;
+  --warning-color-light: #f8dfa5;
+
+  /* Nav colors */
+  --nav-label-color: var(--highlight-color);
+  --nav-active-color: #d95d39; /* bright warm orange-red */
+
+  /* Borders & Shadows */
+  --border-color: rgba(122, 104, 85, 0.3); /* warm transparent border */
+  --box-shadow: 0 8px 30px rgba(166, 108, 108, 0.25); /* soft shadow with warm tint */
 }
 
 /* ------------------------------

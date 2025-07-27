@@ -14,7 +14,7 @@ import { useSelector } from "react-redux";
 import {
   motion,
   AnimatePresence,
-  LayoutGroup ,
+  LayoutGroup,
   useScroll,
   useTransform,
 } from "framer-motion";
@@ -29,7 +29,7 @@ const Portfolio = ({ notify }) => {
 
   const isDark = useSelector((state) => state.theme.isDark);
   const { scrollYProgress } = useScroll();
-  const yParallax = useTransform(scrollYProgress, [0, 1], [0, -100]);
+  const yParallax = useTransform(scrollYProgress, [0, 0.5], [0, -20]); // reduced shift to avoid overlap
 
   const fetchData = useCallback(async () => {
     setIsLoading(true);
@@ -60,7 +60,7 @@ const Portfolio = ({ notify }) => {
 
   if (isLoading) {
     return (
-      <div className="portfolio-container" style={{ padding: "2rem 1rem" }}>
+      <div className="portfolio-container pt-22" style={{ padding: "2rem 1rem" }}>
         <Skeleton active paragraph={{ rows: 10 }} />
       </div>
     );
@@ -69,7 +69,7 @@ const Portfolio = ({ notify }) => {
   if (hasFetched && error) {
     return (
       <motion.div
-        className="text-center p-8 text-red-400"
+        className="text-center p-8 text-red-400 pt-22"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
@@ -92,7 +92,7 @@ const Portfolio = ({ notify }) => {
 
   return (
     <motion.div
-      className={`portfolio-container ${isDark ? "theme-dark" : "theme-light"}`}
+      className={`portfolio-container pt-22 ${isDark ? "theme-dark" : "theme-light"}`}
       style={{ padding: "2rem 1rem" }}
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
