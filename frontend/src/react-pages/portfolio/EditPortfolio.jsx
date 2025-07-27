@@ -74,7 +74,20 @@ const StyledModal = styled(Modal)`
     border: 1px solid ${({ theme }) => theme.modalBorder};
     box-shadow: ${({ theme }) => theme.modalShadow};
   }
+
+  .ant-modal-header {
+    background: none !important; /* ✅ remove header background */
+    border-bottom: none;
+    color: ${({ theme }) => theme.textColor};
+  }
+
+  .ant-modal-title {
+    color: ${({ theme }) => theme.textColor}; /* Ensure title uses theme color */
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
 `;
+
 
 const Label = styled.label`
   color: ${({ theme }) => theme.textColor};
