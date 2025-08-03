@@ -29,7 +29,7 @@ const Portfolio = ({ notify }) => {
 
   const isDark = useSelector((state) => state.theme.isDark);
   const { scrollYProgress } = useScroll();
-  const yParallax = useTransform(scrollYProgress, [0, 0.5], [0, 0]); // reduced shift to avoid overlap
+  const yParallax = useTransform(scrollYProgress, [0, 0.5], [0, 0]);
 
   const fetchData = useCallback(async () => {
     setIsLoading(true);
@@ -60,7 +60,7 @@ const Portfolio = ({ notify }) => {
 
   if (isLoading) {
     return (
-      <div className="portfolio-container pt-22" style={{ padding: "2rem 1rem" }}>
+      <div className="portfolio-container pt-24 px-4">
         <Skeleton active paragraph={{ rows: 10 }} />
       </div>
     );
@@ -69,7 +69,7 @@ const Portfolio = ({ notify }) => {
   if (hasFetched && error) {
     return (
       <motion.div
-        className="text-center p-8 text-red-400 pt-22"
+        className="text-center p-8 text-red-400 pt-24"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
@@ -92,8 +92,9 @@ const Portfolio = ({ notify }) => {
 
   return (
     <motion.div
-      className={`portfolio-container pt-22 ${isDark ? "theme-dark" : "theme-light"}`}
-      style={{ padding: "2rem 1rem" }}
+      className={`portfolio-container pt-24 px-4 sm:px-8 ${
+        isDark ? "theme-dark" : "theme-light"
+      }`}
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
@@ -117,19 +118,23 @@ const Portfolio = ({ notify }) => {
           </h1>
           <p className="centered-text">{portfolioData?.shortNote}</p>
           <div className="social-icons-wrapper">
-            {[{
-              href: "https://github.com/Hemanth9397/DigitalWebsite",
-              icon: <GithubOutlined />,
-              color: "#6e5494"
-            }, {
-              href: "https://www.linkedin.com/in/hemanth-gidijala-34372b169/",
-              icon: <LinkedinOutlined />,
-              color: "#0077b5"
-            }, {
-              href: "mailto:ghemanthkumar03@gmail.com",
-              icon: <MailOutlined />,
-              color: "#d93025"
-            }].map(({ href, icon, color }, i) => (
+            {[
+              {
+                href: "https://github.com/Hemanth9397/DigitalWebsite",
+                icon: <GithubOutlined />,
+                color: "#6e5494",
+              },
+              {
+                href: "https://www.linkedin.com/in/hemanth-gidijala-34372b169/",
+                icon: <LinkedinOutlined />,
+                color: "#0077b5",
+              },
+              {
+                href: "mailto:ghemanthkumar03@gmail.com",
+                icon: <MailOutlined />,
+                color: "#d93025",
+              },
+            ].map(({ href, icon, color }, i) => (
               <motion.a
                 key={i}
                 href={href}
@@ -171,10 +176,11 @@ const Portfolio = ({ notify }) => {
           variants={{ visible: { transition: { staggerChildren: 0.2 } } }}
         >
           <h2 className="section-title">Projects</h2>
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
             {portfolioData?.projects?.map((project, i) => (
               <motion.div
                 key={i}
+                className="w-full"
                 variants={{
                   hidden: { opacity: 0, y: 20 },
                   visible: { opacity: 1, y: 0 },
@@ -196,6 +202,7 @@ const Portfolio = ({ notify }) => {
                   }
                   className="styled-card"
                   style={{
+                    width: "100%",
                     backgroundColor: isDark ? "#1e2633" : "#ffffff",
                     color: isDark ? "#ffffff" : "#000000",
                   }}
@@ -216,9 +223,17 @@ const Portfolio = ({ notify }) => {
         >
           <h2 className="section-title">Technical Skills</h2>
           <div className="technical-skills-grid">
-            {["frontend", "backend", "database", "versionControl", "toolsAndUtilities"].map((key) => (
+            {[
+              "frontend",
+              "backend",
+              "database",
+              "versionControl",
+              "toolsAndUtilities",
+            ].map((key) => (
               <div key={key} className="technical-skill-category">
-                <h3 className="technical-skill-title">{key.replace(/([A-Z])/g, " $1")}</h3>
+                <h3 className="technical-skill-title">
+                  {key.replace(/([A-Z])/g, " $1")}
+                </h3>
                 <div className="flex flex-wrap justify-center gap-3">
                   {portfolioData?.technicalSkills?.[key]?.map((skill, idx) => (
                     <motion.span
@@ -259,7 +274,10 @@ const Portfolio = ({ notify }) => {
             I'm open to new opportunities and collaborations.
           </p>
           <div className="button-group">
-            {[{ label: "Call Saudi 🇸🇦", href: "tel:+966539217292" }, { label: "Call India 🇮🇳", href: "tel:+919640777368" }].map(({ label, href }, i) => (
+            {[
+              { label: "Call Saudi 🇸🇦", href: "tel:+966539217292" },
+              { label: "Call India 🇮🇳", href: "tel:+919640777368" },
+            ].map(({ label, href }, i) => (
               <motion.a
                 key={i}
                 href={href}
