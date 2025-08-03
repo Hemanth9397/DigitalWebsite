@@ -3,7 +3,8 @@ import { useDispatch } from "react-redux";
 import axios from "axios";
 import { login } from "../slicers/auth/authSlice";
 
-const useAuthInitializer = () => {
+const useAuthInitializer = (user) => {
+   
   const dispatch = useDispatch();
 
   useEffect(() => {

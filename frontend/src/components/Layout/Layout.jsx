@@ -9,7 +9,6 @@ import axios from "axios";
 import useAutoLogout from "../../hooks/useAutoLogout";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../slicers/auth/authSlice";
-import ThemeToggle from "./ThemeToggle";
 import useAuthInitializer from "../../hooks/useAuthInitializer";
 
 import {
@@ -18,6 +17,7 @@ import {
   PhoneOutlined,
   LockOutlined,
   UnlockOutlined,
+  SettingOutlined,
 } from "@ant-design/icons";
 
 const modes = ["portfolio"];
@@ -98,14 +98,30 @@ const Layout = ({ notify }) => {
     <div className="root-container">
       <header className="header">
         <div className="left-header">
-          <ThemeToggle />
+          <StyledNavLink
+            to="/settings"
+            className={({ isActive }) => (isActive ? "active" : "")}
+            aria-label="Settings"
+          >
+            <LinkContent>
+              <SettingOutlined className="nav-icon" />
+            </LinkContent>
+          </StyledNavLink>
+
           <ModeScroller modes={modes} />
         </div>
 
-        <nav className="nav-bar" role="navigation" aria-label="Primary Navigation">
+        <nav
+          className="nav-bar"
+          role="navigation"
+          aria-label="Primary Navigation"
+        >
           <ul>
             <li>
-              <StyledNavLink to="/home" className={({ isActive }) => (isActive ? "active" : "")}>
+              <StyledNavLink
+                to="/home"
+                className={({ isActive }) => (isActive ? "active" : "")}
+              >
                 <LinkContent>
                   <HomeOutlined className="nav-icon" />
                   <span className="nav-label-text">Home</span>
@@ -113,7 +129,10 @@ const Layout = ({ notify }) => {
               </StyledNavLink>
             </li>
             <li>
-              <StyledNavLink to="/about" className={({ isActive }) => (isActive ? "active" : "")}>
+              <StyledNavLink
+                to="/about"
+                className={({ isActive }) => (isActive ? "active" : "")}
+              >
                 <LinkContent>
                   <InfoCircleOutlined className="nav-icon" />
                   <span className="nav-label-text">About</span>
@@ -121,7 +140,10 @@ const Layout = ({ notify }) => {
               </StyledNavLink>
             </li>
             <li>
-              <StyledNavLink to="/contact" className={({ isActive }) => (isActive ? "active" : "")}>
+              <StyledNavLink
+                to="/contact"
+                className={({ isActive }) => (isActive ? "active" : "")}
+              >
                 <LinkContent>
                   <PhoneOutlined className="nav-icon" />
                   <span className="nav-label-text">Contact</span>

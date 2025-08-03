@@ -12,6 +12,7 @@ import { parseSkills } from "../../utils/parseSkills";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import TextArea from "antd/es/input/TextArea";
 
 const projectSchema = Yup.object().shape({
   title: Yup.string().required("Project title is required"),
@@ -87,6 +88,15 @@ const StyledModal = styled(Modal)`
     font-weight: 600;
   }
 `;
+
+const StyledTextArea = styled(TextArea)`
+  padding: 4px 11px;
+  background-color: #1e222a !important;
+  color: #f0f0f0 !important;
+  border: 1px solid #444;
+  border-radius: 6px;
+  resize: vertical;
+  min-height: 120px;`;
 
 
 const Label = styled.label`
@@ -429,7 +439,7 @@ const darkTheme = {
                   </div>
                 )}
 
-                <Input
+                <StyledTextArea
                   placeholder="Project Description"
                   name={`projects[${index}].description`}
                   value={project.description}
@@ -440,6 +450,7 @@ const darkTheme = {
                     )
                   }
                   onBlur={formik.handleBlur}
+                  autoSize={{ minRows: 3, maxRows: 10 }}
                 />
                 {formik.errors.projects?.[index]?.description && (
                   <div style={{ color: "#e74c3c", fontSize: 12 }}>

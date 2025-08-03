@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import "./ModeScroller.scss";
 import { setMode } from "../../slicers/mode/modeSlice";
 import { useLocation, useNavigate } from "react-router-dom";
+import "./ModeScroller.scss";
 
 const ModeScroller = ({ modes = [] }) => {
   const scrollerRef = useRef(null);
@@ -13,14 +13,46 @@ const ModeScroller = ({ modes = [] }) => {
 
   const user = useSelector((state) => state.auth.user);
 
-  // Add Admin mode ONLY if user is admin
-  const extendedModes = [...modes];
-  if (user?.role === "admin") {
-    extendedModes.push("admin-website");
-  }
+  // Memoize extendedModes to avoid unnecessary recalculations
+  const extendedModes = useMemo(() => {
+    const arr = [...modes];
+    if (user?.role === "admin") {
+      arr.push("admin-website");
+    }
+    return arr;
+  }, [modes, user?.role]);
 
+  // Sync activeIndex with current path and scroll into view
+  useEffect(() => {
+    const currentPath = location.pathname;
+    let currentMode = "portfolio"; // default
+
+    if (currentPath === "/admin") {
+      currentMode = "admin-website";
+    } else if (currentPath !== "/") {
+      currentMode = currentPath.slice(1);
+    }
+
+    const index = extendedModes.findIndex((mode) => mode === currentMode);
+    if (index !== -1) {
+      setActiveIndex(index);
+
+      const item = scrollerRef.current?.children[index];
+      if (item) {
+        item.scrollIntoView({
+          behavior: "smooth",
+          inline: "center",
+          block: "nearest",
+        });
+      }
+    }
+  }, [location.pathname, extendedModes]);
+
+  // Scroll listener to update activeIndex on scroll
   useEffect(() => {
     const container = scrollerRef.current;
+    if (!container) return;
+
     const handleScroll = () => {
       const children = Array.from(container.children);
       const containerRect = container.getBoundingClientRect();
@@ -70,18 +102,6 @@ const ModeScroller = ({ modes = [] }) => {
     navigate(path);
     setActiveIndex(index);
   };
-
-  useEffect(() => {
-    const defaultIndex = extendedModes.findIndex((m) => m === "portfolio");
-    const item = scrollerRef.current?.children[defaultIndex];
-    if (item) {
-      item.scrollIntoView({
-        behavior: "smooth",
-        inline: "center",
-        block: "nearest",
-      });
-    }
-  }, [extendedModes]);
 
   return (
     <div className="mode-wrapper">

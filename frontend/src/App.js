@@ -19,6 +19,7 @@ import RequireAdmin from "./react-pages/Admin/RequireAdmin.jsx";
 const HomeComponent = lazy(() => import("./react-pages/Home"));
 const ContactComponent = lazy(() => import("./react-pages/Contact"));
 const AboutComponent = lazy(() => import("./react-pages/About"));
+const SettingsComponent = lazy(() => import("./react-pages/settings/Settings"));
 const BloggerComponent = lazy(() => import("./react-pages/Blogger"));
 const ShoppingComponent = lazy(() => import("./react-pages/Shopping"));
 const PortfolioComponent = lazy(() =>
@@ -102,6 +103,7 @@ const router = createBrowserRouter([
           { path: "*", element: <NotFound /> },
         ],
       },
+      { path: "settings", element: <Suspense fallback={<SpinnerCentered />}><SettingsComponent /></Suspense> },
       ...websitesRoutes,
       { path: "*", element: <NotFound /> },
     ],
