@@ -59,12 +59,84 @@ const Portfolio = ({ notify }) => {
   }, [fetchData]);
 
   if (isLoading) {
-    return (
-      <div className="portfolio-container pt-24 px-4">
-        <Skeleton active paragraph={{ rows: 10 }} />
+  return (
+    <div className="portfolio-container pt-24 px-4 space-y-12 animate-pulse">
+      {/* Header Skeleton */}
+      <div className="text-center">
+        <div className="mx-auto h-8 w-2/3 bg-gray-300 rounded-md mb-2"></div>
+        <div className="mx-auto h-4 w-1/3 bg-gray-300 rounded-md"></div>
       </div>
-    );
-  }
+
+      {/* Social Icons Skeleton */}
+      <div className="flex justify-center gap-6">
+        {[...Array(3)].map((_, i) => (
+          <div
+            key={i}
+            className="h-10 w-10 bg-gray-300 rounded-full"
+          ></div>
+        ))}
+      </div>
+
+      {/* About Me Skeleton */}
+      <div>
+        <div className="h-6 w-40 bg-gray-300 rounded-md mb-4"></div>
+        <div className="space-y-2">
+          <div className="h-4 w-full bg-gray-300 rounded-md"></div>
+          <div className="h-4 w-5/6 bg-gray-300 rounded-md"></div>
+          <div className="h-4 w-3/4 bg-gray-300 rounded-md"></div>
+        </div>
+      </div>
+
+      {/* Projects Skeleton */}
+      <div>
+        <div className="h-6 w-40 bg-gray-300 rounded-md mb-4"></div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {[...Array(2)].map((_, i) => (
+            <div
+              key={i}
+              className="p-4 space-y-2 bg-gray-200 dark:bg-gray-700 rounded-lg"
+            >
+              <div className="h-4 w-2/3 bg-gray-300 rounded-md"></div>
+              <div className="h-3 w-full bg-gray-300 rounded-md"></div>
+              <div className="h-3 w-5/6 bg-gray-300 rounded-md"></div>
+              <div className="h-3 w-1/2 bg-gray-300 rounded-md"></div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Technical Skills Skeleton */}
+      <div>
+        <div className="h-6 w-40 bg-gray-300 rounded-md mb-4"></div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {[...Array(2)].map((_, i) => (
+            <div key={i}>
+              <div className="h-4 w-32 bg-gray-300 rounded-md mb-2"></div>
+              <div className="flex flex-wrap gap-2">
+                {[...Array(4)].map((_, j) => (
+                  <div
+                    key={j}
+                    className="h-6 w-20 bg-gray-300 rounded-full"
+                  ></div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Resume + Contact Buttons Skeleton */}
+      <div className="text-center space-y-4">
+        <div className="h-6 w-60 bg-gray-300 rounded-md mx-auto"></div>
+        <div className="flex justify-center gap-4">
+          <div className="h-10 w-32 bg-gray-300 rounded-md"></div>
+          <div className="h-10 w-32 bg-gray-300 rounded-md"></div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 
   if (hasFetched && error) {
     return (
@@ -92,7 +164,7 @@ const Portfolio = ({ notify }) => {
 
   return (
     <motion.div
-      className={`portfolio-container pt-24 px-4 sm:px-8 ${
+      className={`portfolio-container pt-1.5 px-4 sm:px-8 ${
         isDark ? "theme-dark" : "theme-light"
       }`}
       initial={{ opacity: 0, scale: 0.95 }}
