@@ -60,7 +60,7 @@ const Portfolio = ({ notify }) => {
 
   if (isLoading) {
   return (
-    <div className="portfolio-container pt-24 px-4 space-y-12 animate-pulse">
+    <div className="portfolio-container pt-2 px-4 space-y-12 animate-pulse">
       {/* Header Skeleton */}
       <div className="text-center">
         <div className="mx-auto h-8 w-2/3 bg-gray-300 rounded-md mb-2"></div>
@@ -261,17 +261,17 @@ const Portfolio = ({ notify }) => {
               >
                 <Card
                   title={project.title}
-                  extra={
-                    <a
-                      href={project.link}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="hover-text-shadow-purple"
-                      style={{ color: isDark ? "#66ccff" : "#0077b5" }}
-                    >
-                      View on GitHub
-                    </a>
-                  }
+                  // extra={
+                  //   <a
+                  //     href={project.link}
+                  //     target="_blank"
+                  //     rel="noreferrer"
+                  //     className="hover-text-shadow-purple"
+                  //     style={{ color: isDark ? "#66ccff" : "#0077b5" }}
+                  //   >
+                  //     View on GitHub
+                  //   </a>
+                  // }
                   className="styled-card"
                   style={{
                     width: "100%",
