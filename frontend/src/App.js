@@ -22,6 +22,7 @@ const AboutComponent = lazy(() => import("./react-pages/About"));
 const SettingsComponent = lazy(() => import("./react-pages/settings/Settings"));
 const BloggerComponent = lazy(() => import("./react-pages/Blogger"));
 const ShoppingComponent = lazy(() => import("./react-pages/Shopping"));
+const ChatmintComponent = lazy(() => import("./react-pages/chat/Chatmint"));
 const PortfolioComponent = lazy(() =>
   import("./react-pages/portfolio/Portfolio")
 );
@@ -39,6 +40,7 @@ const SpinnerCentered = () => (
 const websitesRoutes = [
   { path: "blogger", element: <BloggerComponent /> },
   { path: "shopping", element: <ShoppingComponent /> },
+  
 ];
 
 const router = createBrowserRouter([
@@ -104,6 +106,7 @@ const router = createBrowserRouter([
         ],
       },
       { path: "settings", element: <Suspense fallback={<SpinnerCentered />}><SettingsComponent /></Suspense> },
+      { path: "chatmint", element: <Suspense fallback={<SpinnerCentered />}><ChatmintComponent /></Suspense> },
       ...websitesRoutes,
       { path: "*", element: <NotFound /> },
     ],
