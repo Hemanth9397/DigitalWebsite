@@ -13,7 +13,7 @@ const getDownloadPDF = (req, res, next) => {
   const filePath = path.join(
     __dirname,
     "../files",
-    "Frontend@HemanthGidijala.pdf"
+    "FullStack@HemanthGidijala.pdf"
   );
 
   fs.access(filePath, fs.constants.F_OK, (err) => {
@@ -21,7 +21,7 @@ const getDownloadPDF = (req, res, next) => {
       return next(new HttpError("File not found.", 404));
     }
 
-    res.download(filePath, "Frontend@HemanthGidijala.pdf", (err) => {
+    res.download(filePath, "FullStack@HemanthGidijala.pdf", (err) => {
       if (err) {
         return next(new HttpError("File download failed.", 500));
       }
