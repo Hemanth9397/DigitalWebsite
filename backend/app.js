@@ -4,7 +4,7 @@ import cors from 'cors';
 import portfolioRoutes from "./routes/portfolio-routes.js";
 import userRoutes from "./routes/user-routes.js";
 import adminRoutes from "./routes/admin-routes.js";
-import searchRoutes from "./routes/search-routes.js";
+import projectRoutes from "./routes/project-routes.js";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import { authenticate } from "./middleware/authMiddleware.js";
@@ -52,7 +52,7 @@ app.use("/api/v1/auth/me", authenticate, (req, res) => {
   res.status(200).json({ success: true, user: req.user});
 });
 app.use("/api/v1/admin", adminRoutes);
-app.use("/api/v1/home/searchItem", searchRoutes);
+app.use("/api/v1/projects", projectRoutes);
 app.use("/api/v1", userRoutes);
 
 // 404 Handler
