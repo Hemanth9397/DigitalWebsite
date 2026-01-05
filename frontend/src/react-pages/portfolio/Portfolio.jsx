@@ -348,7 +348,7 @@ const Portfolio = ({ notify }) => {
           <div className="button-group">
             {[
               // { label: "Call Saudi 🇸🇦", href: "tel:+966539217292" },
-              { label: "Call India 🇮🇳", href: "tel:+919640777368" },
+              { label: "Call India 🇮🇳", href: "tel:+917095059865" },
             ].map(({ label, href }, i) => (
               <motion.a
                 key={i}
